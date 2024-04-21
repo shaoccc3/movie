@@ -1,0 +1,151 @@
+<mxfile host="Electron" modified="2024-04-21T16:08:14.592Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.2.5 Chrome/120.0.6099.109 Electron/28.1.0 Safari/537.36" etag="DPyCoM1018iIDqMLu3lf" version="24.2.5" type="device">
+  <diagram name="第1頁" id="CqictL9OCTBHq35JKptm">
+    <mxGraphModel dx="941" dy="692" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="2336" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="ZfVGiHW8qadgPJ7597cX-1" value="" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="75" y="60" width="470" height="560" as="geometry" />
+        </mxCell>
+        <mxCell id="ZfVGiHW8qadgPJ7597cX-4" value="" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="110" y="130" width="130" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="ZfVGiHW8qadgPJ7597cX-2" value="電影海報" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="130" y="140" width="90" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="ZfVGiHW8qadgPJ7597cX-3" value="電影資訊" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="135" y="260" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="ZfVGiHW8qadgPJ7597cX-5" value="列表" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="90" y="70" width="440" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="ZfVGiHW8qadgPJ7597cX-6" value="" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="270" y="130" width="220" height="460" as="geometry" />
+        </mxCell>
+        <mxCell id="ZfVGiHW8qadgPJ7597cX-8" value="用戶評論" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="280" y="230" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ZfVGiHW8qadgPJ7597cX-10" value="" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="75" y="690" width="535" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="ZfVGiHW8qadgPJ7597cX-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0.952;entryY=0.017;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="ZfVGiHW8qadgPJ7597cX-8" target="ZfVGiHW8qadgPJ7597cX-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ZfVGiHW8qadgPJ7597cX-12" value="用戶頭貼" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="90" y="700" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ZfVGiHW8qadgPJ7597cX-14" value="用戶名稱" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="160" y="710" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ZfVGiHW8qadgPJ7597cX-15" value="評分" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="290" y="720" width="70" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="ZfVGiHW8qadgPJ7597cX-16" value="留言時間" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="370" y="720" width="70" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="ZfVGiHW8qadgPJ7597cX-17" value="評論標題" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="100" y="770" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ZfVGiHW8qadgPJ7597cX-18" value="評論內容" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="100" y="810" width="470" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ZfVGiHW8qadgPJ7597cX-19" value="{電影名稱}的影評" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="280" y="140" width="200" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="ZfVGiHW8qadgPJ7597cX-21" value="" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=mxgraph.basic.tick" vertex="1" parent="1">
+          <mxGeometry x="110" y="880" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ZfVGiHW8qadgPJ7597cX-22" value="" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=mxgraph.basic.x" vertex="1" parent="1">
+          <mxGeometry x="150" y="880" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ZfVGiHW8qadgPJ7597cX-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="ZfVGiHW8qadgPJ7597cX-23" target="ZfVGiHW8qadgPJ7597cX-25">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="670" y="180" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ZfVGiHW8qadgPJ7597cX-23" value="查詢評論" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="285" y="200" width="190" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="ZfVGiHW8qadgPJ7597cX-25" value="" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="610" y="60" width="320" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="ZfVGiHW8qadgPJ7597cX-28" value="是否暴雷" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="620" y="80" width="50" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="ZfVGiHW8qadgPJ7597cX-30" value="&lt;span style=&quot;font-family: Arial, Tahoma, Helvetica, sans-serif; font-size: 14px; text-align: left; background-color: rgb(48, 48, 48);&quot;&gt;&lt;font color=&quot;#ffffff&quot;&gt;依評級查詢&lt;/font&gt;&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="690" y="85" width="100" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="ZfVGiHW8qadgPJ7597cX-32" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="ZfVGiHW8qadgPJ7597cX-31" target="ZfVGiHW8qadgPJ7597cX-33">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="860" y="230" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ZfVGiHW8qadgPJ7597cX-31" value="&lt;span style=&quot;font-family: Arial, Tahoma, Helvetica, sans-serif; font-size: 14px; text-align: left; background-color: rgb(48, 48, 48);&quot;&gt;&lt;font color=&quot;#ffffff&quot;&gt;排序方式&lt;/font&gt;&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="810" y="85" width="100" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="ZfVGiHW8qadgPJ7597cX-33" value="1.最新發布&lt;div&gt;2.最受歡迎&lt;/div&gt;&lt;div&gt;3.發布日期&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;align=center;" vertex="1" parent="1">
+          <mxGeometry x="800" y="220" width="120" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="ZfVGiHW8qadgPJ7597cX-34" value="" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="90" y="1030" width="470" height="560" as="geometry" />
+        </mxCell>
+        <mxCell id="ZfVGiHW8qadgPJ7597cX-35" value="" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="125" y="1100" width="130" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="ZfVGiHW8qadgPJ7597cX-36" value="電影海報" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="145" y="1110" width="90" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="ZfVGiHW8qadgPJ7597cX-37" value="電影資訊" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="150" y="1230" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="ZfVGiHW8qadgPJ7597cX-38" value="列表" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="105" y="1040" width="440" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="ZfVGiHW8qadgPJ7597cX-39" value="" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="285" y="1100" width="220" height="460" as="geometry" />
+        </mxCell>
+        <mxCell id="ZfVGiHW8qadgPJ7597cX-55" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="ZfVGiHW8qadgPJ7597cX-40" target="ZfVGiHW8qadgPJ7597cX-45">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ZfVGiHW8qadgPJ7597cX-40" value="用戶評論" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="295" y="1200" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ZfVGiHW8qadgPJ7597cX-41" value="{電影名稱}的短評" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="295" y="1110" width="200" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="ZfVGiHW8qadgPJ7597cX-56" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="ZfVGiHW8qadgPJ7597cX-42" target="ZfVGiHW8qadgPJ7597cX-57">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="630" y="1180" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ZfVGiHW8qadgPJ7597cX-42" value="查詢評論" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="300" y="1170" width="190" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="ZfVGiHW8qadgPJ7597cX-45" value="" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="50" y="1710" width="630" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="ZfVGiHW8qadgPJ7597cX-47" value="用戶名稱" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="175" y="1730" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ZfVGiHW8qadgPJ7597cX-48" value="評分" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="305" y="1740" width="70" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="ZfVGiHW8qadgPJ7597cX-49" value="留言時間" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="385" y="1740" width="70" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="ZfVGiHW8qadgPJ7597cX-51" value="評論內容" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="170" y="1790" width="380" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="ZfVGiHW8qadgPJ7597cX-52" value="" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=mxgraph.basic.tick" vertex="1" parent="1">
+          <mxGeometry x="610" y="1740" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ZfVGiHW8qadgPJ7597cX-54" value="用戶貼" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="65" y="1730" width="90" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="ZfVGiHW8qadgPJ7597cX-57" value="" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="570" y="1150" width="330" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
