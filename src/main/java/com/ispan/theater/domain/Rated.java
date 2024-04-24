@@ -21,4 +21,11 @@ public class Rated {
     @Column(name = "code", nullable = false, length = 20 , unique = true)
     private String code;
 
+    @Override
+    public String toString() {
+        return "Rated{" +
+                "context='" + context + '\'' +
+                ", code='" + code + '\'' +
+                '}';
+    }
 }

@@ -49,27 +49,35 @@ public class testMovieService {
                 put("ratedCode","d").
                 put("releaseDate","2006-01-20").
                 put("endDate","2006-02-28");
-        JSONObject findJson = new JSONObject().
-                put("startprice",350).put("endprice",450);
-        JSONObject updateJson1 = new JSONObject().put("name","Saving Private Ryan")
-                .put("endDate","1998-08-08");
-//        JSONObject updateJson2= new JSONObject().put("name","Brokeback Mountain")
-//                .put("price",400);
-//
-        Movie update = movieService.updateMovie(updateJson1);
-//        Movie update2 = movieService.updateMovie(updateJson2);
-//        List<Movie> movies = movieService.multiFind(findJson);
-//        for (Movie movie : movies) {
-//            System.out.println(movie);
-//        }
+
 //        Movie movie = movieService.jsonToMovie(movieJson);
 //        Movie movie1 = movieService.jsonToMovie(movieJson1);
-//        List<Movie> movies = movieRepository.findAll();
-//        for (Movie m : movies) {
-//            System.out.println(m);
-//        }
-//        Movie movie = new Movie();
-//        movie = movieService.getMovieById(1);
-//        System.out.println(movie);
+
+
+    }
+    @Test
+    public void testUpdateMovie(){
+//        JSONObject updateJson1 = new JSONObject().put("name","Saving Private Ryan")
+//                .put("endDate","1998-08-08");
+//        JSONObject updateJson2= new JSONObject().put("name","Brokeback Mountain")
+//                .put("price",400);
+//                Movie update = movieService.updateMovie(updateJson1);
+//        Movie update2 = movieService.updateMovie(updateJson2);
+    }
+    @Test
+    public void testFind(){
+        JSONObject findJson = new JSONObject().
+                put("startprice",350).put("endprice",450);
+
+
+
+        List<Movie> movies = movieService.multiFind(findJson);
+        for (Movie movie : movies) {
+            System.out.println(movie);
+        }
+        List<Movie> movies1 = movieRepository.fineMovieByNameLike("m");
+        for (Movie movie : movies1) {
+            System.out.println(movie);
+        }
     }
 }

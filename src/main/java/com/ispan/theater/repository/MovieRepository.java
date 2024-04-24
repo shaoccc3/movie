@@ -11,5 +11,8 @@ import java.util.List;
 public interface MovieRepository extends JpaRepository<Movie, Integer> ,MovieDao {
     @Query("select c from Movie c where c.name = :name")
     public Movie findByName(@Param("name") String name);
-
+    @Query("select c from Movie c where c.name like concat('%', :name ,'%')")
+    public List<Movie> fineMovieByNameLike(@Param("name") String name);
+    @Query("select count(*) from Movie c where c.name like concat('%', :name ,'%')")
+    public long countByNameLike(String name);
 }

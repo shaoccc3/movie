@@ -1,9 +1,11 @@
 package com.ispan.theater.service;
 
+import com.ispan.theater.domain.Category;
 import com.ispan.theater.domain.Movie;
 import com.ispan.theater.domain.Rated;
 import com.ispan.theater.repository.*;
 import com.ispan.theater.util.DatetimeConverter;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +35,9 @@ public class MovieService {
     public Movie getMovieById(Integer id) {//test passed
         Optional<Movie> optional = movieRepository.findById(id);
         return optional.orElse(null);
+    }
+    public List<Movie> getMovieByName(String name) {
+        return movieRepository.fineMovieByNameLike(name);
     }
     public Movie jsonToMovie(JSONObject jsonObject) {//test passed
         Movie movie = null;
@@ -109,6 +114,31 @@ public class MovieService {
     }
     public void deleteMovie(Movie movie) {
         movieRepository.delete(movie);
+    }
+    public JSONObject movieToJson(Movie movie) {
+        JSONObject jsonObject = new JSONObject();
+        JSONArray jsonArray = new JSONArray();
+        jsonObject.put("name", movie.getName());
+        jsonObject.put("description", movie.getDescription());
+        jsonObject.put("director", movie.getDirector());
+        jsonObject.put("releaseDate", movie.getReleaseDate());
+        jsonObject.put("endDate", movie.getEndDate());
+        jsonObject.put("price", movie.getPrice());
+        String rateStr = movie.getCategoryCode();
+        String[] cateArray = rateStr.split(",");
+        for(String cate : cateArray) {
+            Category temp = categoryRepository.findByCode(cate);
+            if(temp!=null) {
+                jsonArray.put(temp.toString());
+            }
+        }
+        jsonObject.put("category",jsonArray);
+        jsonObject.put("rated", movie.getRatedCode());
+        jsonObject.put("duration", movie.getDuration());
+        return jsonObject;
+    }
+    public long count(String name){
+        return movieRepository.countByNameLike(name);
     }
 
 
