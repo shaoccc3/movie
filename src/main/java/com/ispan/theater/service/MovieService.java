@@ -36,8 +36,12 @@ public class MovieService {
         Optional<Movie> optional = movieRepository.findById(id);
         return optional.orElse(null);
     }
-    public List<Movie> getMovieByName(String name) {
-        return movieRepository.fineMovieByNameLike(name);
+    public List<Movie> getMovieByName(String name,Integer page) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("name", name);
+        jsonObject.put("start", 10*page);
+        jsonObject.put("rows", 10);
+        return movieRepository.multiConditionFindMovie(jsonObject);
     }
     public Movie jsonToMovie(JSONObject jsonObject) {//test passed
         Movie movie = null;
