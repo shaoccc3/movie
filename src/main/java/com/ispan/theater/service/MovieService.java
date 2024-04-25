@@ -5,15 +5,23 @@ import com.ispan.theater.domain.Movie;
 import com.ispan.theater.domain.Rated;
 import com.ispan.theater.repository.*;
 import com.ispan.theater.util.DatetimeConverter;
+import jakarta.persistence.criteria.Predicate;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 @Transactional
@@ -143,6 +151,85 @@ public class MovieService {
     }
     public long count(String name){
         return movieRepository.countByNameLike(name);
+    }
+
+    //多條件搜尋
+    public Page<Movie> findMulti1(JSONObject jsonObject){
+
+        String name=jsonObject.isNull("name")?null :jsonObject.getString("name");
+        String director=jsonObject.isNull("director")?null :jsonObject.getString("director");
+        String releaseDate=jsonObject.isNull("releaseDate")?null :jsonObject.getString("releaseDate");
+        String endDate=jsonObject.isNull("endDate")?null :jsonObject.getString("endDate");
+        Double startprice=jsonObject.isNull("startprice")?null :jsonObject.getDouble("startprice");
+        Double endprice=jsonObject.isNull("endprice")?null :jsonObject.getDouble("endprice");
+        String category=jsonObject.isNull("category")?null :jsonObject.getString("category");
+        String rated=jsonObject.isNull("rated")?null :jsonObject.getString("rated");
+        Integer startduration=jsonObject.isNull("startduration")?null :jsonObject.getInt("startduration");
+        Integer endduration=jsonObject.isNull("endduration")?null :jsonObject.getInt("endduration");
+        Integer start = jsonObject.isNull("start")?0 :jsonObject.getInt("start");
+        Integer rows = jsonObject.isNull("rows")?10 :jsonObject.getInt("rows");
+        String order = jsonObject.isNull("order") ? "name" : jsonObject.getString("order");
+        boolean dir = jsonObject.isNull("dir") ? false : jsonObject.getBoolean("dir");
+        Pageable pageable = null;
+        if(dir){
+            pageable = PageRequest.of(start, rows, Sort.Direction.DESC, order);
+        }
+        else{
+            pageable = PageRequest.of(start, rows, Sort.Direction.ASC, order);
+        }
+        Specification<Movie> spec = (root, query, builder) -> {
+            Predicate predicate = builder.conjunction();
+            //where
+            List<Predicate> predicates = new ArrayList<>();
+            if( name !=null&& !name.isEmpty()){
+                predicates.add(builder.like(root.get("name"), "%" + name + "%"));
+            }
+
+            if(director!=null&& !director.isEmpty()){
+                predicates.add(builder.like(root.get("director"), "%" + director + "%"));
+            }
+            if(releaseDate!=null&& !releaseDate.isEmpty()){
+                Date releaseParse = DatetimeConverter.parse(releaseDate,"yyyy-MM-dd");
+                predicates.add(builder.greaterThanOrEqualTo(root.get("releaseDate"), releaseParse));
+            }
+            if(endDate!=null&& !endDate.isEmpty()){
+                Date endParse = DatetimeConverter.parse(endDate,"yyyy-MM-dd");
+                predicates.add(builder.lessThanOrEqualTo(root.get("endDate"), endParse));
+            }
+            if(startprice!=null){
+                predicates.add(builder.greaterThanOrEqualTo(root.get("price"), startprice));
+            }
+            if(endprice!=null){
+                predicates.add(builder.lessThanOrEqualTo(root.get("price"), endprice));
+            }
+            if(category!=null&& !category.isEmpty()){
+                String[] categories = category.split(",");
+                Predicate[] categoryPredicates = new Predicate[categories.length];
+                for(int i=0;i < categories.length ; i++){
+                    categoryPredicates[i] = builder.like(root.get("categoryCode"), "%" + categories[i] + "%");
+                }
+                predicates.add(builder.or(categoryPredicates));
+            }
+            if(startduration!=null){
+                predicates.add(builder.greaterThanOrEqualTo(root.get("duration"), startduration));
+            }
+            if(endduration!=null){
+                predicates.add(builder.lessThanOrEqualTo(root.get("duration"), endduration));
+            }
+            if(rated!=null){
+                Rated item = ratedRepository.findByCode(rated);
+                predicates.add(builder.equal(root.get("ratedCode"), item));
+            }
+            if(predicates !=null && predicates.size()>0){
+                query.where(predicates.toArray(new Predicate[0]));
+            }
+            //where end
+
+
+            return predicate;
+        };
+
+        return movieRepository.findAll(spec, pageable);
     }
 
 

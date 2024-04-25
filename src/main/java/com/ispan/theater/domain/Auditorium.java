@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.logging.Level;
+
 @NoArgsConstructor
 @Getter
 @Setter
@@ -16,14 +18,26 @@ public class Auditorium {
     @Column(name = "auditorium_id", nullable = false)
     private Integer id;
 
+    @Column(name = "auditorium_number", nullable = false)
+    private Integer auditoriumNumber;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "cinema_id", nullable = false)
     private Cinema cinema;
 
-    @Column(name = "level_id", nullable = false)
-    private Integer levelId;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "level_id", nullable = false)
+    private AuditoriumLevel levelId;
 
     @Column(name = "layout_id", nullable = false)
     private Integer layoutId;
 
+    @Override
+    public String toString() {
+        return "Auditorium{" +
+                "cinema=" + cinema +
+                ", levelId=" + levelId +
+                ", layoutId=" + layoutId +
+                '}';
+    }
 }

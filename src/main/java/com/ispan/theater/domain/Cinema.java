@@ -28,4 +28,13 @@ public class Cinema {
     @Column(name = "location_category", nullable = false, length = 20)
     private String locationCategory;
 
+    @Override
+    public String toString() {
+        return "Cinema{" +
+                "name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", phone='" + phone + '\'' +
+                ", locationCategory='" + locationCategory + '\'' +
+                '}';
+    }
 }

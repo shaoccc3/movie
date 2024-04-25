@@ -42,8 +42,8 @@ public class MovieDaoImpl implements MovieDao {
         String rated=jsonObject.isNull("rated")?null :jsonObject.getString("rated");
         Integer startduration=jsonObject.isNull("startduration")?null :jsonObject.getInt("startduration");
         Integer endduration=jsonObject.isNull("endduration")?null :jsonObject.getInt("endduration");
-        int start = 0;
-        int rows = 10;
+        Integer start = jsonObject.isNull("start")?0 :jsonObject.getInt("start");
+        Integer rows = jsonObject.isNull("rows")?10 :jsonObject.getInt("rows");
         String order = jsonObject.isNull("order") ? "name" : jsonObject.getString("order");
         boolean dir = jsonObject.isNull("dir") ? false : jsonObject.getBoolean("dir");
 

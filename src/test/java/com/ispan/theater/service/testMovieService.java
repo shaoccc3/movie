@@ -10,6 +10,7 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -66,18 +67,23 @@ public class testMovieService {
     }
     @Test
     public void testFind(){
-        JSONObject findJson = new JSONObject().
-                put("startprice",350).put("endprice",450);
+        JSONObject findJson = new JSONObject()
+                .put("rows",1).put("start",2).put("order","price").put("dir","false");
 
 
 
         List<Movie> movies = movieService.multiFind(findJson);
+        //Page<Movie> moviepage = movieService.findMulti1(findJson);
+        //List<Movie> list = moviepage.getContent();
+//        for (Movie movie : list) {
+//            System.out.println(movie);
+//        }
         for (Movie movie : movies) {
             System.out.println(movie);
         }
-        List<Movie> movies1 = movieRepository.fineMovieByNameLike("m");
-        for (Movie movie : movies1) {
-            System.out.println(movie);
-        }
+//        List<Movie> movies1 = movieRepository.fineMovieByNameLike("m");
+//        for (Movie movie : movies1) {
+//            System.out.println(movie);
+//        }
     }
 }
