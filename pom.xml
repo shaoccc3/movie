@@ -97,6 +97,10 @@
             <version>3.0.3</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-crypto</artifactId>
+		</dependency>
 
 
     </dependencies>
