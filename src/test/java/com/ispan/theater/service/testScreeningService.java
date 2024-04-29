@@ -18,8 +18,8 @@ public class testScreeningService {
     public void testScreeningService() {
         JSONObject obj = new JSONObject();
         Movie movie = movieService.getMovieById(1);
-        obj.put("startTime","2024-03-03 18:00");
-        obj.put("endTime","2024-03-03 20:20");
+        obj.put("startTime","2024-03-03 21:00");
+        obj.put("endTime","2024-03-03 23:20");
         obj.put("auditoriumId",1);
         Screening s = screeningService.createScreening(movie, obj);
     }

@@ -16,7 +16,27 @@ public class testTicketService {
     public void testTicketServiceInsert() {
         Screening s = screeningService.getScreening(2);
         JSONObject jo = new JSONObject().put("screeningId", s.getId());
-        ticketService.insertTicket(jo);
+        long startTime = System.currentTimeMillis();
+        for (int i = 0; i < 50; i++) {
+            ticketService.insertTicket(jo);
+        }
 
+        long endTime = System.currentTimeMillis();
+        long elapsedTime = endTime - startTime;
+        System.out.println(elapsedTime);
+
+    }
+    @Test
+    public void testTicketServiceInsert2() {
+        Screening s = screeningService.getScreening(3);
+        JSONObject jo = new JSONObject().put("screeningId", s.getId());
+        long startTime = System.currentTimeMillis();
+        for (int i = 0; i < 50; i++) {
+            ticketService.insertTicket2(jo);
+        }
+
+        long endTime = System.currentTimeMillis();
+        long elapsedTime = endTime - startTime;
+        System.out.println(elapsedTime);
     }
 }
