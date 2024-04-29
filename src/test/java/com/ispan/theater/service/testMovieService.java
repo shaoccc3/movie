@@ -58,29 +58,33 @@ public class testMovieService {
     }
     @Test
     public void testUpdateMovie(){
-//        JSONObject updateJson1 = new JSONObject().put("name","Saving Private Ryan")
-//                .put("endDate","1998-08-08");
-//        JSONObject updateJson2= new JSONObject().put("name","Brokeback Mountain")
-//                .put("price",400);
-//                Movie update = movieService.updateMovie(updateJson1);
-//        Movie update2 = movieService.updateMovie(updateJson2);
+        JSONObject updateJson1 = new JSONObject().put("id",2)
+                .put("name_eng",movieRepository.findById(2).get().getName())
+                .put("name","搶救雷恩大兵");
+        JSONObject updateJson2=  new JSONObject().put("id",3)
+                .put("name_eng",movieRepository.findById(3).get().getName())
+                .put("name","斷背山");
+        Movie update = movieService.updateMovie(updateJson1);
+        Movie update2 = movieService.updateMovie(updateJson2);
     }
     @Test
     public void testFind(){
-        JSONObject findJson = new JSONObject()
-                .put("rows",1).put("start",2).put("order","price").put("dir","false");
+        JSONObject findJson = new JSONObject().put("name","mount").put("startduration",200);
 
-
-
-        List<Movie> movies = movieService.multiFind(findJson);
-        //Page<Movie> moviepage = movieService.findMulti1(findJson);
-        //List<Movie> list = moviepage.getContent();
-//        for (Movie movie : list) {
+        //List<Movie> movies = movieService.multiFind(findJson);
+        Page<Movie> moviepage = movieService.findMulti1(findJson);
+        List<Movie> list = moviepage.getContent();
+        if (!list.isEmpty()) {
+            for (Movie movie : list) {
+                System.out.println(movie);
+            }
+        }
+        else{
+            System.out.println("查無結果");
+        }
+//        for (Movie movie : movies) {
 //            System.out.println(movie);
 //        }
-        for (Movie movie : movies) {
-            System.out.println(movie);
-        }
 //        List<Movie> movies1 = movieRepository.fineMovieByNameLike("m");
 //        for (Movie movie : movies1) {
 //            System.out.println(movie);

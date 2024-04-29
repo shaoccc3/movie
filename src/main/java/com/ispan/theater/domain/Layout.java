@@ -9,6 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@Table(name = "Layout")
 public class Layout {
     @EmbeddedId
     private LayoutId id;

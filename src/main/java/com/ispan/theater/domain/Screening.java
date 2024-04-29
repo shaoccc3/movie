@@ -11,6 +11,7 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity
+@Table(name = "Screening")
 public class Screening {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

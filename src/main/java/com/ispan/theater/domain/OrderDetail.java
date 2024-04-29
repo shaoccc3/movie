@@ -9,6 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@Table(name = "OrderDetail")
 public class OrderDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

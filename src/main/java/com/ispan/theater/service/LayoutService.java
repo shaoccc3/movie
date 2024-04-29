@@ -1,0 +1,46 @@
+package com.ispan.theater.service;
+
+import com.ispan.theater.domain.Auditorium;
+import com.ispan.theater.domain.Layout;
+import com.ispan.theater.domain.LayoutId;
+import com.ispan.theater.domain.Seat;
+import com.ispan.theater.repository.LayoutRepository;
+import com.ispan.theater.repository.SeatRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+@Service
+public class LayoutService {
+    @Autowired
+    private LayoutRepository layoutRepository;
+    @Autowired
+    private SeatRepository seatRepository;
+    public void insertLayout(Auditorium auditorium) {//測試版 還未加上版型
+
+        for(int i=0;i<13;i++){
+            for(int j=0;j<18;j++){
+                Integer seatid = (i+1)*(j+1);
+                Optional<Seat> optionalSeat = seatRepository.findById(seatid);
+                if(optionalSeat.isPresent()){
+                    Layout layout = new Layout();
+                    LayoutId layoutId = new LayoutId();
+                    Seat seat = optionalSeat.get();
+                    layoutId.setAuditoriumId(auditorium.getId());
+                    layoutId.setSeatId(seat.getId());
+                    layout.setId(layoutId);
+                    layout.setAuditorium(auditorium);
+                    layout.setSeat(seat);
+                    layoutRepository.save(layout);
+                }
+            }
+        }
+    }
+
+    public List<Layout> getLayout(Auditorium auditorium){
+        return layoutRepository.findByAuditorium(auditorium);
+    }
+}

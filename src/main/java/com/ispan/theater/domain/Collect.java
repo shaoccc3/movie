@@ -9,6 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@Table(name = "Collect")
 public class Collect {
     @EmbeddedId
     private CollectId id;

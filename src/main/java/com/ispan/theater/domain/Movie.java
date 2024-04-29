@@ -21,8 +21,11 @@ public class Movie {
     @Column(name = "movie_id", nullable = false)
     private Integer id;
 
-    @Column(name = "name", nullable = false, length = 20)
+    @Column(name = "name", nullable = false, length = 50)
     private String name;
+
+    @Column(name = "name_eng", length = 50)
+    private String name_eng;
 
     @Column(name = "duration", nullable = false)
     private Integer duration;
@@ -64,17 +67,17 @@ public class Movie {
     @Override
     public String toString() {
         return "Movie{" +
-                "ratedCode=" + ratedCode +
-                ", price=" + price +
-                ", viewer=" + viewer +
-                ", endDate=" + endDate +
-                ", releaseDate=" + releaseDate +
-                ", description='" + description + '\'' +
-                ", director='" + director + '\'' +
-                ", categoryCode='" + categoryCode + '\'' +
+                "name='" + name + '\'' +
+                ", name_eng='" + name_eng + '\'' +
                 ", duration=" + duration +
-                ", name='" + name + '\'' +
-                ", id=" + id +
+                ", categoryCode='" + categoryCode + '\'' +
+                ", director='" + director + '\'' +
+                ", description='" + description + '\'' +
+                ", releaseDate=" + releaseDate +
+                ", endDate=" + endDate +
+                ", viewer=" + viewer +
+                ", price=" + price +
+                ", ratedCode=" + ratedCode +
                 '}';
     }
 }
