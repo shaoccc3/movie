@@ -70,6 +70,6 @@ public class User {
     @JsonIgnore
     @Lob
     @Column(name = "user_photo")
-    private byte[] userPhoto;
+    private String userPhoto;
     
 }

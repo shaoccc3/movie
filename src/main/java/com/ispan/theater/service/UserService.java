@@ -31,6 +31,9 @@ public class UserService {
 			String phone = obj.isNull("phone") ? null : obj.getString("phone");
 			String birth = obj.isNull("birth") ? null : obj.getString("birth");
 			String gender = obj.isNull("gender") ? null : obj.getString("gender");
+			String photo =obj.isNull("image") ? null:obj.getString("image");
+			
+			
 			// 必填項目
 			if (password == null || email == null || phone == null) {
 				return null;
@@ -55,7 +58,7 @@ public class UserService {
 				user.setConsumption(0.0);
 				user.setUserlevel(0);
 				user.setIsverified(false);
-				user.setUserPhoto(null);
+				user.setUserPhoto(photo);
 				return userRepository.save(user);
 			}
 		} catch (Exception e) {
@@ -88,8 +91,12 @@ public class UserService {
 		Boolean isverified = obj.isNull("isverified") ? null : obj.getBoolean("isverified");
 		// 圖片要直接加在這裡?
 
-		byte[] userPhoto = obj.isNull("userPhoto") ? null : obj.getString("userPhoto").getBytes();
 
+		String userPhoto = obj.isNull("userPhoto") ? null : obj.getString("userPhoto");
+		
+		
+		
+		
 		if (userRepository.findById(userid) == null) {
 			return null;
 		}
