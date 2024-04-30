@@ -2,15 +2,18 @@ package com.ispan.theater.controller;
 
 import com.ispan.theater.domain.Movie;
 import com.ispan.theater.service.MovieService;
+import org.apache.commons.codec.binary.Base64;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class MovieAjaxController {
@@ -34,4 +37,22 @@ public class MovieAjaxController {
         response.put("movie", array);
         return response.toString();
     }
+    @PostMapping("/backstage/movie/upload")
+    public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file) {
+        Movie movie = movieService.getMovieById(2);
+        try {
+            if (file.isEmpty()) {
+                return ResponseEntity.badRequest().body("上傳的檔案為空");
+            }
+            byte[] imageData = file.getBytes();
+            String base64Photo =  Base64.encodeBase64String(imageData);
+            movie.setImage(base64Photo);
+            movieService.saveMovie(movie);
+
+            return ResponseEntity.ok("上傳成功");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("上傳失敗: " + e.getMessage());
+        }
+    }
+
 }

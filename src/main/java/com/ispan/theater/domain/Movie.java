@@ -64,6 +64,9 @@ public class Movie {
     @JoinColumn(name = "rated_code", nullable = false, referencedColumnName = "code")
     private Rated ratedCode;
 
+    @Lob
+    private String image;
+
     @Override
     public String toString() {
         return "Movie{" +

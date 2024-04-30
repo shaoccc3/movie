@@ -18,11 +18,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
+@Repository
 public interface MovieRepository extends JpaRepository<Movie, Integer> , JpaSpecificationExecutor<Movie>,MovieDao {
     @Query("select c from Movie c where c.name = :name")
     public Movie findByName(@Param("name") String name);

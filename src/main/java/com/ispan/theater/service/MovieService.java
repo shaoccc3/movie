@@ -253,6 +253,8 @@ public class MovieService {
 
         return movieRepository.findAll(spec, pageable);
     }
-
+    public void saveMovie(Movie movie) {
+        movieRepository.save(movie);
+    }
 
 }

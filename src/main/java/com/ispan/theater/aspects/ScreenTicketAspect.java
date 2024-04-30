@@ -33,7 +33,6 @@ public class ScreenTicketAspect {
 
     @AfterThrowing(pointcut = "screeningCreation(movie, jsonObject)", throwing = "exception")
     public void afterThrowingAdvice(Movie movie, JSONObject jsonObject, Exception exception) {
-
         System.out.println("Error occurred while creating screening for movie: " + movie.getName());
         System.out.println("Error message: " + exception.getMessage());
     }
