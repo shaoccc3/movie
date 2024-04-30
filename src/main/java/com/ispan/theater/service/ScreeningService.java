@@ -41,4 +41,9 @@ public class ScreeningService {
     public Screening getScreening(Integer screeningId) {
         return screeningRepository.findById(screeningId).orElse(null);
     }
+
+    public void deleteScreening(Integer screeningId) {
+        Screening screening = getScreening(screeningId);
+        screeningRepository.delete(screening);
+    }
 }

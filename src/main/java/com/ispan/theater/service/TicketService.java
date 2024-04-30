@@ -4,8 +4,11 @@ import com.ispan.theater.dao.TicketMapper;
 import com.ispan.theater.domain.*;
 import com.ispan.theater.repository.ScreeningRepository;
 import com.ispan.theater.repository.TicketRepository;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,6 +26,8 @@ public class TicketService {
     private LayoutService layoutService;
     @Autowired
     private TicketMapper ticketMapper ;
+
+    @Async
     public  void insertTicket(JSONObject jsonObject){
 
         Integer screeningId = jsonObject.getInt("screeningId");
@@ -47,6 +52,7 @@ public class TicketService {
         }
 
     }
+    @Async
     public  void insertTicket2(JSONObject jsonObject){
 
         Integer screeningId = jsonObject.getInt("screeningId");
@@ -74,4 +80,6 @@ public class TicketService {
         }
 
     }
+
+
 }

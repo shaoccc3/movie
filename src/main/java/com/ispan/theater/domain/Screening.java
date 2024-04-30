@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 @NoArgsConstructor
 @Getter
@@ -41,5 +42,8 @@ public class Screening {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "modify_date")
     private Date modifyDate;
+
+    @OneToMany(mappedBy = "screening" , fetch = FetchType.LAZY , cascade = CascadeType.REMOVE)
+    private List<Ticket> tickets;
 
 }
