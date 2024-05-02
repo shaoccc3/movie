@@ -25,10 +25,10 @@ public class UserAjaxController {
 		String password = userJson.isNull("password") ? null : userJson.getString("password");
 		User user = userService.InsertUser(userJson);
 		if (user != null) {
-			repJson.put("success", "true");
+			repJson.put("success", true);
 			repJson.put("message", "新增成功");
 		}else {
-			repJson.put("success", "false");
+			repJson.put("success", false);
 			repJson.put("message", "新增失敗");
 		}
 		return repJson.toString();
