@@ -3,12 +3,15 @@ package com.ispan.theater.controller;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ispan.theater.domain.User;
 import com.ispan.theater.service.UserService;
+
+import jakarta.servlet.http.HttpSession;
 
 @RestController
 @CrossOrigin
@@ -33,5 +36,42 @@ public class UserAjaxController {
 		}
 		return repJson.toString();
 	}
-
+	
+	
+	
+	@PostMapping("user/login")
+	public String userLogin(@RequestBody String json,HttpSession session ) {
+		JSONObject jsonobj =new JSONObject(json);
+		JSONObject result = new JSONObject();
+		User user = userService.checkLogin(jsonobj);
+		if (user!=null) {
+			session.setAttribute("user", user);
+			result.put("message", "登入成功");
+		}else{
+			result.put("message", "登入失敗");
+		}
+		return result.toString();
+	}
+	
+	
+	
+	
+	
+	@GetMapping("user/profile")
+	public String userProfile(HttpSession session) {
+		JSONObject result = new JSONObject();
+		String id = (String)session.getAttribute("id");
+		System.out.println(id);
+		result.put("id",id);
+		return result.toString();
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 }
