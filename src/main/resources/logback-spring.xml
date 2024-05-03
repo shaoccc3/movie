@@ -1,0 +1,58 @@
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+    <contextName>logback-test</contextName>
+
+    <property name="logback.logdir" value="D://workspace/batch/movie/log"/>
+    <appender name="asyncAppender" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="consoleLog"/>
+    </appender>
+    <appender name="asyncAppender2" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="fileInfoLog"/>
+    </appender>
+    <appender name="fileInfoLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${logback.logdir}/info.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>error.log.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d [%thread] %-5level %logger{36} %line - %msg%n</pattern>
+        </encoder>
+
+    </appender>
+    <appender name="consoleLog" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d [%thread] %-5level %logger{36} %line - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="fileErrorLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>Error</level>
+        </filter>
+
+        <File>${logback.logdir}/error.${logback.appname}.log</File>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+
+            <FileNamePattern>
+                ${logback.logdir}/error.${logback.appname}.%d{yyyy-MM-dd}.log
+            </FileNamePattern>
+
+            <maxHistory>90</maxHistory>
+
+        </rollingPolicy>
+
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d [%thread] %-5level %logger{36} %line - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <root level="info">
+        <appender-ref ref="asyncAppender"/>
+        <appender-ref ref="asyncAppender2"/>
+        <appender-ref ref="fileErrorLog"/>
+    </root>
+</configuration>

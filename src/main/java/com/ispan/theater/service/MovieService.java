@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -47,7 +46,10 @@ public class MovieService {
         Optional<Movie> optional = movieRepository.findById(id);
         return optional.orElse(null);
     }
-
+    public boolean existsMovieByName(String name) {
+        Movie movie = movieRepository.findByName(name);
+        return movie != null;
+    }
     public List<Movie> getMovieByName(String name, Integer page) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("name", name);
@@ -70,6 +72,7 @@ public class MovieService {
             movie.setEndDate(DatetimeConverter.parse(jsonObject.getString("endDate"), "yyyy-MM-dd"));
             movie.setCreateDate(new Date());
             movie.setModifyDate(new Date());
+            movie.setImage(jsonObject.getString("image"));
             movie.setViewer(0);
             movieRepository.save(movie);
             return movie;
@@ -100,6 +103,7 @@ public class MovieService {
         String category = jsonObject.isNull("category") ? null : jsonObject.getString("category");
         String rated = jsonObject.isNull("rated") ? null : jsonObject.getString("rated");
         Integer duration = jsonObject.isNull("duration") ? null : jsonObject.getInt("duration");
+        String image = jsonObject.isNull("image") ? null : jsonObject.getString("image");
         if (movieRepository.findById(id).isEmpty()){
             return null;
         }
@@ -135,6 +139,9 @@ public class MovieService {
         if (duration != null && duration > 0) {
             movie.setDuration(duration);
         }
+        if(image != null && image.length() > 0) {
+            movie.setImage(image);
+        }
         movie.setModifyDate(new Date());
         return movieRepository.save(movie);
     }
@@ -150,6 +157,7 @@ public class MovieService {
         jsonObject.put("description", movie.getDescription());
         jsonObject.put("director", movie.getDirector());
         jsonObject.put("releaseDate", movie.getReleaseDate());
+        jsonObject.put("image",movie.getImage());
         jsonObject.put("endDate", movie.getEndDate());
         jsonObject.put("price", movie.getPrice());
         String rateStr = movie.getCategoryCode();
@@ -183,18 +191,17 @@ public class MovieService {
         String rated = jsonObject.isNull("rated") ? null : jsonObject.getString("rated");
         Integer startduration = jsonObject.isNull("startduration") ? null : jsonObject.getInt("startduration");
         Integer endduration = jsonObject.isNull("endduration") ? null : jsonObject.getInt("endduration");
-        Integer start = jsonObject.isNull("start") ? 0 : jsonObject.getInt("start");
-        Integer rows = jsonObject.isNull("rows") ? 10 : jsonObject.getInt("rows");
+        int start = jsonObject.isNull("start") ? 0 : jsonObject.getInt("start");
+        int rows = jsonObject.isNull("rows") ? 10 : jsonObject.getInt("rows");
         String order = jsonObject.isNull("order") ? "name" : jsonObject.getString("order");
-        boolean dir = jsonObject.isNull("dir") ? false : jsonObject.getBoolean("dir");
-        Pageable pageable = null;
+        boolean dir = !jsonObject.isNull("dir") && jsonObject.getBoolean("dir");
+        Pageable pageable ;
         if (dir) {
             pageable = PageRequest.of(start, rows, Sort.Direction.DESC, order);
         } else {
             pageable = PageRequest.of(start, rows, Sort.Direction.ASC, order);
         }
         Specification<Movie> spec = (root, query, builder) -> {
-            Predicate predicate = builder.conjunction();
             //where
             List<Predicate> predicates = new ArrayList<>();
             if (name != null && !name.isEmpty()) {

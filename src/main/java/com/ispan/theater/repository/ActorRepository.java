@@ -10,5 +10,7 @@ import java.util.List;
 @Repository
 public interface ActorRepository extends JpaRepository<Actor, Integer> {
     @Query("select c from Actor  c where c.name like %:name%")
-    public List<Actor> findByName(@Param("name") String name);
+    public List<Actor> findByNameLike(@Param("name") String name);
+    @Query("select c from Actor c where c.name = :name ")
+    public Actor findByName(@Param("name") String name);
 }

@@ -2,6 +2,7 @@ package com.ispan.theater.service;
 
 import com.ispan.theater.domain.Actor;
 import com.ispan.theater.repository.ActorRepository;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,9 +17,11 @@ public class ActorService {
     public Actor findById(Integer id) {
         return actorRepository.findById(id).get();
     }
-    public void insert(String name) {
+    public void insert(String json) {
         Actor actor = new Actor();
-        actor.setName(name);
+        JSONObject obj = new JSONObject(json);
+        actor.setName(obj.getString("name"));
+        actor.setPhoto(obj.getString("photo"));
         actorRepository.save(actor);
     }
     public void delete(Integer id) {
@@ -27,9 +30,10 @@ public class ActorService {
     public List<Actor> findAll() {
         return actorRepository.findAll();
     }
-    public List<Actor> findByName(String name) {
-        return actorRepository.findByName(name);
+    public List<Actor> findByNameLike(String name) {
+        return actorRepository.findByNameLike(name);
     }
+    public Actor findByName(String name) { return actorRepository.findByName(name);};
     public Actor updateActorName(Integer id){
         Actor actor = actorRepository.findById(id).get();
         actor.setName(actor.getName());

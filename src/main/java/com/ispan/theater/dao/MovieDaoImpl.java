@@ -45,7 +45,7 @@ public class MovieDaoImpl implements MovieDao {
         Integer start = jsonObject.isNull("start")?0 :jsonObject.getInt("start");
         Integer rows = jsonObject.isNull("rows")?10 :jsonObject.getInt("rows");
         String order = jsonObject.isNull("order") ? "name" : jsonObject.getString("order");
-        boolean dir = jsonObject.isNull("dir") ? false : jsonObject.getBoolean("dir");
+        boolean dir = !jsonObject.isNull("dir") && jsonObject.getBoolean("dir");
 
         CriteriaBuilder criteriaBuilder =this.getSession().getCriteriaBuilder();
         CriteriaQuery<Movie> criteriaQuery = criteriaBuilder.createQuery(Movie.class);
