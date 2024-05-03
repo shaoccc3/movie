@@ -12,7 +12,7 @@ import lombok.Setter;
 @Table(name = "Collect")
 public class Collect {
     @EmbeddedId
-    private CollectId id;
+    private CollectId collectId;
 
     @MapsId("userId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
