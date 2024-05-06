@@ -155,7 +155,7 @@ public class UserService {
 	}
 
 	public User checkLogin(JSONObject obj) {
-		String userName = obj.isNull("userName") ? null : obj.getString("userName");
+		String userName = obj.isNull("username") ? null : obj.getString("username");
 		String userPassword = obj.isNull("password") ? null : obj.getString("password");
 		// 透過Email,Phone找是否有該使用者
 		User dbusers = userRepository.findByEmailOrPhone(userName, userName);

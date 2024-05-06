@@ -4,8 +4,10 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ispan.theater.domain.User;
@@ -62,7 +64,8 @@ public class UserAjaxController {
 		JSONObject result = new JSONObject();
 		String id = (String)session.getAttribute("id");
 		System.out.println(id);
-		result.put("id",id);
+		User user = userService.getUserById(Integer.parseInt(id));
+		result.put("user",user);
 		return result.toString();
 		
 	}
