@@ -4,14 +4,14 @@ spring:
 #database connection
   datasource:
     url: jdbc:sqlserver://localhost:1433;database=test1;trustServerCertificate=true;encrypt=true
-    password: p@ssw0rd
+    password: sa123456
     username: sa
   jpa:
     properties:
       hibernate:
         jdbc:
         dialect: org.hibernate.dialect.SQLServerDialect
-        format_sql: true
+        format-sql: true
     hibernate:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
@@ -21,7 +21,7 @@ spring:
     ansi:
       enabled: always
 server:
-  port: 8082
+  port: 8080
 logging:
   config: classpath:logback-spring.xml
   level:

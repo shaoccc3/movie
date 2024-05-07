@@ -23,10 +23,6 @@ public class Order {
     private User user;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "order_time", nullable = false)
-    private Date orderTime;
-
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_date", nullable = false)
     private Date createDate;
 
@@ -40,5 +36,15 @@ public class Order {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "movie_id", nullable = false)
     private Movie movie;
+    
+    @PrePersist
+    public void onCreate() {
+    	if(createDate==null) {
+    		createDate=new Date();
+    	}
+    	if(modifyDate==null) {
+    		modifyDate=new Date();
+    	}
+    }
 
 }
