@@ -1,0 +1,14 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot-TheaterApplication<Movie-proj>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.ispan.theater.TheaterApplication",
+      "projectName": "Movie-proj",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: labSpringBoot-jpa
+  #database connection
+  datasource:
+    url: jdbc:sqlserver://localhost:1433;database=test1;trustServerCertificate=true;encrypt=true
+    password: P@ssw0rd
+    username: sa
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+        dialect: org.hibernate.dialect.SQLServerDialect
+        format_sql: true
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      ddl-auto: update
+  output:
+    ansi:
+      enabled: always
+server:
+  port: 8082
