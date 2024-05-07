@@ -5,6 +5,7 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +19,7 @@ public class OrderController {
 	OrderService os;
 	
 	@GetMapping("/movie/order")
+	@Cacheable(cacheNames = "Order",key="#id")
 	public String getOrderById(@RequestParam(name="id")Integer id) {
 		JSONObject orderJson=new JSONObject();
 		Order order=os.getOrderById(id);
@@ -28,7 +30,9 @@ public class OrderController {
 				put("orderAmount", order.getOrderAmount()).put("movieId", order.getMovie().getId()).put("userId", order.getUser().getId()).put("seccess", true).toString();
 	}
 	
+	
 	@GetMapping("/movie/orders")
+	@Cacheable(cacheNames = "Orders")
 	public String getOrders() {
 		List<Order> orders=os.getOrders();
 		System.out.println(orders);
