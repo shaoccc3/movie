@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 @NoArgsConstructor
 @Getter
@@ -18,7 +19,7 @@ public class Order {
     @Column(name = "order_id", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
@@ -33,9 +34,12 @@ public class Order {
     @Column(name = "order_amount", nullable = false)
     private Double orderAmount;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "movie_id", nullable = false)
     private Movie movie;
+    
+    @OneToMany(cascade = CascadeType.ALL,mappedBy ="order",fetch=FetchType.LAZY)
+    private List<OrderDetail> orderDetails;
     
     @PrePersist
     public void onCreate() {
@@ -47,4 +51,9 @@ public class Order {
     	}
     }
 
+	@Override
+	public String toString() {
+		return "Order [id=" + id + ", user_id=" + user.getId() + ", createDate=" + createDate + ", modifyDate=" + modifyDate
+				+ ", orderAmount=" + orderAmount + ", movie=" + movie.getName() + "]";
+	}
 }
