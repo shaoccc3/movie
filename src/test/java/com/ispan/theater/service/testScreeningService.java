@@ -22,6 +22,7 @@ public class testScreeningService {
         obj.put("endTime","2024-03-01 11:20");
         obj.put("auditoriumId",1);
         Screening s = screeningService.createScreening(movie, obj);
+        System.out.println(s);
     }
 
     @Test

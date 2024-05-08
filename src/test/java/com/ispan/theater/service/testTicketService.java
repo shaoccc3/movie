@@ -14,7 +14,7 @@ public class testTicketService {
     private ScreeningService screeningService;
     @Test
     public void testTicketServiceInsert() {
-        Screening s = screeningService.getScreening(2);
+        Screening s = screeningService.findByScreening(2);
         JSONObject jo = new JSONObject().put("screeningId", s.getId());
         long startTime = System.currentTimeMillis();
         for (int i = 0; i < 50; i++) {
@@ -28,7 +28,7 @@ public class testTicketService {
     }
     @Test
     public void testTicketServiceInsert2() {
-        Screening s = screeningService.getScreening(3);
+        Screening s = screeningService.findByScreening(3);
         JSONObject jo = new JSONObject().put("screeningId", s.getId());
         long startTime = System.currentTimeMillis();
         for (int i = 0; i < 50; i++) {

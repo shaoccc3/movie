@@ -4,6 +4,7 @@ import com.ispan.theater.dao.TicketMapper;
 import com.ispan.theater.domain.*;
 import com.ispan.theater.repository.ScreeningRepository;
 import com.ispan.theater.repository.TicketRepository;
+import jakarta.transaction.Transactional;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.json.JSONObject;
@@ -29,7 +30,6 @@ public class TicketService {
 
     @Async
     public  void insertTicket(JSONObject jsonObject){
-
         Integer screeningId = jsonObject.getInt("screeningId");
         Optional<Screening> optionalScreening = screeningRepository.findById(screeningId);
         if(optionalScreening.isPresent()){
@@ -50,11 +50,10 @@ public class TicketService {
                 ticketRepository.save(ticket);
             }
         }
-
     }
     @Async
+    @Transactional
     public  void insertTicket2(JSONObject jsonObject){
-
         Integer screeningId = jsonObject.getInt("screeningId");
         Optional<Screening> optionalScreening = screeningRepository.findById(screeningId);
         if(optionalScreening.isPresent()){
@@ -80,6 +79,10 @@ public class TicketService {
         }
 
     }
-
-
+    @Async
+    public void deleteTicketByScreening(Screening screening){
+        if(screening!=null){
+            ticketRepository.deleteByScreening(screening);
+        }
+    }
 }

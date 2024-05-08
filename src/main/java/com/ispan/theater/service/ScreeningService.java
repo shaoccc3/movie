@@ -2,17 +2,31 @@ package com.ispan.theater.service;
 
 import com.ispan.theater.domain.Auditorium;
 import com.ispan.theater.domain.Movie;
+import com.ispan.theater.domain.Rated;
 import com.ispan.theater.domain.Screening;
 import com.ispan.theater.repository.AuditoriumRepository;
 import com.ispan.theater.repository.MovieRepository;
 import com.ispan.theater.repository.ScreeningRepository;
 import com.ispan.theater.util.DatetimeConverter;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.Predicate;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 @Transactional
@@ -23,6 +37,16 @@ public class ScreeningService {
     private MovieRepository movieRepository;
     @Autowired
     private AuditoriumRepository auditoriumRepository;
+
+    public JSONObject screenToJSON(Screening screening) {
+        JSONObject obj = new JSONObject();
+        obj.put("Screening_id", screening.getId());
+        obj.put("Movie_id", screening.getMovie());
+        obj.put("Auditorium_id", screening.getAuditorium());
+        obj.put("Start_time", screening.getStartTime());
+        obj.put("End_time", screening.getEndTime());
+        return obj;
+    }
 
     public Screening createScreening(Movie movie, JSONObject jsonObject) {
         String startTime = jsonObject.getString("startTime");
@@ -38,12 +62,95 @@ public class ScreeningService {
         screening.setAuditorium(auditorium);
         return screeningRepository.save(screening);
     }
-    public Screening getScreening(Integer screeningId) {
+
+    public Screening findByScreening(Integer screeningId) {
         return screeningRepository.findById(screeningId).orElse(null);
     }
 
+    public Page<Screening> findScreenings(JSONObject jsonObject) {
+        Integer movieId = jsonObject.isNull("movieid") ? null : jsonObject.getInt("movieid");
+        String name = jsonObject.isNull("name") ? null : jsonObject.getString("name");
+        String startTimeMin = jsonObject.isNull("startTimeMin") ? null : jsonObject.getString("startTimeMin");
+        String endTimeMin = jsonObject.isNull("endTimeMin") ? null : jsonObject.getString("endTimeMin");
+        String startTimeMax = jsonObject.isNull("startTimeMax") ? null : jsonObject.getString("startTimeMax");
+        String endTimeMax = jsonObject.isNull("endTimeMax") ? null : jsonObject.getString("endTimeMax");
+        Integer auditorium_id = jsonObject.isNull("auditoriumId") ? null : jsonObject.getInt("auditoriumId");
+        int start = jsonObject.isNull("start") ? 0 : jsonObject.getInt("start");
+        int rows = jsonObject.isNull("rows") ? 10 : jsonObject.getInt("rows");
+        String order = jsonObject.isNull("order") ? "startTime" : jsonObject.getString("order");
+        boolean dir = !jsonObject.isNull("dir") && jsonObject.getBoolean("dir");
+        Pageable pageable;
+
+        //order sort
+        if (dir) {
+            pageable = PageRequest.of(start, rows, Sort.Direction.DESC, order);
+        } else {
+            pageable = PageRequest.of(start, rows, Sort.Direction.ASC, order);
+        }
+        Specification<Screening> spec = (root, query, builder) -> {
+            //where
+            List<Predicate> predicates = new ArrayList<>();
+            Join<Screening, Movie> movieJoin = root.join("movie");
+            if (movieId == null) {
+                if (name != null && !name.isEmpty()) {
+                    Pattern pattern = Pattern.compile("[\\u4E00-\\u9FA5]+");
+                    Matcher matcher = pattern.matcher(name);
+                    if (matcher.find()) {
+                        System.out.println("中文");
+                        predicates.add(builder.like(movieJoin.get("name"), "%" + name + "%"));
+                    } else {
+                        System.out.println("英文");
+                        predicates.add(builder.like(movieJoin.get("name_eng"), "%" + name + "%"));
+                    }
+                }
+            }
+            else {
+                Movie movie = movieRepository.findById(movieId).orElse(null);
+                if (movie != null) {
+                    predicates.add(builder.equal(root.get("movie"), movie));
+                } else {
+                    return null;
+                }
+            }
+            if (startTimeMin != null && !startTimeMin.isEmpty()) {
+                Date releaseParse = DatetimeConverter.parse(startTimeMin, "yyyy-MM-dd HH:mm");
+                predicates.add(builder.greaterThanOrEqualTo(root.get("startTime"), releaseParse));
+            }
+            if (startTimeMax != null && !startTimeMax.isEmpty()) {
+                Date endParse = DatetimeConverter.parse(startTimeMax, "yyyy-MM-dd HH:mm");
+                predicates.add(builder.lessThanOrEqualTo(root.get("startTime"), endParse));
+            }
+            if (endTimeMin != null && !endTimeMin.isEmpty()) {
+                Date releaseParse = DatetimeConverter.parse(endTimeMin, "yyyy-MM-dd HH:mm");
+                predicates.add(builder.greaterThanOrEqualTo(root.get("endTime"), releaseParse));
+            }
+            if (endTimeMax != null && !endTimeMax.isEmpty()) {
+                Date endParse = DatetimeConverter.parse(endTimeMax, "yyyy-MM-dd HH:mm");
+                predicates.add(builder.lessThanOrEqualTo(root.get("endTime"), endParse));
+            }
+
+            if (auditorium_id != null) {
+                Optional<Auditorium> item = auditoriumRepository.findById(auditorium_id);
+                item.ifPresent(auditorium -> predicates.add(builder.equal(root.get("auditorium"), auditorium)));
+
+            }
+            return builder.and(predicates.toArray(new Predicate[0]));
+        };
+        return screeningRepository.findAll(spec, pageable);
+    }
+    public List<Screening> findScreeningsByMovieId(Integer movieId) {
+        Movie movie = movieRepository.findById(movieId).orElse(null);
+        List<Screening> screenings = new ArrayList<>();
+        if (movie != null) {
+            screenings = screeningRepository.findByMovie(movie);
+        }
+        return screenings;
+    }
+
     public void deleteScreening(Integer screeningId) {
-        Screening screening = getScreening(screeningId);
-        screeningRepository.delete(screening);
+        Screening screening = screeningRepository.findById(screeningId).orElse(null);
+        if (screening != null) {
+            screeningRepository.delete(screening);
+        }
     }
 }

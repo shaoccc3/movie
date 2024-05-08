@@ -1,5 +1,6 @@
 package com.ispan.theater.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -65,7 +66,8 @@ public class Movie {
     private Rated ratedCode;
 
     @Lob
-    private String image;
+    @JsonIgnore
+    private byte[] image;
 
     @Override
     public String toString() {
