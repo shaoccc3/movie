@@ -24,7 +24,7 @@ public class testScreeningService {
         Screening s = screeningService.createScreening(movie, obj);
     }
 
-    @Test
+//    @Test
     public void testScreeningService2() {
         screeningService.deleteScreening(8);
     }

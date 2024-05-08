@@ -16,7 +16,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name = "\"user\"")
 public class User {
-    @Id
+    @Override
+	public String toString() {
+		return "[id=" + id + ", userFirstname=" + userFirstname + ", userLastname=" + userLastname + ", email="
+				+ email + ", phone=" + phone + ", consumption=" + consumption + ", userlevel=" + userlevel + ", birth="
+				+ birth + ", gender=" + gender + ", isverified=" + isverified + "]";
+	}
+
+
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id", nullable = false)
     private Integer id;

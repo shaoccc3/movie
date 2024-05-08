@@ -4,6 +4,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ispan.theater.domain.User;
 import com.ispan.theater.service.UserService;
+import com.ispan.theater.util.JsonWebTokenUtility;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -19,6 +21,9 @@ import jakarta.servlet.http.HttpSession;
 public class UserAjaxController {
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	JsonWebTokenUtility jsonWebTokenUtility;
 
 	@PostMapping("/user/register") // testpage
 	public String userRegister(@RequestBody String json) {
@@ -41,14 +46,24 @@ public class UserAjaxController {
 	
 	
 	@PostMapping("/user/login")
-	public String userLogin(@RequestBody String json,HttpSession session ) {
+	public String userLogin(@RequestBody String  json,HttpSession session) {
 		JSONObject jsonobj =new JSONObject(json);
 		JSONObject result = new JSONObject();
 		User user = userService.checkLogin(jsonobj);
 		if (user!=null) {
-			session.setAttribute("user", user);
+			result.put("success", true);
 			result.put("message", "登入成功");
+			session.setAttribute("id", user.getId());
+			JSONObject inputjson= new JSONObject()
+					.put("userid", user.getId())
+					.put("email",user.getEmail())
+					.put("birth", user.getBirth());
+			String token = jsonWebTokenUtility.createEncryptedToken(inputjson.toString(),null);
+			result.put("token", token);
+			result.put("username", user.getUserFirstname()+user.getUserLastname());
+			
 		}else{
+			result.put("success", false);
 			result.put("message", "登入失敗");
 		}
 		return result.toString();
@@ -73,15 +88,37 @@ public class UserAjaxController {
 	}
 	
 	
+	@GetMapping("/user/check/email")
+	public String checkEmail(@RequestParam String email) {
+		JSONObject result=new JSONObject();
+		if(email==null||email.length()!=0) {
+			result.put("success", false);
+			result.put("message", "Email格式有誤");
+		}else {
+			if(userService.existByEmail(email)) {
+				result.put("success", false);
+				result.put("message", "Email已存在,請使用其他Eamil");
+			}else {
+				result.put("success", true);
+				result.put("message", "Eamil可以使用");	
+			}
+		}
+		return result.toString();
+	}
+	
+	
 	
 	
 	@GetMapping("/user/profile")
-	public String userProfile(HttpSession session) {
+	public String userProfile(@RequestParam String token) {
+		
+		String data = jsonWebTokenUtility.validateEncryptedToken(token);
+		JSONObject obj =  new JSONObject(data);
 		JSONObject result = new JSONObject();
-		String id = (String)session.getAttribute("id");
-		System.out.println(id);
-		User user = userService.getUserById(Integer.parseInt(id));
-		result.put("user",user);
+		Integer id = obj.getInt("userid");
+		User user = userService.getUserById(id);
+		JSONObject userobj =new JSONObject(user.toString());
+		result.put("user",userobj);
 		return result.toString();
 		
 	}

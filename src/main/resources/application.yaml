@@ -26,5 +26,6 @@ logging:
   config: classpath:logback-spring.xml
   level:
     root: INFO
-
-
+jwt:
+  token:
+    expire: 10
