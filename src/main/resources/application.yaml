@@ -28,4 +28,4 @@ logging:
     root: INFO
 jwt:
   token:
-    expire: 10
+    expire: 100

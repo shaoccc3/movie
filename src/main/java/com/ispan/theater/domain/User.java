@@ -49,7 +49,8 @@ public class User {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "registrationDate", nullable = false)
     private Date registrationDate;
-
+    
+    @JsonIgnore
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "modifiedDate", nullable = false)
     private Date modifiedDate;

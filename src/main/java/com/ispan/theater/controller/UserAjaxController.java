@@ -2,6 +2,7 @@ package com.ispan.theater.controller;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -110,17 +111,20 @@ public class UserAjaxController {
 	
 	
 	@GetMapping("/user/profile")
-	public String userProfile(@RequestParam String token) {
+	public ResponseEntity<?> userProfile(@RequestParam String token) {
 		
 		String data = jsonWebTokenUtility.validateEncryptedToken(token);
-		JSONObject obj =  new JSONObject(data);
-		JSONObject result = new JSONObject();
-		Integer id = obj.getInt("userid");
-		User user = userService.getUserById(id);
-		JSONObject userobj =new JSONObject(user.toString());
-		result.put("user",userobj);
-		return result.toString();
-		
+		if(data!=null&&data.length()!=0) {
+			JSONObject obj =  new JSONObject(data);
+			Integer id = obj.getInt("userid");
+			User user = userService.getUserById(id);
+			if(user!=null) {
+				ResponseEntity<User> ok=  ResponseEntity.ok(user);
+				return ok;
+			}
+		}
+			ResponseEntity<Void> notFound = ResponseEntity.notFound().build();
+			return notFound;
 	}
 	
 	
