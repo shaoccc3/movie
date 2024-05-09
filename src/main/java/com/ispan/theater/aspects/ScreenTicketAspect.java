@@ -18,7 +18,6 @@ public class ScreenTicketAspect {
     @Autowired
     private TicketService ticketService;
 
-
     @Pointcut("execution(* com.ispan.theater.service.ScreeningService.createScreening(com.ispan.theater.domain.Movie, org.json.JSONObject)) && args(movie, jsonObject)")
     public void screeningCreation(Movie movie, JSONObject jsonObject) {}
 
@@ -36,4 +35,5 @@ public class ScreenTicketAspect {
         System.out.println("Error occurred while creating screening for movie: " + movie.getName());
         System.out.println("Error message: " + exception.getMessage());
     }
+    
 }

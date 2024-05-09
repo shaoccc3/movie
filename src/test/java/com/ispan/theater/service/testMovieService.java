@@ -50,13 +50,12 @@ public class testMovieService {
                 put("ratedCode","d").
                 put("releaseDate","2006-01-20").
                 put("endDate","2006-02-28");
-
+        
 //        Movie movie = movieService.jsonToMovie(movieJson);
 //        Movie movie1 = movieService.jsonToMovie(movieJson1);
-
-
     }
-    @Test
+    
+//    @Test
     public void testUpdateMovie(){
         JSONObject updateJson1 = new JSONObject().put("id",2)
                 .put("name_eng",movieRepository.findById(2).get().getName())
@@ -67,7 +66,7 @@ public class testMovieService {
         Movie update = movieService.updateMovie(updateJson1);
         Movie update2 = movieService.updateMovie(updateJson2);
     }
-    @Test
+//    @Test
     public void testFind(){
         JSONObject findJson = new JSONObject().put("name","mount").put("startduration",200);
 

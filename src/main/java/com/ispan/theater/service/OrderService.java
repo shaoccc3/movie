@@ -10,8 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ispan.theater.domain.Order;
 import com.ispan.theater.domain.Ticket;
+import com.ispan.theater.repository.MovieRepository;
 import com.ispan.theater.repository.OrderRepository;
-import com.ispan.theater.repository.TicketRepository;
 
 
 
@@ -19,22 +19,22 @@ import com.ispan.theater.repository.TicketRepository;
 public class OrderService {
 
 	@Autowired
-	OrderRepository or;
+	OrderRepository orderRepository;
 	@Autowired
-	TicketRepository tr;
+	MovieRepository movieRepository;
 	@Transactional(isolation=Isolation.READ_COMMITTED)
 	public Order findOrderByOrderId(Integer id) {
-		Optional<Order> order=or.findById(id);
+		Optional<Order> order=orderRepository.findById(id);
 		return order.orElse(null);
 	}
 	
 	public Order findOrderByUserId(Integer id) {
-		Optional<Order> order=or.findOrderByUserId(id);
+		Optional<Order> order=orderRepository.findOrderByUserId(id);
 		return order.orElse(null);
 	}
 	
 	public List<Order> getOrders(){
-		return or.findAll();
+		return orderRepository.findAll();
 	}
 	
 	@Transactional
@@ -44,12 +44,16 @@ public class OrderService {
 	
 	@Transactional
 	public void updeteOrderAmountTest() {
-		Order order=or.findOrderByUserId(3).orElse(null);
+		Order order=orderRepository.findOrderByUserId(3).orElse(null);
 		order.setOrderAmount(order.getOrderAmount()+1);
 	}
 	
 	@Transactional
 	public void setTicket(Ticket ticket) {
 		ticket.setIsAvailable("已售出");
+	}
+	
+	public List<String> findMovieByScreening(Integer cinemaId){
+		return movieRepository.findMovieByScreening(cinemaId);
 	}
 }

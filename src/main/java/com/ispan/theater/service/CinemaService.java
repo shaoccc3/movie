@@ -48,7 +48,11 @@ public class CinemaService {
         else{
             return null;
         }
-
     }
 
+    public List<String> findAllCinemaName() {
+    	return cinemaRepository.findAllCinemaName();
+    }
+    
+    
 }

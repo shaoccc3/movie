@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DatetimeConverter {
+	
 	public static String toString(Date datetime, String format) {
 		String result = "";
 		try {
@@ -26,4 +27,9 @@ public class DatetimeConverter {
 		}
 		return result;
 	}
+	
+	public static String subString(Date datetime) {
+		return datetime.toString().substring(0, 11);
+	}
+	
 }

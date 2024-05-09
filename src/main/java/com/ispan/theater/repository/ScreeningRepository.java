@@ -12,4 +12,7 @@ import java.util.List;
 public interface ScreeningRepository extends JpaRepository<Screening, Integer> {
     @Query("select c from Screening c where c.movie = :movie")
     List<Screening> findByMovie(@Param("movie") Movie movie);
+    
+    @Query("select s.startTime from Screening as s join Movie as m on s.movie.id=m.id where s.auditorium.id=: id")
+    List<String> findScreeningByStartTime(@Param(value="id")Integer id);
 }

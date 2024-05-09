@@ -32,5 +32,9 @@ public interface MovieRepository extends JpaRepository<Movie, Integer> , JpaSpec
     public List<Movie> fineMovieByNameLike(@Param("name") String name);
     @Query("select count(*) from Movie c where c.name like concat('%', :name ,'%')")
     public long countByNameLike(String name);
-
+    
+    
+    @Query(value="select distinct m.name from Movie as m join Screening as s on m.id=s.movie.id join Auditorium as a on s.auditorium.id=a.id where a.cinema.id= :cinemaId")
+    public List<String> findMovieByScreening(@Param(value="cinemaId")Integer cinemaId);
+    	
 }
