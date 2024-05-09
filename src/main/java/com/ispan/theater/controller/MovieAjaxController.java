@@ -7,6 +7,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -67,6 +68,23 @@ public class MovieAjaxController {
             return ResponseEntity.notFound().build();
         }
     }
+    @GetMapping("backstage/movie/{id}")
+    public String findMovie(@PathVariable Integer id) {
+        Movie movie = movieService.getMovieById(id);
+        JSONObject response = new JSONObject();
+        JSONArray array = new JSONArray();
+        if (movie!=null) {
+            JSONObject movieJson = movieService.movieToJson(movie);
+            array.put(movieJson);
+            response.put("list", array);
+            System.out.println(movie);
+            response.put("success","success");
+        }
+        else{
+            response.put("fail","movie not found");
+        }
+        return response.toString();
+    }
 
     @PostMapping("/backstage/movie/uploadPhoto/{id}")
     public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file ,@PathVariable Integer id) {//測試用
@@ -102,16 +120,16 @@ public class MovieAjaxController {
 
     }
 
-    @PutMapping("/backstage/movie")
-    public String updateMovie(@RequestBody String moviestr) {
+    @PutMapping("/backstage/movie/{id}")
+    public String updateMovie(@RequestBody String moviestr,@PathVariable Integer id) {
         JSONObject jsonObject = new JSONObject(moviestr);
         JSONObject response = new JSONObject();
-        if (movieService.getMovieById(jsonObject.getInt("id")) != null) {
+        if (movieService.getMovieById(id) != null) {
             Movie movie = movieService.updateMovie(jsonObject);
-            response.put("msg", "更新成功");
-            response.put("succeed", "succeed");
+            response.put("message", "更新成功");
+            response.put("success", "success");
         } else {
-            response.put("msg", "更新失敗");
+            response.put("message", "更新失敗");
             response.put("fail", "fail");
         }
         return response.toString();

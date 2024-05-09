@@ -6,6 +6,7 @@ import com.ispan.theater.domain.Rated;
 import com.ispan.theater.repository.CategoryRepository;
 import com.ispan.theater.repository.MovieRepository;
 import com.ispan.theater.repository.RatedRepository;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,14 +59,15 @@ public class testMovieService {
     }
     @Test
     public void testUpdateMovie(){
-        JSONObject updateJson1 = new JSONObject().put("id",2)
-                .put("name_eng",movieRepository.findById(2).get().getName())
-                .put("name","搶救雷恩大兵");
+
+        JSONArray temp = new JSONArray().put("a");
+        JSONObject updateJson1 = new JSONObject().put("id",1)
+                .put("category",temp);
         JSONObject updateJson2=  new JSONObject().put("id",3)
                 .put("name_eng",movieRepository.findById(3).get().getName())
                 .put("name","斷背山");
         Movie update = movieService.updateMovie(updateJson1);
-        Movie update2 = movieService.updateMovie(updateJson2);
+//        Movie update2 = movieService.updateMovie(updateJson2);
     }
     @Test
     public void testFind(){

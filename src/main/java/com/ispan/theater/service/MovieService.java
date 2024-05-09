@@ -10,6 +10,8 @@ import org.apache.commons.codec.binary.Base64;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -38,11 +40,11 @@ public class MovieService {
     private ActorRepository actorRepository;
     @Autowired
     private RatedRepository ratedRepository;
-
+    @CacheEvict(value = "movieFindList", allEntries = true)
     public List<Movie> getAllMovies() {
         return movieRepository.findAll();
     }//test passed
-
+    @CacheEvict(value = "movieFindList", allEntries = true)
     public Movie getMovieById(Integer id) {//test passed
         Optional<Movie> optional = movieRepository.findById(id);
         if (optional.isPresent()) {
@@ -50,12 +52,11 @@ public class MovieService {
         }
         return null;
     }
-
     public boolean existsMovieByName(String name) {
         Movie movie = movieRepository.findByName(name);
         return movie != null;
     }
-
+    @CacheEvict(value = "movieFindList", allEntries = true)
     public List<Movie> getMovieByName(String name, Integer page) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("name", name);
@@ -63,7 +64,7 @@ public class MovieService {
         jsonObject.put("rows", 10);
         return movieRepository.multiConditionFindMovie(jsonObject);
     }
-
+    @CacheEvict(value = "movieFindList", allEntries = true)
     public Movie jsonToMovie(JSONObject jsonObject) {//test passed
         Movie movie = null;
         if (movieRepository.findByName(jsonObject.getString("name")) == null) {
@@ -86,17 +87,17 @@ public class MovieService {
             return null;
         }
     }
-
+    //棄用 目前使用multiFind1
     public List<Movie> multiFind(JSONObject jsonObject) {//test passed
         if (movieRepository.multiConditionFindMovie(jsonObject) != null) {
             return movieRepository.multiConditionFindMovie(jsonObject);
         } else {
             return null;
         }
-
     }
-
+    @CacheEvict(value = "movieFindList", allEntries = true)
     public Movie updateMovie(JSONObject jsonObject) {//test pass
+        System.out.println(jsonObject.toString());
         Integer id = jsonObject.getInt("id");
         String name = jsonObject.isNull("name") ? null : jsonObject.getString("name");
         String name_eng = jsonObject.isNull("name_eng") ? null : jsonObject.getString("name_eng");
@@ -105,7 +106,14 @@ public class MovieService {
         String releaseDate = jsonObject.isNull("releaseDate") ? null : jsonObject.getString("releaseDate");
         String endDate = jsonObject.isNull("endDate") ? null : jsonObject.getString("endDate");
         Double price = jsonObject.isNull("price") ? null : jsonObject.getDouble("price");
-        String category = jsonObject.isNull("category") ? null : jsonObject.getString("category");
+        JSONArray categories = jsonObject.getJSONArray("category");
+        System.out.println(categories);
+//        String category = jsonObject.isNull("category") ? null : jsonObject.getString("category");
+        List<String> categoryCodes = new ArrayList<>();
+
+        List<Object> code = categories.toList();
+        categoryCodes.add(code.toString().trim().replace("[","").replace("]",""));
+
         String rated = jsonObject.isNull("rated") ? null : jsonObject.getString("rated");
         Integer duration = jsonObject.isNull("duration") ? null : jsonObject.getInt("duration");
         String image = jsonObject.isNull("image") ? null : jsonObject.getString("image");
@@ -134,8 +142,11 @@ public class MovieService {
         if (price != null && price.doubleValue() > 0) {
             movie.setPrice(price);
         }
-        if (category != null && category.length() > 0) {
-            movie.setCategoryCode(category);
+        if (!categoryCodes.isEmpty()) {
+            for(String categoryCode : categoryCodes) {
+                movie.setCategoryCode(categoryCode);
+            }
+
         }
         if (rated != null && rated.length() > 0) {
             Rated temp = ratedRepository.findByCode(rated);
@@ -150,11 +161,11 @@ public class MovieService {
         movie.setModifyDate(new Date());
         return movieRepository.save(movie);
     }
-
+    @CacheEvict(value = "movieFindList", allEntries = true)
     public void deleteMovie(Movie movie) {
         movieRepository.delete(movie);
     }
-
+    @CacheEvict(value = "movieFindList", allEntries = true)
     public JSONObject movieToJson(Movie movie) {
         String photoUrl = "/backstage/movie/photo/" + movie.getId();
         JSONObject jsonObject = new JSONObject();
@@ -173,11 +184,11 @@ public class MovieService {
         for (String cate : cateArray) {
             Category temp = categoryRepository.findByCode(cate);
             if (temp != null) {
-                jsonArray.put(temp.toString());
+                jsonArray.put(temp.getCode());
             }
         }
         jsonObject.put("category", jsonArray);
-        jsonObject.put("rated", movie.getRatedCode());
+        jsonObject.put("rated", movie.getRatedCode().getCode());
         jsonObject.put("duration", movie.getDuration());
         return jsonObject;
     }
@@ -187,8 +198,8 @@ public class MovieService {
     }
 
     //多條件搜尋 分頁版本
+    @Cacheable(value = "movieFindList" , key = "#root.methodName" )
     public Page<Movie> findMulti1(JSONObject jsonObject) {
-
         String name = jsonObject.isNull("name") ? null : jsonObject.getString("name");
         String director = jsonObject.isNull("director") ? null : jsonObject.getString("director");
         String releaseDate = jsonObject.isNull("releaseDate") ? null : jsonObject.getString("releaseDate");
@@ -260,11 +271,8 @@ public class MovieService {
                 Rated item = ratedRepository.findByCode(rated);
                 predicates.add(builder.equal(root.get("ratedCode"), item));
             }
-
-
             return builder.and(predicates.toArray(new Predicate[0]));
         };
-
         return movieRepository.findAll(spec, pageable);
     }
 
@@ -279,16 +287,13 @@ public class MovieService {
         String rated = jsonObject.isNull("rated") ? null : jsonObject.getString("rated");
         Integer startduration = jsonObject.isNull("startduration") ? null : jsonObject.getInt("startduration");
         Integer endduration = jsonObject.isNull("endduration") ? null : jsonObject.getInt("endduration");
-
         Pageable pageable;
-
         Specification<Movie> spec = (root, query, builder) -> {
             //where
             List<Predicate> predicates = new ArrayList<>();
             if (name != null && !name.isEmpty()) {
                 Pattern pattern = Pattern.compile("[\\u4E00-\\u9FA5]+");
                 Matcher matcher = pattern.matcher(name);
-
                 if (matcher.find()) {
                     System.out.println("中文");
                     predicates.add(builder.like(root.get("name"), "%" + name + "%"));
@@ -297,7 +302,6 @@ public class MovieService {
                     predicates.add(builder.like(root.get("name_eng"), "%" + name + "%"));
                 }
             }
-
             if (director != null && !director.isEmpty()) {
                 predicates.add(builder.like(root.get("director"), "%" + director + "%"));
             }
@@ -333,16 +337,16 @@ public class MovieService {
                 Rated item = ratedRepository.findByCode(rated);
                 predicates.add(builder.equal(root.get("ratedCode"), item));
             }
-
-
             return builder.and(predicates.toArray(new Predicate[0]));
         };
-
         return movieRepository.count(spec);
     }
-
+    @CacheEvict(value = "movieFindList", allEntries = true)
     public void saveMovie(Movie movie) {
         movieRepository.save(movie);
     }
+
+
+
 
 }
