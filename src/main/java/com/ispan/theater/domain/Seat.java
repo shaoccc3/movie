@@ -22,4 +22,10 @@ public class Seat {
     @Column(name = "seat_column", nullable = false)
     private Integer seatColumn;
 
+	@Override
+	public String toString() {
+		return "Seat []";
+	}
+
+    
 }

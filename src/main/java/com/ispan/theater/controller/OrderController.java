@@ -57,6 +57,7 @@ public class OrderController {
 		return orderJson.put("orders", array).put("success", true).toString();
 	}
 	
+	//test
 	@GetMapping("/movie/locktest")
 	public String lockTest() {
 		Order order=orderService.findOrderByOrderId(3);
@@ -69,7 +70,8 @@ public class OrderController {
 		return new JSONObject().put("success",true).toString();
 	}
 	
-	@GetMapping("/movie/addOrderTest")
+	//test
+	@GetMapping("/movie/addOrderTest") 
 	public String addOrderTest(@RequestParam("ticketId")Integer ticketId) {
 		Ticket ticket=ticketRepository.findById(ticketId).orElse(null);
 		synchronized (this) {
@@ -87,9 +89,33 @@ public class OrderController {
 	public String findAllCinema() {
 		return new JSONObject().put("allCinemaName", cinemaService.findAllCinemaName()).toString(); 
 	}
+	
 	@GetMapping("/movie/findMovie")
 	public String findMovie(@RequestParam("cinemaId")Integer cinemaId) {
 		return new JSONObject().put("movies",orderService.findMovieByScreening(cinemaId)).toString();
 	}
 	
+	@GetMapping("/movie/dates")
+	public String findScreeningByDate(@RequestParam("auditoriumId")Integer auditoriumId) {
+		return new JSONObject().put("dates", orderService.findScreeningByDate(auditoriumId)).toString();
+	}
+	
+	@GetMapping("/movie/times")
+	public String findScreeningByTime(@RequestParam("auditoriumId")Integer auditoriumId,@RequestParam("Date")String Date) {
+		return new JSONObject().put("times", orderService.findScreeningByTime(auditoriumId,Date)).toString();
+	}
+	
+	@GetMapping("/movie/tickets")
+	public String findTickets(@RequestParam("screeningId")Integer screeningId) {
+		return new JSONObject().put("tickets", orderService.ticketList(screeningId)).toString();
+	}
+	
+	
+	
+	@GetMapping("/movie/tickets1")
+	public String findTickets1(@RequestParam("screeningId")Integer screeningId) {
+		return new JSONObject().put("tickets", orderService.ticketList1(screeningId)).toString();
+	}
 }
+
+

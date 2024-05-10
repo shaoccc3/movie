@@ -28,8 +28,8 @@ public class DatetimeConverter {
 		return result;
 	}
 	
-	public static String subString(Date datetime) {
-		return datetime.toString().substring(0, 11);
-	}
+//	public static String subString(Date datetime) {
+//		return datetime.toString().substring(0, 11);
+//	}
 	
 }

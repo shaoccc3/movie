@@ -1,7 +1,7 @@
 <configuration scan="true" scanPeriod="60 seconds" debug="false">
     <contextName>logback-test</contextName>
 
-    <property name="logback.logdir" value="D://workspace/batch/movie/log"/>
+    <property name="logback.logdir" value="C://workspace/batch/movie/log"/>
     <appender name="asyncAppender" class="ch.qos.logback.classic.AsyncAppender">
         <appender-ref ref="consoleLog"/>
     </appender>
