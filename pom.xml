@@ -127,11 +127,30 @@
 		</dependency>
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt-jackson</artifactId> <!-- or jjwt-gson if Gson is preferred -->
+			<artifactId>jjwt-jackson</artifactId> <!-- or jjwt-gson if Gson is
+			preferred -->
 			<version>0.12.5</version>
 			<scope>runtime</scope>
 		</dependency>
 		<!--jjwt函式庫-->
+
+
+		<!-- google函式庫-->
+
+		<dependency>
+			<groupId>com.google.api-client</groupId>
+			<artifactId>google-api-client</artifactId>
+			<version>2.4.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.oauth-client</groupId>
+			<artifactId>google-oauth-client</artifactId>
+			<version>1.35.0</version>
+		</dependency>
+
+
+		<!-- -->
+
 
 	</dependencies>
 
