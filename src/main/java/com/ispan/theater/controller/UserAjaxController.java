@@ -20,8 +20,10 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
+import com.ispan.theater.DTO.UserDTO;
 import com.ispan.theater.domain.User;
 import com.ispan.theater.service.UserService;
+import com.ispan.theater.util.EmailSenderComponent;
 import com.ispan.theater.util.JsonWebTokenUtility;
 
 import jakarta.servlet.http.HttpSession;
@@ -29,6 +31,12 @@ import jakarta.servlet.http.HttpSession;
 @RestController
 @CrossOrigin
 public class UserAjaxController {
+	
+	
+	
+	@Autowired
+	EmailSenderComponent emailSenderComponent;
+	
 	@Autowired
 	UserService userService;
 
@@ -48,6 +56,13 @@ public class UserAjaxController {
 		}
 		User user = userService.InsertUser(userJson);
 		if (user != null) {
+			
+//			寄送驗證信
+//			JSONObject inputjson = new JSONObject().put("userid", user.getId());
+//			String token = jsonWebTokenUtility.createEncryptedToken(inputjson.toString(), null);
+//			emailSenderComponent.sendEmail(user.getEmail(),token);
+//
+			
 			repJson.put("success", true);
 			repJson.put("message", "新增成功");
 		} else {
@@ -152,7 +167,7 @@ public class UserAjaxController {
 				String userId = payload.getSubject();
 				// Get profile information from payload
 				String email = payload.getEmail();
-				// 透過URL下載客戶圖片上傳DB
+				// 可 透過URL下載客戶圖片上傳DB
 				String pictureUrl = (String) payload.get("picture");
 				String familyName = (String) payload.get("family_name");
 				String givenName = (String) payload.get("given_name");
@@ -198,20 +213,57 @@ public class UserAjaxController {
 
 	}
 
+	
+	
+	//修改密碼  未完成
 	@PutMapping("/user/check/changePaaword/{token}")
-	public void changePaaword(@PathVariable(name = "token") String token, @RequestBody String password) {
-		System.out.println(password);
+	public void changePaaword(@PathVariable(name = "token") 
+	
+	String token, @RequestBody String password) {
 		String data = jsonWebTokenUtility.validateEncryptedToken(token);
 		if (data != null && data.length() != 0) {
 			JSONObject obj = new JSONObject(data);
 			Integer userid = obj.getInt("userid");
 			JSONObject update = new JSONObject(password).put("userid", userid);
-			System.out.println(update);
 			userService.updateUser(update);
-			System.out.println("OKOKOKOKOK");
-
 		}
 
 	}
+	
+	
+	//修改個人資料 (要跟修改密碼做區別) 未完成
+	@PutMapping("/user/check/changeUserProfile/{token}")
+	public void changeUserProfile(@PathVariable(name = "token") String token, @RequestBody UserDTO userDTO) {
+		String data = jsonWebTokenUtility.validateEncryptedToken(token);
+		if (data != null && data.length() != 0) {
+			Integer userid = new JSONObject(data).getInt("userid");
+			JSONObject update = new JSONObject(userDTO).put("userid", userid);
+			userService.updateUser(update);
+		}
+
+	}
+	
+	
+	
+	
+	//Email驗證
+	@PutMapping("/user/verify-email/{token}")
+	public void testuser(@PathVariable(name = "token") String token) {
+		//檢查token並解析
+		String data = jsonWebTokenUtility.validateEncryptedToken(token);
+		//tokern有效
+		if(data != null && data.length() != 0) {
+			Integer userid = new JSONObject(data).getInt("userid");
+			JSONObject update = new JSONObject().put("userid", userid).put("isverified", true);
+			userService.updateUser(update);
+		}
+		System.out.println("sendokokok");
+	}
+	
+	
+	
+	
+	
+	
 
 }

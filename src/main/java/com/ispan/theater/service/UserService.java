@@ -12,9 +12,11 @@ import org.springframework.stereotype.Service;
 
 import com.ispan.theater.domain.User;
 import com.ispan.theater.repository.UserRepository;
+import com.ispan.theater.util.EmailSenderComponent;
 
 @Service
 public class UserService {
+	
 
 	@Autowired
 	private UserRepository userRepository;
@@ -217,5 +219,7 @@ public class UserService {
 		}
 		return null;
 	}
+	
+
 
 }

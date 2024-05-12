@@ -28,4 +28,15 @@ logging:
     root: INFO
 jwt:
   token:
-    expire: 100
+    expire: 10
+    
+# email SMTP 服务器配置
+
+mail:
+  smtp:
+    host: smtp.gmail.com
+    port: 587
+    username: ispanmove@gmail.com
+    password: czdn gmwi vvtn onrx
+    tls: true
+
