@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,6 +31,7 @@ import jakarta.servlet.http.HttpSession;
 
 @RestController
 @CrossOrigin
+@RequestMapping(value =  "/user")
 public class UserAjaxController {
 	
 	
@@ -43,7 +45,7 @@ public class UserAjaxController {
 	@Autowired
 	JsonWebTokenUtility jsonWebTokenUtility;
 
-	@PostMapping("/user/register") // testpage
+	@PostMapping("/register") // testpage
 	public String userRegister(@RequestBody String json) {
 		JSONObject repJson = new JSONObject();
 		JSONObject userJson = new JSONObject(json);
@@ -58,10 +60,10 @@ public class UserAjaxController {
 		if (user != null) {
 			
 //			寄送驗證信
-//			JSONObject inputjson = new JSONObject().put("userid", user.getId());
-//			String token = jsonWebTokenUtility.createEncryptedToken(inputjson.toString(), null);
-//			emailSenderComponent.sendEmail(user.getEmail(),token);
-//
+			JSONObject inputjson = new JSONObject().put("userid", user.getId());
+			String token = jsonWebTokenUtility.createEncryptedToken(inputjson.toString(), null);
+			emailSenderComponent.sendEmail(user.getEmail(),token);
+
 			
 			repJson.put("success", true);
 			repJson.put("message", "新增成功");
@@ -72,7 +74,7 @@ public class UserAjaxController {
 		return repJson.toString();
 	}
 
-	@PostMapping("/user/login")
+	@PostMapping("/login")
 	public String userLogin(@RequestBody String json, HttpSession session) {
 		JSONObject jsonobj = new JSONObject(json);
 		JSONObject result = new JSONObject();
@@ -94,7 +96,7 @@ public class UserAjaxController {
 		return result.toString();
 	}
 
-	@GetMapping("/user/check/phone")
+	@GetMapping("/check/phone")
 	public String checkPhone(@RequestParam String phone) {
 		JSONObject result = new JSONObject();
 		if (phone == null || phone.length() != 10) {
@@ -112,10 +114,10 @@ public class UserAjaxController {
 		return result.toString();
 	}
 
-	@GetMapping("/user/check/email")
+	@GetMapping("/check/email")
 	public String checkEmail(@RequestParam String email) {
 		JSONObject result = new JSONObject();
-		if (email == null || email.length() != 0) {
+		if (email == null || email.length() == 0) {
 			result.put("success", false);
 			result.put("message", "Email格式有誤");
 		} else {
@@ -130,7 +132,7 @@ public class UserAjaxController {
 		return result.toString();
 	}
 
-	@GetMapping("/user/profile")
+	@GetMapping("/profile")
 	public ResponseEntity<?> userProfile(@RequestParam String token) {
 
 		String data = jsonWebTokenUtility.validateEncryptedToken(token);
@@ -147,8 +149,9 @@ public class UserAjaxController {
 		return notFound;
 	}
 
-	@PostMapping("/user/login/google")
-	public String testGoolgle(@RequestParam("credential") String credential) {
+	@PostMapping("/login/google")
+	public String testGoolgle(@RequestBody String credentialJSON) {
+		String credential = new JSONObject (credentialJSON).getString("credential");
 		GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new GsonFactory())
 				// Specify the CLIENT_ID of the app that accesses the backend:
 				.setAudience(Collections
@@ -216,7 +219,7 @@ public class UserAjaxController {
 	
 	
 	//修改密碼  未完成
-	@PutMapping("/user/check/changePaaword/{token}")
+	@PutMapping("/check/changePaaword/{token}")
 	public void changePaaword(@PathVariable(name = "token") 
 	
 	String token, @RequestBody String password) {
@@ -232,7 +235,7 @@ public class UserAjaxController {
 	
 	
 	//修改個人資料 (要跟修改密碼做區別) 未完成
-	@PutMapping("/user/check/changeUserProfile/{token}")
+	@PutMapping("/check/changeUserProfile/{token}")
 	public void changeUserProfile(@PathVariable(name = "token") String token, @RequestBody UserDTO userDTO) {
 		String data = jsonWebTokenUtility.validateEncryptedToken(token);
 		if (data != null && data.length() != 0) {
@@ -247,8 +250,10 @@ public class UserAjaxController {
 	
 	
 	//Email驗證
-	@PutMapping("/user/verify-email/{token}")
-	public void testuser(@PathVariable(name = "token") String token) {
+	@PutMapping("/verify-email/{token}")
+	public String testuser(@PathVariable(name = "token") String token) {
+		System.out.println("sendokokok");
+		JSONObject result =new JSONObject();
 		//檢查token並解析
 		String data = jsonWebTokenUtility.validateEncryptedToken(token);
 		//tokern有效
@@ -256,14 +261,15 @@ public class UserAjaxController {
 			Integer userid = new JSONObject(data).getInt("userid");
 			JSONObject update = new JSONObject().put("userid", userid).put("isverified", true);
 			userService.updateUser(update);
+			result.put("success", true);
+			result.put("message", "郵件驗證成功");
+			
+		}else {
+			result.put("success", false);
+			result.put("message", "郵件驗證失敗，請重新獲取驗證信進行驗證");
 		}
-		System.out.println("sendokokok");
+		return result.toString();
 	}
-	
-	
-	
-	
-	
 	
 
 }

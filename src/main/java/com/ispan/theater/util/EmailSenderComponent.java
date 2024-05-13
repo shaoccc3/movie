@@ -39,7 +39,7 @@ public class EmailSenderComponent {
                 .from(smtpUsername)
                 .to(useremail)
                 .withSubject("ispanmove認證信")
-                .withPlainText("请点击以下链接完成邮箱验证：http://localhost:8082/user/verify-email/" + token)
+                .withPlainText("请点击以下链接完成邮箱验证：http://localhost:5173/user/verify-email/" + token)
                 .buildEmail();
         // 发送邮件
         mailer.sendMail(email,/* async = */true);
