@@ -1,29 +1,16 @@
 package com.ispan.theater.repository;
 
-import com.ispan.theater.dao.MovieDao;
-import com.ispan.theater.domain.Movie;
-import com.ispan.theater.domain.Rated;
-import com.ispan.theater.util.DatetimeConverter;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
-import netscape.javascript.JSObject;
-import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import com.ispan.theater.dao.MovieDao;
+import com.ispan.theater.domain.Movie;
 @Repository
 public interface MovieRepository extends JpaRepository<Movie, Integer> , JpaSpecificationExecutor<Movie>,MovieDao {
     @Query("select c from Movie c where c.name = :name")
@@ -34,7 +21,7 @@ public interface MovieRepository extends JpaRepository<Movie, Integer> , JpaSpec
     public long countByNameLike(String name);
     
     
-    @Query(value="select distinct m.name from Movie as m join Screening as s on m.id=s.movie.id join Auditorium as a on s.auditorium.id=a.id where a.cinema.id= :cinemaId")
-    public List<String> findMovieByScreening(@Param(value="cinemaId")Integer cinemaId);
+    @Query(value="select distinct m.movie_id,m.name,a.cinema_id from movie as m join Screening as s on m.movie_id=s.Movie_id join auditorium as a on s.auditorium_id=a.auditorium_id where a.cinema_id= :cinemaId",nativeQuery = true)
+    public List<Map<String,Object>> findMovieByScreening(@Param(value="cinemaId")Integer cinemaId);
     	
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +18,7 @@ import com.ispan.theater.service.CinemaService;
 import com.ispan.theater.service.OrderService;
 
 @RestController
+@CrossOrigin
 public class OrderController {
 	@Autowired
 	OrderService orderService;
@@ -96,13 +98,13 @@ public class OrderController {
 	}
 	
 	@GetMapping("/movie/dates")
-	public String findScreeningByDate(@RequestParam("auditoriumId")Integer auditoriumId) {
-		return new JSONObject().put("dates", orderService.findScreeningByDate(auditoriumId)).toString();
+	public String findScreeningByDate(@RequestParam("cinemaId")Integer cinemaId,@RequestParam("movieId")Integer movieId) {
+		return new JSONObject().put("dates", orderService.findScreeningByDate(cinemaId,movieId)).toString();
 	}
 	
 	@GetMapping("/movie/times")
-	public String findScreeningByTime(@RequestParam("auditoriumId")Integer auditoriumId,@RequestParam("Date")String Date) {
-		return new JSONObject().put("times", orderService.findScreeningByTime(auditoriumId,Date)).toString();
+	public String findScreeningByTime(@RequestParam("cinemaId")Integer cinemaId,@RequestParam("Date")String Date,@RequestParam("movieId")Integer movieId) {
+		return new JSONObject().put("times", orderService.findScreeningByTime(cinemaId,Date,movieId)).toString();
 	}
 	
 	@GetMapping("/movie/tickets")
@@ -111,7 +113,7 @@ public class OrderController {
 	}
 	
 	
-	
+
 	@GetMapping("/movie/tickets1")
 	public String findTickets1(@RequestParam("screeningId")Integer screeningId) {
 		return new JSONObject().put("tickets", orderService.ticketList1(screeningId)).toString();

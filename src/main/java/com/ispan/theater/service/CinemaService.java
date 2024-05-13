@@ -1,14 +1,16 @@
 package com.ispan.theater.service;
 
-import com.ispan.theater.domain.Cinema;
-import com.ispan.theater.repository.CinemaRepository;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
+import com.ispan.theater.domain.Cinema;
+import com.ispan.theater.repository.CinemaRepository;
 
 @Service
 @Transactional
@@ -50,7 +52,11 @@ public class CinemaService {
         }
     }
 
-    public List<String> findAllCinemaName() {
+    public List<Map<String,Object>> findAllCinemaName() {
+    	List<Map<String,Object>> list=cinemaRepository.findAllCinemaName();
+    	for(Map<String,Object> map:list) {
+    		System.out.println(map.entrySet());
+    	}
     	return cinemaRepository.findAllCinemaName();
     }
     
