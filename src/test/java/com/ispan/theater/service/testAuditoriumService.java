@@ -30,8 +30,6 @@ public class testAuditoriumService {
         jsonObject.put("levelid",1);
         jsonObject.put("auditoriumNumber",1);
         jsonObject.put("cinemaid",1);
-
-
         Auditorium auditorium =  auditoriumService.saveAuditorium(jsonObject);
     }
     @Test

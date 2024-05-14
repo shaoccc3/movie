@@ -303,19 +303,21 @@ public class MovieService {
             if (name != null && !name.isEmpty()) {
                 Pattern pattern = Pattern.compile("[\\u4E00-\\u9FA5]+");
                 Matcher matcher = pattern.matcher(name);
-
+                Predicate namePredicate;
                 if (matcher.find()) {
                     System.out.println("中文");
-                    predicates.add(builder.like(root.get("name"), "%" + name + "%"));
+                    namePredicate =builder.like(root.get("name"), "%" + name + "%");
                 } else {
                     System.out.println("英文");
-                    predicates.add(builder.like(root.get("name_eng"), "%" + name + "%"));
+                    namePredicate=builder.like(root.get("name_eng"), "%" + name + "%");
                 }
+                Predicate directorPredicate = builder.like(root.get("director"), "%" + name + "%");
+                predicates.add(builder.or(namePredicate, directorPredicate));
             }
 
-            if (director != null && !director.isEmpty()) {
-                predicates.add(builder.like(root.get("director"), "%" + director + "%"));
-            }
+//            if (director != null && !director.isEmpty()) {
+//                predicates.add(builder.like(root.get("director"), "%" + director + "%"));
+//            }
             if (releaseDate != null && !releaseDate.isEmpty()) {
                 Date releaseParse = DatetimeConverter.parse(releaseDate, "yyyy-MM-dd");
                 predicates.add(builder.greaterThanOrEqualTo(root.get("releaseDate"), releaseParse));
