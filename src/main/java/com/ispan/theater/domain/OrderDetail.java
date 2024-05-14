@@ -1,5 +1,9 @@
 package com.ispan.theater.domain;
 
+import java.util.Arrays;
+
+import org.springframework.data.mapping.AccessOptions.SetOptions.Propagation;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,5 +30,11 @@ public class OrderDetail {
 
     @Column(name = "qrcode", nullable = false)
     private byte[] qrcode;
+
+	@Override
+	public String toString() {
+		return "OrderDetail [id=" + id + ", order=" + order + ", ticket=" + ticket + ", qrcode="
+				+ Arrays.toString(qrcode) + "]";
+	}
 
 }

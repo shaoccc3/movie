@@ -1,22 +1,32 @@
 package com.ispan.theater.repository;
 
-import com.ispan.theater.domain.Screening;
-import com.ispan.theater.domain.Ticket;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
+
+import com.ispan.theater.domain.Ticket;
 
 @Repository
 public interface TicketRepository extends JpaRepository<Ticket, Integer> {
-
-
-    @Query("delete from Ticket  c where c.screening = :screening")
-    @Modifying
-    void deleteByScreening(@Param("screening") Screening screening);
-
+	
+	@Query(value="select t.* from Ticket as t join Screening as s on t.Screening_id=s.Screening_id where s.Screening_id = :screeningId ",nativeQuery = true)
+	public List<Map<String,Object>> getTickets(@Param("screeningId")Integer screeningId);
+	
+//	@Query(value="select t.* from Ticket as t join Screening as s on t.Screening_id=s.Screening_id where s.Screening_id = :screeningId ",nativeQuery = true)
+//	public List<Ticket> getTickets1(@Param("screeningId")Integer screeningId);
+	
+//	@Query(value="select t from Ticket as t where t.screening.id = :screeningId ")
+//	public List<Ticket> getTickets1(@Param("screeningId")Integer screeningId);
+//	//t.screening.id
+	
+	@Query(value="select t.* from Ticket as t  where t.Screening_id = :screeningId ",nativeQuery = true)
+	public List<Map<String,Object>> getTickets1(@Param("screeningId")Integer screeningId);
+	
+	@Query("select t from Ticket t where t.screening.id = :screeningId")
+	public List<Ticket> test(@Param("screeningId")Integer screeningId);
+	
 }

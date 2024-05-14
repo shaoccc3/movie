@@ -7,6 +7,10 @@ import lombok.Setter;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @NoArgsConstructor
 @Getter
 @Setter
@@ -18,6 +22,8 @@ public class Ticket {
     @Column(name = "Ticket_id", nullable = false)
     private Integer id;
 
+    //@JsonBackReference
+    
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "Screening_id", nullable = false)
     private Screening screening;
