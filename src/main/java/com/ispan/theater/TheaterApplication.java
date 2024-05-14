@@ -10,7 +10,6 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @SpringBootApplication
 @EnableAsync
 @EnableAspectJAutoProxy
-@EnableCaching
 public class TheaterApplication {
 
     public static void main(String[] args) {

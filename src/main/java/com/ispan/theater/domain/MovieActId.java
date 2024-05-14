@@ -22,6 +22,11 @@ public class MovieActId implements Serializable {
     @Column(name = "movie_id", nullable = false)
     private Integer movieId;
 
+    public MovieActId(Integer actorId, Integer movieId) {
+        this.actorId = actorId;
+        this.movieId = movieId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

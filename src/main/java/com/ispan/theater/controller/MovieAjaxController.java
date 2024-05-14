@@ -33,6 +33,7 @@ public class MovieAjaxController {
         JSONObject response = new JSONObject();
 
         Page<Movie> result = movieService.findMulti1(jsonObject);
+        System.out.println("test");
         List<Movie> movies = result.getContent();
         long count = movieService.count(jsonObject);
         JSONArray array = new JSONArray();
@@ -107,12 +108,12 @@ public class MovieAjaxController {
     public String insertMovie(@RequestBody String moviestr) {
         JSONObject jsonObject = new JSONObject(moviestr);
         JSONObject response = new JSONObject();
-        if (movieService.existsMovieByName(jsonObject.getString("name"))) {
-            Movie movie = movieService.jsonToMovie(jsonObject);
-            response.put("msg", "新增成功");
-            response.put("succeed", "succeed");
+        if (!movieService.existsMovieByName(jsonObject.getString("name"))) {
+            Movie movie = movieService.insertMovie(jsonObject);
+            response.put("message", "新增成功");
+            response.put("success", "success");
         } else {
-            response.put("msg", "新增失敗");
+            response.put("message", "新增失敗");
             response.put("fail", "fail");
         }
         return response.toString();
