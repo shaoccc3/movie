@@ -88,8 +88,8 @@ public class OrderService {
 		return ticketRepository.getTickets(id);
 	}
 	
-	public List<Ticket> ticketList1(Integer id){
-		return ticketRepository.test(id);
+	public List<Map<String,Object>> ticketList1(Integer id){
+		return ticketRepository.getTickets(id);
 	}
 	
 }

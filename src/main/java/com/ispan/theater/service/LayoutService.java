@@ -21,9 +21,9 @@ public class LayoutService {
     private SeatRepository seatRepository;
     public void insertLayout(Auditorium auditorium) {//測試版 還未加上版型
 
-        for(int i=0;i<13;i++){
-            for(int j=0;j<18;j++){
-                Integer seatid = (i+1)*(j+1);
+        for(int i=1;i<=13;i++){
+            for(int j=1;j<=18;j++){
+                Integer seatid = (i-1)*24+j;
                 Optional<Seat> optionalSeat = seatRepository.findById(seatid);
                 if(optionalSeat.isPresent()){
                     Layout layout = new Layout();

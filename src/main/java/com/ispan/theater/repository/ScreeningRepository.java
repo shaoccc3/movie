@@ -23,3 +23,4 @@ public interface ScreeningRepository extends JpaRepository<Screening, Integer> {
     List<Map<String,Object>> findScreeningByTime(@Param(value="cinemaId")Integer cinemaId,@Param(value="date")String date,@Param(value="movieId")Integer movieId);
     
 }
+ 
