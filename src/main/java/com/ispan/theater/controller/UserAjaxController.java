@@ -60,9 +60,9 @@ public class UserAjaxController {
 		if (user != null) {
 			
 //			寄送驗證信
-			JSONObject inputjson = new JSONObject().put("userid", user.getId());
-			String token = jsonWebTokenUtility.createEncryptedToken(inputjson.toString(), null);
-			emailSenderComponent.sendEmail(user.getEmail(),token);
+//			JSONObject inputjson = new JSONObject().put("userid", user.getId());
+//			String token = jsonWebTokenUtility.createEncryptedToken(inputjson.toString(), null);
+//			emailSenderComponent.sendEmail(user.getEmail(),token);
 
 			
 			repJson.put("success", true);
@@ -241,6 +241,7 @@ public class UserAjaxController {
 		if (data != null && data.length() != 0) {
 			Integer userid = new JSONObject(data).getInt("userid");
 			JSONObject update = new JSONObject(userDTO).put("userid", userid);
+			
 			userService.updateUser(update);
 		}
 

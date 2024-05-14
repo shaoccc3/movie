@@ -28,7 +28,7 @@ logging:
     root: INFO
 jwt:
   token:
-    expire: 10
+    expire: 100
     
 # email SMTP 服务器配置
 
