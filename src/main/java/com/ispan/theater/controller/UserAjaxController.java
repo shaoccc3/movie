@@ -231,15 +231,15 @@ public class UserAjaxController {
 
 	// 修改個人資料 (要跟修改密碼做區別) 未完成
 	@PutMapping("/check/changeUserProfile/{token}")
-	public void changeUserProfile(@PathVariable(name = "token") String token, @RequestBody UserDTO userDTO) {
+	public ResponseEntity<?> changeUserProfile(@PathVariable(name = "token") String token, @RequestBody UserDTO userDTO) {
 		String data = jsonWebTokenUtility.validateEncryptedToken(token);
 		if (data != null && data.length() != 0) {
 			Integer userid = new JSONObject(data).getInt("userid");
 			JSONObject update = new JSONObject(userDTO).put("userid", userid);
-
-			userService.updateUser(update);
+			User user = userService.updateUser(update);
+			return ResponseEntity.ok(user);
 		}
-
+		return ResponseEntity.notFound().build();
 	}
 
 	// Email驗證
