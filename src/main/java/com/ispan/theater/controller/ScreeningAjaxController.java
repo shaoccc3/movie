@@ -1,7 +1,9 @@
 package com.ispan.theater.controller;
 
+import com.ispan.theater.domain.Auditorium;
 import com.ispan.theater.domain.Movie;
 import com.ispan.theater.domain.Screening;
+import com.ispan.theater.service.AuditoriumService;
 import com.ispan.theater.service.MovieService;
 import com.ispan.theater.service.ScreeningService;
 import org.json.JSONArray;
@@ -18,7 +20,8 @@ public class ScreeningAjaxController {
     private ScreeningService screeningService;
     @Autowired
     private MovieService movieService;
-
+    @Autowired
+    private AuditoriumService auditoriumService;
     @PostMapping("/backstage/screening/find")
     public String findScreening(@RequestBody String json) {
         JSONObject jsonObject = new JSONObject(json);
@@ -62,6 +65,22 @@ public class ScreeningAjaxController {
         else{
             response.put("fail", false);
             response.put("message", "電影不存在");
+        }
+        return response.toString();
+    }
+    @GetMapping("/backstage/auditotium/{cinemaid}")
+    public String screeningByCinemaId(@PathVariable Integer cinemaid) {
+        JSONObject response = new JSONObject();
+
+        List<Auditorium> result = auditoriumService.getCinemaAuditoriums(cinemaid);
+        if(!result.isEmpty()) {
+            response.put("list", result);
+            response.put("count", result.size());
+            response.put("success", "success");
+        }
+        else{
+            response.put("fail", false);
+            response.put("message","Not Found");
         }
         return response.toString();
     }
