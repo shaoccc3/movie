@@ -9,10 +9,10 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ispan.theater.domain.User;
 import com.ispan.theater.repository.UserRepository;
-import com.ispan.theater.util.EmailSenderComponent;
 
 @Service
 public class UserService {
@@ -33,7 +33,7 @@ public class UserService {
 			String phone = obj.isNull("phone") ? null : obj.getString("phone");
 			String birth = obj.isNull("birth") ? null : obj.getString("birth");
 			String gender = obj.isNull("gender") ? null : obj.getString("gender");
-			String photo = obj.isNull("image") ? null : obj.getString("image");
+//			String photo = obj.isNull("image") ? null : obj.("image");
 			Boolean isverified = obj.isNull("isverified") ? null : obj.getBoolean("isverified");
 
 			// 必填項目
@@ -64,7 +64,7 @@ public class UserService {
 			} else {
 				user.setIsverified(isverified);
 			}
-			user.setUserPhoto(photo);
+//			user.setUserPhoto(photo);
 			return userRepository.save(user);
 
 		} catch (Exception e) {
@@ -138,7 +138,7 @@ public class UserService {
 		}
 		// 照片
 		if (userPhoto != null) {
-			update.setUserPhoto(userPhoto);
+//			update.setUserPhoto(userPhoto);
 		}
 
 		update.setModifiedDate(new Date());
@@ -221,5 +221,19 @@ public class UserService {
 	}
 	
 
+	public User updatePhoto (Integer userid,MultipartFile photoFile) throws Exception{
+		
+		Optional<User> optional = userRepository.findById(userid);
+		if (optional.isPresent()) {
+			User user = optional.get();
+			user.setUserPhoto(photoFile.getBytes());
+			userRepository.save(user);
+			return user;
+		}
+		return null;
+	}
+	
+	
+	
 
 }

@@ -79,6 +79,6 @@ public class User {
     @JsonIgnore
     @Lob
     @Column(name = "user_photo")
-    private String userPhoto;
+    private byte[] userPhoto;
     
 }
