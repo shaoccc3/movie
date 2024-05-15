@@ -12,9 +12,11 @@ import org.springframework.stereotype.Service;
 
 import com.ispan.theater.domain.User;
 import com.ispan.theater.repository.UserRepository;
+import com.ispan.theater.util.EmailSenderComponent;
 
 @Service
 public class UserService {
+	
 
 	@Autowired
 	private UserRepository userRepository;
@@ -31,36 +33,40 @@ public class UserService {
 			String phone = obj.isNull("phone") ? null : obj.getString("phone");
 			String birth = obj.isNull("birth") ? null : obj.getString("birth");
 			String gender = obj.isNull("gender") ? null : obj.getString("gender");
-			String photo =obj.isNull("image") ? null:obj.getString("image");
-			
-			
+			String photo = obj.isNull("image") ? null : obj.getString("image");
+			Boolean isverified = obj.isNull("isverified") ? null : obj.getBoolean("isverified");
+
 			// 必填項目
-			if (password == null || email == null || phone == null) {
+			if (password == null ||password.length()==0|| email == null || email.length()==0|| phone== null||phone.length()==0) {
 				return null;
 			}
-			if (userRepository.findByEmailOrPhone(email, phone) == null) {
-				User user = new User();
-				user.setUserFirstname(userFirstname);
-				user.setUserLastname(userLastname);
-				// 密碼加密
-				user.setPassword(passwordEncoder.encode(password));
-				user.setEmail(email);
-				user.setPhone(phone);
-				if (birth != null && birth.length() != 0) {
-					LocalDate temp = LocalDate.parse(birth, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-					user.setBirth(temp);
-				} else {
-					user.setBirth(null);
-				}
-				user.setGender(gender);
-				user.setRegistrationDate(new Date());
-				user.setModifiedDate(new Date());
-				user.setConsumption(0.0);
-				user.setUserlevel(0);
-				user.setIsverified(false);
-				user.setUserPhoto(photo);
-				return userRepository.save(user);
+
+			User user = new User();
+			user.setUserFirstname(userFirstname);
+			user.setUserLastname(userLastname);
+			// 密碼加密
+			user.setPassword(passwordEncoder.encode(password));
+			user.setEmail(email);
+			user.setPhone(phone);
+			if (birth != null && birth.length() != 0) {
+				LocalDate temp = LocalDate.parse(birth, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+				user.setBirth(temp);
+			} else {
+				user.setBirth(null);
 			}
+			user.setGender(gender);
+			user.setRegistrationDate(new Date());
+			user.setModifiedDate(new Date());
+			user.setConsumption(0.0);
+			user.setUserlevel(0);
+			if (isverified == null) {
+				user.setIsverified(false);
+			} else {
+				user.setIsverified(isverified);
+			}
+			user.setUserPhoto(photo);
+			return userRepository.save(user);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -78,7 +84,7 @@ public class UserService {
 	}
 
 	public User updateUser(JSONObject obj) {
-		Integer userid = obj.isNull("id") ? null : obj.getInt("id");
+		Integer userid = obj.isNull("userid") ? null : obj.getInt("userid");
 		String userFirstname = obj.isNull("userFirstname") ? null : obj.getString("userFirstname");
 		String userLastname = obj.isNull("userLastname") ? null : obj.getString("userLastname");
 		String password = obj.isNull("password") ? null : obj.getString("password");
@@ -91,16 +97,13 @@ public class UserService {
 		Boolean isverified = obj.isNull("isverified") ? null : obj.getBoolean("isverified");
 		// 圖片要直接加在這裡?
 
-
 		String userPhoto = obj.isNull("userPhoto") ? null : obj.getString("userPhoto");
+
+		Optional<User> optional = userRepository.findById(userid);
 		
-		
-		
-		
-		if (userRepository.findById(userid) == null) {
+		if(optional.isEmpty()) {
 			return null;
 		}
-		Optional<User> optional = userRepository.findById(userid);
 		User update = optional.get();
 		if (userFirstname != null && userFirstname.length() > 0) {
 			update.setUserFirstname(userFirstname);
@@ -143,6 +146,11 @@ public class UserService {
 		return user;
 	}
 
+	
+	
+	
+	
+	
 	public boolean deleteByUserId(Integer id) {
 		if (id != null) {
 			Optional<User> optional = userRepository.findById(id);
@@ -194,5 +202,30 @@ public class UserService {
 		}
 		return false;
 	}
+
+	public Boolean existByPhoneOrEmail(String email, String phone) {
+		if (email != null && email.length() != 0 || phone != null && phone.length() != 0) {
+			User result = userRepository.findByEmailOrPhone(email, phone);
+			if (result != null) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public User findUserByEmail(String email) {
+		if (email != null && email.length() != 0) {
+			return userRepository.findByEmail(email);
+		}
+		return null;
+	}
+	public User findUsersById(Integer id) {
+		Optional<User>optional = userRepository.findById(id);
+		if(optional.isPresent()) {
+			return optional.get();
+		}
+		return null;
+	}
+
 
 }

@@ -24,4 +24,9 @@ public class MovieAct {
     @JoinColumn(name = "movie_id", nullable = false)
     private Movie movie;
 
+    public MovieAct(MovieActId id, Actor actor, Movie movie) {
+        this.id = id;
+        this.actor = actor;
+        this.movie = movie;
+    }
 }

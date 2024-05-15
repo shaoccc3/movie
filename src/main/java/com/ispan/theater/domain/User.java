@@ -6,7 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -80,5 +82,10 @@ public class User {
     @Lob
     @Column(name = "user_photo")
     private String userPhoto;
+    
+    
+    
+//    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
+//	private List<Comment> comment = new ArrayList<>();
     
 }

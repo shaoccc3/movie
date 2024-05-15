@@ -61,4 +61,9 @@ public class Comment {
 //	在資料庫不存在而外的添加資源
 	@Transient
 	private List<Comment>children;
+	@Transient
+	public String getToken(String token) {
+		// TODO Auto-generated method stub
+		return token;
+	}
 }

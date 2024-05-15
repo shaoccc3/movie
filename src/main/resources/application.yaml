@@ -26,5 +26,16 @@ logging:
   config: classpath:logback-spring.xml
   level:
     root: INFO
+jwt:
+  token:
+    expire: 100
+# email SMTP 服务器配置
 
+mail:
+  smtp:
+    host: smtp.gmail.com
+    port: 587
+    username: ispanmove@gmail.com
+    password: czdn gmwi vvtn onrx
+    tls: true
 

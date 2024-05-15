@@ -10,6 +10,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,11 +22,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+
 import com.ispan.theater.domain.Comment;
 import com.ispan.theater.domain.Movie;
+import com.ispan.theater.domain.User;
 import com.ispan.theater.repository.CommentRepository;
 import com.ispan.theater.repository.MovieRepository;
 import com.ispan.theater.service.CommentService;
+import com.ispan.theater.service.UserService;
+import com.ispan.theater.util.JsonWebTokenUtility;
+
+import jakarta.servlet.http.HttpSession;
 
 
 @CrossOrigin
@@ -38,14 +45,37 @@ public class CommentController {
 	private CommentRepository commentRepository;
 	@Autowired
 	private CommentService commentService;
+	@Autowired
+    private HttpSession httpSession;
+	@Autowired
+	private JsonWebTokenUtility jwtu;
 
 	@PostMapping
 	public void save(@RequestBody Comment comment) {
-		comment.setCreatetime(LocalDateTime.now());
-		
-		commentService.insertComment(comment);
-		
-		
+	    // Validate user authentication token
+	    String authToken = "eyJwMmMiOjEyMDAwMCwicDJzIjoiUWRpQkRUMGI2bXFQVDNDc1lpNHF0ZEg3ZnNWWk1HUE9RMnVIRXhsUzFRR2FPWm1LTnM2eEwySVZRa0Y1d2Vxb2lpb0FId1ZaaXliOXVNNjdfWjhSdXciLCJhbGciOiJQQkVTMi1IUzUxMitBMjU2S1ciLCJlbmMiOiJBMjU2R0NNIn0.f0wHN4mODfc2tynXdjsvySDojMDVq2OxZdXq3yhi8BYYj95ZsnMmiA.WH_OrxmtYliGn-Hb.ZuKcSD5YolMBID8cXlwfI-CyjD2fpD6FP87DPOmSVwJYlZD4_-Q6TyFYS8a6aZkjbn3NsI2wVYDvn7xevJS2WhMwjVSQkV5xvubHP1eLvRzylKkNGXHoogPnFj8lDB8Z2erp916WXzQOjaqA.YVBWhOYlVJsD535cvEI5Sw";
+	    if (jwtu.validateEncryptedToken(authToken) != null) {
+	        // Check if the user is logged in
+	        if (comment.getUserId() != null) {
+	            Integer userId = comment.getUserId().getId();
+	            // Ensure comment content is not empty
+	            if (comment.getContent() != null && !comment.getContent().isEmpty()) {
+	                // Set creation time
+	                comment.setCreatetime(LocalDateTime.now());
+	                // Call service class method to save the comment
+	                commentService.insertComment(comment);
+	            } else {
+	                // Handle empty comment content
+	                System.out.println("Comment content is empty.");
+	            }
+	        } else {
+	            // Handle case where user ID is not available
+	            System.out.println("User ID is missing.");
+	        }
+	    } else {
+	        // Handle invalid authentication token
+	        System.out.println("Invalid authentication token.");
+	    }
 	}
 	@GetMapping
 	public Map<String, Object> list(@RequestParam Movie movieId) {
@@ -92,3 +122,4 @@ public class CommentController {
 	
 	
 }
+////select * from comment as c join movie as m on c.movie_id=m.movie_id where c.user_id=1
