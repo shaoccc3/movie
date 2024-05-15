@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin
@@ -68,11 +69,10 @@ public class ScreeningAjaxController {
         }
         return response.toString();
     }
-    @GetMapping("/backstage/auditotium/{cinemaid}")
-    public String screeningByCinemaId(@PathVariable Integer cinemaid) {
+    @GetMapping("/backstage/auditorium")
+    public String screeningByCinemaId(@RequestParam("cinemaId") Integer cinemaId) {
         JSONObject response = new JSONObject();
-
-        List<Auditorium> result = auditoriumService.getCinemaAuditoriums(cinemaid);
+        List<Map<String,Object>> result = auditoriumService.getCinemaAuditoriums(cinemaId);
         if(!result.isEmpty()) {
             response.put("list", result);
             response.put("count", result.size());
@@ -83,5 +83,38 @@ public class ScreeningAjaxController {
             response.put("message","Not Found");
         }
         return response.toString();
+    }
+    //find by a_id m_id
+    @GetMapping("/backstage/screen")
+    public String screeningByMovieAuditorium( @RequestParam("mid") Integer mid,@RequestParam("aid") Integer aid) {
+        JSONObject response = new JSONObject();
+        List<Map<String,Object>> result = screeningService.getScreeningsByMovieIdAuditoriumId(mid,aid);
+        if(!result.isEmpty()) {
+            response.put("list", result);
+            response.put("count", result.size());
+            response.put("success", "success");
+        }
+        else{
+            response.put("fail", "fail");
+            response.put("message", "Not Found");
+        }
+        return response.toString();
+    }
+    @PostMapping("/backstage/screen/calendar")
+    public String modifyCalendar(@RequestBody String json) {
+        JSONArray array = new JSONArray(json);
+        for (int i = 0; i < array.length(); i++) {
+            JSONObject object = array.getJSONObject(i);
+            Integer re = screeningService.jsonToScreen(object);
+            System.out.println(re);
+            System.out.println(object);
+        }
+        return "OK";
+    }
+    @DeleteMapping("/backstage/screen/calendar")
+    public void deleteScreen(@RequestParam("deletelist") List<Integer> deletelist){
+        for(Integer id:deletelist){
+            screeningService.deleteScreening(id);
+        }
     }
 }

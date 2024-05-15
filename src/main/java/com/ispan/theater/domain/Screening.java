@@ -45,13 +45,12 @@ public class Screening {
     @Column(name = "modify_date")
     private Date modifyDate;
 
-    @OneToMany(mappedBy = "screening" , fetch = FetchType.LAZY , cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "screening", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JsonIgnore
     private List<Ticket> tickets;
 
-	@Override
-	public String toString() {
-		return "Screening []";
-	}
-	
+    @Override
+    public String toString() {
+        return "Screening []";
+    }
 }

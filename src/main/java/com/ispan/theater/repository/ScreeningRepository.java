@@ -26,4 +26,6 @@ public interface ScreeningRepository extends JpaRepository<Screening, Integer>, 
     @Query(value="select s.Screening_id,s.Start_time from Screening as s join auditorium as a on s.auditorium_id=a.auditorium_id where a.cinema_id= :cinemaId and s.Start_time like :date% and s.movie_id= :movieId",nativeQuery=true)
     List<Map<String,Object>> findScreeningByTime(@Param(value="cinemaId")Integer cinemaId,@Param(value="date")String date,@Param(value="movieId")Integer movieId);
 
+    @Query(value="select s.Screening_id,s.Start_time ,s.End_time from Screening as s where s.movie_id= :mid and s.auditorium_id = :aid",nativeQuery=true)
+    List<Map<String,Object>> findScreeningsByMovieAuditoium(@Param("mid") Integer mid,@Param("aid") Integer aid);
 }

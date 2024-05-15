@@ -22,6 +22,8 @@ public class ScreenTicketAspect {
 
     @Pointcut("execution(* com.ispan.theater.service.ScreeningService.createScreening(com.ispan.theater.domain.Movie, org.json.JSONObject)) && args(movie, jsonObject)")
     public void screeningCreation(Movie movie, JSONObject jsonObject) {}
+    @Pointcut("execution(* com.ispan.theater.service.ScreeningService.jsonToScreen(org.json.JSONObject)) && args(jsonScreen)")
+    public void jsonScreening(JSONObject jsonScreen) {}
 
     @AfterReturning(pointcut = "screeningCreation(movie, jsonObject)", returning = "screening")
     @Transactional
@@ -30,6 +32,14 @@ public class ScreenTicketAspect {
         screeningJson.put("screeningId", screening.getId());
         ticketService.insertTicket2(screeningJson);
         System.out.println("HAHAHASuccessfully created screening for movie: " + screening.getMovie().getName());
+    }
+    @AfterReturning(pointcut = "jsonScreening(jsonScreen)", returning = "screeningid")
+    @Transactional
+    public void afterJsonScreening(JSONObject jsonScreen, Integer screeningid) {
+        JSONObject screeningJson = new JSONObject();
+        screeningJson.put("screeningId", screeningid);
+        ticketService.insertTicket2(screeningJson);
+        System.out.println("HAHAHASuccessfully created screening for movie: " + screeningid);
     }
 
     @AfterThrowing(pointcut = "screeningCreation(movie, jsonObject)", throwing = "exception")
