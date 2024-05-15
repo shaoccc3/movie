@@ -2,12 +2,15 @@ package com.ispan.theater.controller;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -112,11 +115,23 @@ public class OrderController {
 		return new JSONObject().put("tickets", orderService.ticketList(screeningId)).toString();
 	}
 	
-	
-
 	@GetMapping("/movie/tickets1")
 	public String findTickets1(@RequestParam("screeningId")Integer screeningId) {
 		return new JSONObject().put("tickets", orderService.ticketList1(screeningId)).toString();
+	}
+	
+	@PostMapping("/movie/booking")
+	public String booking(@RequestBody List<Integer> list) {
+		List<Ticket> tickets=ticketRepository.findTicketsById(list);
+		synchronized (this) {
+			for(int i=0;i<tickets.size();i++) {
+				if(!"未售出".equals(tickets.get(i).getIsAvailable())){
+					return new JSONObject().put("success", false).toString();
+				}
+			}
+			orderService.setTicketAvailable(list);
+		}
+		return new JSONObject().put("success", true).toString();
 	}
 }
 

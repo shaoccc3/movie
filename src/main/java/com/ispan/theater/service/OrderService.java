@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -90,6 +89,10 @@ public class OrderService {
 	
 	public List<Map<String,Object>> ticketList1(Integer id){
 		return ticketRepository.getTickets(id);
+	}
+	@Transactional
+	public void setTicketAvailable(List<Integer> list) {
+		ticketRepository.setTicketAvailable("已售出", list);
 	}
 	
 }

@@ -28,13 +28,10 @@ public class OrderDetail {
     @JoinColumn(name = "ticket_id", nullable = false)
     private Ticket ticket;
 
-    @Column(name = "qrcode", nullable = false)
-    private byte[] qrcode;
 
 	@Override
 	public String toString() {
-		return "OrderDetail [id=" + id + ", order=" + order + ", ticket=" + ticket + ", qrcode="
-				+ Arrays.toString(qrcode) + "]";
+		return "OrderDetail [id=" + id + ", order=" + order + ", ticket=" + ticket + "]";
 	}
 
 }
