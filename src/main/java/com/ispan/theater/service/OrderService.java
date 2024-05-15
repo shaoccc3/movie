@@ -1,5 +1,6 @@
 package com.ispan.theater.service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,11 +12,14 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ispan.theater.domain.Order;
+import com.ispan.theater.domain.OrderDetail;
 import com.ispan.theater.domain.Ticket;
+import com.ispan.theater.dto.InsertOrderDTO;
 import com.ispan.theater.repository.MovieRepository;
 import com.ispan.theater.repository.OrderRepository;
 import com.ispan.theater.repository.ScreeningRepository;
 import com.ispan.theater.repository.TicketRepository;
+import com.ispan.theater.util.DatetimeConverter;
 
 
 
@@ -90,9 +94,23 @@ public class OrderService {
 	public List<Map<String,Object>> ticketList1(Integer id){
 		return ticketRepository.getTickets(id);
 	}
+	
 	@Transactional
 	public void setTicketAvailable(List<Integer> list) {
 		ticketRepository.setTicketAvailable("已售出", list);
+	}
+	
+	@Transactional
+	public void createOrder(InsertOrderDTO insertOrderDto) {
+		String Date=DatetimeConverter.createSqlDatetime(new Date());
+		Order order=null;
+		Integer count=orderRepository.createOrder(Date,Date,900.0,insertOrderDto.getMovieId(),insertOrderDto.getUserId());
+		if(count>0) {
+			order=orderRepository.findOrderByUserIdAndCreateDate(Date, insertOrderDto.getUserId()).get();
+		}
+		System.out.println(order.getId());
+		
+//		new OrderDetail()
 	}
 	
 }

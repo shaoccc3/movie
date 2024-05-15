@@ -27,8 +27,7 @@ public class OrderDetail {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "ticket_id", nullable = false)
     private Ticket ticket;
-
-
+    
 	@Override
 	public String toString() {
 		return "OrderDetail [id=" + id + ", order=" + order + ", ticket=" + ticket + "]";

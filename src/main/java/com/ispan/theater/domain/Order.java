@@ -19,7 +19,7 @@ public class Order {
     @Column(name = "order_id", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
@@ -34,7 +34,7 @@ public class Order {
     @Column(name = "order_amount", nullable = false)
     private Double orderAmount;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "movie_id", nullable = false)
     private Movie movie;
     
@@ -50,10 +50,12 @@ public class Order {
     		modifyDate=new Date();
     	}
     }
-
+ 
 	@Override
 	public String toString() {
 		return "Order [id=" + id + ", user_id=" + user.getId() + ", createDate=" + createDate + ", modifyDate=" + modifyDate
 				+ ", orderAmount=" + orderAmount + ", movie=" + movie.getName() + "]";
 	}
+	
+	
 }

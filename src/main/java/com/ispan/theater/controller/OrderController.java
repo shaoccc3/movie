@@ -2,7 +2,6 @@ package com.ispan.theater.controller;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ispan.theater.domain.Order;
 import com.ispan.theater.domain.Ticket;
+import com.ispan.theater.dto.InsertOrderDTO;
 import com.ispan.theater.repository.TicketRepository;
 import com.ispan.theater.service.CinemaService;
 import com.ispan.theater.service.OrderService;
@@ -115,22 +115,26 @@ public class OrderController {
 		return new JSONObject().put("tickets", orderService.ticketList(screeningId)).toString();
 	}
 	
-	@GetMapping("/movie/tickets1")
-	public String findTickets1(@RequestParam("screeningId")Integer screeningId) {
-		return new JSONObject().put("tickets", orderService.ticketList1(screeningId)).toString();
-	}
+//	@GetMapping("/movie/tickets1")
+//	public String findTickets1(@RequestParam("screeningId")Integer screeningId) {
+//		return new JSONObject().put("tickets", orderService.ticketList1(screeningId)).toString();
+//	}
 	
 	@PostMapping("/movie/booking")
-	public String booking(@RequestBody List<Integer> list) {
-		List<Ticket> tickets=ticketRepository.findTicketsById(list);
-		synchronized (this) {
-			for(int i=0;i<tickets.size();i++) {
-				if(!"未售出".equals(tickets.get(i).getIsAvailable())){
-					return new JSONObject().put("success", false).toString();
-				}
-			}
-			orderService.setTicketAvailable(list);
-		}
+	public String booking(@RequestBody InsertOrderDTO insertOrderDto) {
+		System.out.println(new Date());
+		System.out.println(new java.sql.Date(new Date().getTime()));
+		System.out.println(insertOrderDto);
+		orderService.createOrder(insertOrderDto);
+//		List<Ticket> tickets=ticketRepository.findTicketsById(list);
+//		synchronized (this) {
+//			for(int i=0;i<tickets.size();i++) {
+//				if(!"未售出".equals(tickets.get(i).getIsAvailable())){
+//					return new JSONObject().put("success", false).toString();
+//				}
+//			}
+//			orderService.setTicketAvailable(list);
+//		}
 		return new JSONObject().put("success", true).toString();
 	}
 }
