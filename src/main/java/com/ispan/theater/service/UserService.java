@@ -1,5 +1,6 @@
 package com.ispan.theater.service;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -165,8 +166,8 @@ public class UserService {
 	public User checkLogin(JSONObject obj) {
 		String userName = obj.isNull("username") ? null : obj.getString("username");
 		String userPassword = obj.isNull("password") ? null : obj.getString("password");
-		// 透過Email,Phone找是否有該使用者
-		User dbusers = userRepository.findByEmailOrPhone(userName, userName);
+		// 透過Email找是否有該使用者
+		User dbusers = userRepository.findByEmail(userName);
 		if (dbusers == null) {
 			// 沒有找到返回
 			return null;
@@ -221,7 +222,7 @@ public class UserService {
 	}
 	
 
-	public User updatePhoto (Integer userid,MultipartFile photoFile) throws Exception{
+	public User updatePhoto (Integer userid,MultipartFile photoFile) throws IOException {
 		
 		Optional<User> optional = userRepository.findById(userid);
 		if (optional.isPresent()) {

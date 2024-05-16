@@ -1,5 +1,6 @@
 package com.ispan.theater.controller;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Collections;
 
@@ -25,6 +26,7 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
+import com.google.gson.JsonObject;
 import com.ispan.theater.DTO.UserDTO;
 import com.ispan.theater.domain.User;
 import com.ispan.theater.service.UserService;
@@ -81,8 +83,7 @@ public class UserAjaxController {
 		if (user != null) {
 			result.put("success", true);
 			result.put("message", "登入成功");
-			JSONObject inputjson = new JSONObject().put("userid", user.getId()).put("email", user.getEmail())
-					.put("birth", user.getBirth());
+			JSONObject inputjson = new JSONObject().put("userid", user.getId()).put("email", user.getEmail());
 			String token = jsonWebTokenUtility.createEncryptedToken(inputjson.toString(), null);
 			result.put("token", token);
 			result.put("username", user.getUserFirstname() + user.getUserLastname());
@@ -214,9 +215,9 @@ public class UserAjaxController {
 
 	}
 
-	// 修改密碼 未完成
+	// 修改密碼 
 	@PutMapping("/check/changePaaword/{token}")
-	public void changePaaword(@PathVariable(name = "token")
+	public ResponseEntity<?> changePaaword(@PathVariable(name = "token")
 
 	String token, @RequestBody String password) {
 		String data = jsonWebTokenUtility.validateEncryptedToken(token);
@@ -224,9 +225,10 @@ public class UserAjaxController {
 			JSONObject obj = new JSONObject(data);
 			Integer userid = obj.getInt("userid");
 			JSONObject update = new JSONObject(password).put("userid", userid);
-			userService.updateUser(update);
+			User user = userService.updateUser(update);
+			return ResponseEntity.ok(user);
 		}
-
+		return ResponseEntity.notFound().build();
 	}
 
 	// 修改個人資料 (要跟修改密碼做區別) 未完成
@@ -242,7 +244,7 @@ public class UserAjaxController {
 		return ResponseEntity.notFound().build();
 	}
 
-	// Email驗證
+	//Link to Email驗證
 	@PutMapping("/verify-email/{token}")
 	public String userEmailVerify(@PathVariable(name = "token") String token) {
 		JSONObject result = new JSONObject();
@@ -263,9 +265,11 @@ public class UserAjaxController {
 		return result.toString();
 	}
 
+	
+	//圖片上傳
 	@PostMapping("uploadUserPhoto/{token}")
 	public String testupload(@PathVariable(name = "token") String token, @RequestParam MultipartFile file)
-			throws Exception {
+			throws IOException {
 		String data = jsonWebTokenUtility.validateEncryptedToken(token);
 		if (data != null && data.length() != 0) {
 			Integer userid = new JSONObject(data).getInt("userid");
@@ -274,18 +278,54 @@ public class UserAjaxController {
 		return null;
 	}
 
+	//圖片讀取
 	@GetMapping("finduserphoto/{email}")
 	public ResponseEntity<?> testfindphoto(@PathVariable(name = "email") String email) {
 
 		User user = userService.findUserByEmail(email);
-		byte[] photoFile = user.getUserPhoto();
-		if(photoFile!=null) {
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.IMAGE_JPEG);
-		return new ResponseEntity<byte[]>(photoFile, headers, HttpStatus.OK);
-		}else {
-		    return  ResponseEntity.notFound().build();
+		if (user!=null) {
+			byte[] photoFile = user.getUserPhoto();
+			if(photoFile!=null) {
+				HttpHeaders headers = new HttpHeaders();
+				headers.setContentType(MediaType.IMAGE_JPEG);
+				return new ResponseEntity<byte[]>(photoFile, headers, HttpStatus.OK);
+			}
 		}
+		    return  ResponseEntity.notFound().build();
 	}
+	
+	
+	//發送忘記密碼信
+	@GetMapping("/sendForgetPasswordEmail/{email}")
+	public ResponseEntity<?> sendForgetPasswordEmail  (@PathVariable(name = "email") String email){
+		User user = userService.findUserByEmail(email);
+		if (user!=null) {
+			JSONObject inputjson = new JSONObject().put("userid", user.getId()).put("email", user.getEmail());
+			String token = jsonWebTokenUtility.createEncryptedToken(inputjson.toString(), null);
+			emailSenderComponent.sendForgetPasswordEmail(user.getEmail(), token);
+			return  ResponseEntity.ok(user);
+		}
+		System.out.println("error");
+		return ResponseEntity.notFound().build();
+	}
+	
+	
+	//發送驗證信箱信
+	@GetMapping("/sendVeriftEmail/{token}")
+	public  ResponseEntity<?> sendVeriftEmail (@PathVariable(name = "token") String token){
+		String data = jsonWebTokenUtility.validateEncryptedToken(token);
+		if(data!=null) {
+			JSONObject userinfo =new JSONObject(data);
+			emailSenderComponent.sendEmail(userinfo.getString("email"),token);
+			return ResponseEntity.ok(userinfo);
+		}
+		return ResponseEntity.notFound().build();
+	}
+	
+	
+	
+	
+	
+	
 
 }
