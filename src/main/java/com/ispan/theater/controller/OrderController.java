@@ -122,20 +122,11 @@ public class OrderController {
 	
 	@PostMapping("/movie/booking")
 	public String booking(@RequestBody InsertOrderDTO insertOrderDto) {
-		System.out.println(new Date());
-		System.out.println(new java.sql.Date(new Date().getTime()));
-		System.out.println(insertOrderDto);
-		orderService.createOrder(insertOrderDto);
-//		List<Ticket> tickets=ticketRepository.findTicketsById(list);
-//		synchronized (this) {
-//			for(int i=0;i<tickets.size();i++) {
-//				if(!"未售出".equals(tickets.get(i).getIsAvailable())){
-//					return new JSONObject().put("success", false).toString();
-//				}
-//			}
-//			orderService.setTicketAvailable(list);
-//		}
-		return new JSONObject().put("success", true).toString();
+		String json=null;
+		synchronized (this) {
+			json = orderService.createOrder(insertOrderDto);
+		}
+		return json;
 	}
 }
 

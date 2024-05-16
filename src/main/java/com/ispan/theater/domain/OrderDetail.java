@@ -33,4 +33,10 @@ public class OrderDetail {
 		return "OrderDetail [id=" + id + ", order=" + order + ", ticket=" + ticket + "]";
 	}
 
+	public OrderDetail(Order order, Ticket ticket) {
+		super();
+		this.order = order;
+		this.ticket = ticket;
+	}
+
 }

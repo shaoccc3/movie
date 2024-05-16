@@ -1,11 +1,13 @@
 package com.ispan.theater.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -16,6 +18,7 @@ import com.ispan.theater.domain.OrderDetail;
 import com.ispan.theater.domain.Ticket;
 import com.ispan.theater.dto.InsertOrderDTO;
 import com.ispan.theater.repository.MovieRepository;
+import com.ispan.theater.repository.OrderDetailRepository;
 import com.ispan.theater.repository.OrderRepository;
 import com.ispan.theater.repository.ScreeningRepository;
 import com.ispan.theater.repository.TicketRepository;
@@ -34,6 +37,8 @@ public class OrderService {
 	ScreeningRepository screeningRepository;
 	@Autowired
 	TicketRepository ticketRepository;
+	@Autowired
+	OrderDetailRepository orderDetailRepository;
 	@Transactional(isolation=Isolation.READ_COMMITTED)
 	public Order findOrderByOrderId(Integer id) {
 		Optional<Order> order=orderRepository.findById(id);
@@ -95,22 +100,32 @@ public class OrderService {
 		return ticketRepository.getTickets(id);
 	}
 	
-	@Transactional
-	public void setTicketAvailable(List<Integer> list) {
-		ticketRepository.setTicketAvailable("已售出", list);
-	}
+//	@Transactional
+//	public void setTicketAvailable(List<Integer> list) {
+//		ticketRepository.setTicketAvailable("已售出", list);
+//	}
 	
 	@Transactional
-	public void createOrder(InsertOrderDTO insertOrderDto) {
+	public String createOrder(InsertOrderDTO insertOrderDto) {
 		String Date=DatetimeConverter.createSqlDatetime(new Date());
 		Order order=null;
 		Integer count=orderRepository.createOrder(Date,Date,900.0,insertOrderDto.getMovieId(),insertOrderDto.getUserId());
 		if(count>0) {
 			order=orderRepository.findOrderByUserIdAndCreateDate(Date, insertOrderDto.getUserId()).get();
 		}
-		System.out.println(order.getId());
-		
-//		new OrderDetail()
+		List<Ticket> tickets=ticketRepository.findTicketsById(insertOrderDto.getTicketId());
+		List<OrderDetail> orderDetails=new ArrayList<OrderDetail>();
+		for(int i=0;i<tickets.size();i++) {
+			orderDetails.add(new OrderDetail(order,tickets.get(i)));
+		}
+		orderDetailRepository.saveAll(orderDetails);
+		for(int i=0;i<tickets.size();i++) {
+			if(!"未售出".equals(tickets.get(i).getIsAvailable())){
+				return new JSONObject().put("success", false).toString();
+			}
+		}
+		ticketRepository.setTicketAvailable("已售出", insertOrderDto.getTicketId());
+		return new JSONObject().put("success", true).toString();
 	}
 	
 }
