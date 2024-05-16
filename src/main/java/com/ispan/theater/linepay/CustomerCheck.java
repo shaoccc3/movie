@@ -27,7 +27,7 @@ public class CustomerCheck {
 
 		form.setAmount(new BigDecimal("100"));
 		form.setCurrency("TWD");
-		form.setOrderId("merchant_order_id_01");
+		form.setOrderId("merchant_order_id_08");
 
 		ProductPackageForm productPackageForm = new ProductPackageForm();
 		productPackageForm.setId("package_id");
@@ -53,7 +53,7 @@ public class CustomerCheck {
 		confirrmData.setAmount(new BigDecimal("100"));
 		confirrmData.setCurrency("TWD");
 		String confirmNonce=UUID.randomUUID().toString();
-		String comfirmUrl="/v3/payments/2024051602119948210/confirm";
+		String comfirmUrl="/v3/payments/2024051702120162110/confirm";
 		//Request API
 		ObjectMapper mapper=new ObjectMapper();
 		String ChannelSecret = "cc93c047b1eb1ec2d9cad8561b942310";
