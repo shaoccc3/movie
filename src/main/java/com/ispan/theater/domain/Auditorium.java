@@ -24,12 +24,10 @@ public class Auditorium {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "cinema_id", nullable = false)
-    @JsonIgnore
     private Cinema cinema;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "level_id", nullable = false)
-    @JsonIgnore
     private AuditoriumLevel levelId;
 
     @Column(name = "layout_id", nullable = false)
@@ -38,9 +36,8 @@ public class Auditorium {
     @Override
     public String toString() {
         return "Auditorium{" +
-                "cinema=" + cinema.getId() +
-                ", levelId=" + levelId +
-                ", layoutId=" + layoutId +
+                "id=" + id +
+                ", auditoriumNumber=" + auditoriumNumber +
                 '}';
     }
 }

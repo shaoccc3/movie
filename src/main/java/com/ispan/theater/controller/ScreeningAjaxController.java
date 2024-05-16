@@ -45,14 +45,45 @@ public class ScreeningAjaxController {
         JSONArray array = new JSONArray();
         List<Screening> result = screeningService.findScreeningsByMovieId(movieId);
         if(!result.isEmpty()) {
-            response.put("list", array);
+            response.put("list", result);
             response.put("count", result.size());
             response.put("success", true);
             return response.toString();
         }
-        response.put("noresult",true);
+        response.put("noresult","noresult");
         return response.toString();
     }
+    @GetMapping("/backstage/screening")
+    public String findScreeningCinemaMovie(@RequestParam("cinemaId")Integer cinemaId,@RequestParam("movieId")Integer movieId) {
+        JSONObject response = new JSONObject();
+        List<Map<String,Object>> result = screeningService.findScreeningByMovieCinema(cinemaId,movieId);
+        if(!result.isEmpty()) {
+            response.put("list", result);
+            response.put("count", result.size());
+            response.put("success", "success");
+        }
+        else{
+            response.put("fail", "fail");
+            response.put("message", "Not Found");
+        }
+        return response.toString();
+    }
+    @GetMapping("/backstage/screeningbyc")
+    public String findScreeningCinema(@RequestParam("cinemaId") Integer cinemaId) {
+        JSONObject response = new JSONObject();
+        List<Map<String,Object>> result = screeningService.findScreeningByCinema(cinemaId);
+        if(!result.isEmpty()) {
+            response.put("list", result);
+            response.put("count", result.size());
+            response.put("success", "success");
+        }
+        else{
+            response.put("fail", "fail");
+            response.put("message", "Not Found");
+        }
+        return response.toString();
+    }
+
     @PostMapping("/backstage/screening")
     public String insertScreening(@RequestBody String json) {
         JSONObject jsonObject = new JSONObject(json);
@@ -100,6 +131,7 @@ public class ScreeningAjaxController {
         }
         return response.toString();
     }
+    //從日曆獲得資料CRUD
     @PostMapping("/backstage/screen/calendar")
     public String modifyCalendar(@RequestBody String json) {
         JSONArray array = new JSONArray(json);

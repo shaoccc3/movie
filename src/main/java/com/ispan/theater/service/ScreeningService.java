@@ -143,6 +143,12 @@ public class ScreeningService {
         }
         return screenings;
     }
+    public List<Map<String,Object>> findScreeningByMovieCinema(Integer cinemaId,Integer movieId){
+        return screeningRepository.findScreeningByMovieCinema(cinemaId,movieId);
+    }
+    public List<Map<String,Object>> findScreeningByCinema(Integer cinemaId){
+        return screeningRepository.findScreeningByCinema(cinemaId);
+    }
 
     public void deleteScreening(Integer screeningId) {
         Screening screening = screeningRepository.findById(screeningId).orElse(null);
@@ -161,6 +167,7 @@ public class ScreeningService {
         Integer auditoriumId = jsonScreen.isNull("auditoriumId") ? null : jsonScreen.getInt("auditoriumId");
         String startTime = jsonScreen.isNull("start") ? null : jsonScreen.getString("start");
         String endTime = jsonScreen.isNull("end") ? null : jsonScreen.getString("end");
+        System.out.println("AUD"+auditoriumId);
         if (movieId == null || auditoriumId == null || startTime == null || endTime == null) {
             return null;
         }
@@ -168,9 +175,10 @@ public class ScreeningService {
             Screening screening = screeningRepository.findById(screeningId).get();
             screening.setStartTime(DatetimeConverter.parse(startTime, "yyyy-MM-dd HH:mm"));
             screening.setEndTime(DatetimeConverter.parse(endTime, "yyyy-MM-dd HH:mm"));
+            screening.setAuditorium(auditoriumRepository.findById(auditoriumId).get());
             screening.setModifyDate(new Date());
-            screeningRepository.save(screening);
-            return null;
+            Screening insert = screeningRepository.save(screening);
+            return insert.getId();
         } else {
             Screening screening = new Screening();
             screening.setStartTime(DatetimeConverter.parse(startTime, "yyyy-MM-dd HH:mm"));

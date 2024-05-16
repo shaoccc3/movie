@@ -31,6 +31,11 @@ public class LayoutId implements Serializable {
                 Objects.equals(this.seatId, entity.seatId);
     }
 
+    public LayoutId(Integer auditoriumId, Integer seatId) {
+        this.auditoriumId = auditoriumId;
+        this.seatId = seatId;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(auditoriumId, seatId);

@@ -53,29 +53,40 @@ public class TicketService {
     }
     @Async
     @Transactional
-    public  void insertTicket2(JSONObject jsonObject){
+    public  void insertTicket2(JSONObject jsonObject){//screeningId
+        System.out.println("start insert");
+        System.out.println(jsonObject.toString()+"test");
         Integer screeningId = jsonObject.getInt("screeningId");
-        Optional<Screening> optionalScreening = screeningRepository.findById(screeningId);
-        if(optionalScreening.isPresent()){
-            Screening screening = optionalScreening.get();
+        if(screeningRepository.existsById(screeningId)){
+            Screening screening = screeningRepository.findById(screeningId).get();
             Movie movie = screening.getMovie();
             Auditorium auditorium = screening.getAuditorium();
-            List<Layout> layoutList = layoutService.getLayout(auditorium);
-            List<Ticket> ticketList = new ArrayList<>();
-
-            for(Layout layout : layoutList){
-                Seat seat = layout.getSeat();
-                Ticket ticket = new Ticket();
-                ticket.setMovie(movie);
-                ticket.setAuditorium(auditorium);
-                ticket.setSeat(seat);
-                ticket.setIsAvailable("未售出");
-                ticket.setCreateDate(new Date());
-                ticket.setModifyDate(new Date());
-                ticket.setScreening(screening);
-                ticketList.add(ticket);
+            if (ticketRepository.existsByScreenId(screeningId)==0) {
+                List<Layout> layoutList = layoutService.getLayout(auditorium);
+                List<Ticket> ticketList = new ArrayList<>();
+                for(Layout layout : layoutList){
+                    Seat seat = layout.getSeat();
+                    Ticket ticket = new Ticket();
+                    ticket.setMovie(movie);
+                    ticket.setAuditorium(auditorium);
+                    ticket.setSeat(seat);
+                    ticket.setIsAvailable("未售出");
+                    ticket.setCreateDate(new Date());
+                    ticket.setModifyDate(new Date());
+                    ticket.setScreening(screening);
+                    ticketList.add(ticket);
+                }
+                ticketMapper.insertBatch(ticketList);
             }
-            ticketMapper.insertBatch(ticketList);
+            else{
+                List<Ticket> resultid = ticketRepository.findByScreenId(screeningId);
+                for(Ticket ticket : resultid){
+                    ticket.setModifyDate(new Date());
+                    ticket.setAuditorium(auditorium);
+                }
+                ticketMapper.updateBatch(resultid);
+
+            }
         }
 
     }

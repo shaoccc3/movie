@@ -30,4 +30,15 @@ public interface TicketRepository extends JpaRepository<Ticket, Integer> {
 	@Query("select t from Ticket t where t.screening.id = :screeningId")
 	public List<Ticket> test(@Param("screeningId")Integer screeningId);
 
+	@Query("select count(t.id) from Ticket t where t.screening.id = :screeningId")
+	public Integer existsByScreenCount(@Param("screeningId")Integer screeningId);
+
+	@Query(value = "SELECT CASE WHEN EXISTS (SELECT 1 FROM Ticket t WHERE t.Screening_id = :screeningId) THEN 1 ELSE 0 END", nativeQuery = true)
+	public int existsByScreenId(@Param("screeningId") Integer screeningId);
+
+	@Query("select t from Ticket t where t.screening.id = :screeningid")
+	public List<Ticket> findByScreenId(@Param("screeningid")Integer screeningid);
+
+
+
 }

@@ -51,4 +51,11 @@ public class Ticket {
     @Column(name = "modify_date")
     private Date modifyDate;
 
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "id=" + id +
+                ", isAvailable='" + isAvailable + '\'' +
+                '}';
+    }
 }
