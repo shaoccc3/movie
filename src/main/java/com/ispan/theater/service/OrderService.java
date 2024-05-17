@@ -129,8 +129,9 @@ public class OrderService {
 		ticketRepository.setTicketAvailable("已售出", insertOrderDto.getTicketId());
 		return linePayService.request(order,insertOrderDto.getTicketId().size()).get("info").get("paymentUrl").get("web");
 	}
-	
+	@Transactional
 	public String orderCompleted(Integer orderId) {
+		orderRepository.findById(orderId).get().setPaymentCondition(true);
 		return new JSONObject().put("Order", orderRepository.orderCompleted(orderId)).toString();
 	}
 	
