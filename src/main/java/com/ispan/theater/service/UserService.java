@@ -1,5 +1,6 @@
 package com.ispan.theater.service;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -9,10 +10,10 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ispan.theater.domain.User;
 import com.ispan.theater.repository.UserRepository;
-import com.ispan.theater.util.EmailSenderComponent;
 
 @Service
 public class UserService {
@@ -33,7 +34,7 @@ public class UserService {
 			String phone = obj.isNull("phone") ? null : obj.getString("phone");
 			String birth = obj.isNull("birth") ? null : obj.getString("birth");
 			String gender = obj.isNull("gender") ? null : obj.getString("gender");
-			String photo = obj.isNull("image") ? null : obj.getString("image");
+//			String photo = obj.isNull("image") ? null : obj.("image");
 			Boolean isverified = obj.isNull("isverified") ? null : obj.getBoolean("isverified");
 
 			// 必填項目
@@ -64,7 +65,7 @@ public class UserService {
 			} else {
 				user.setIsverified(isverified);
 			}
-			user.setUserPhoto(photo);
+//			user.setUserPhoto(photo);
 			return userRepository.save(user);
 
 		} catch (Exception e) {
@@ -138,7 +139,7 @@ public class UserService {
 		}
 		// 照片
 		if (userPhoto != null) {
-			update.setUserPhoto(userPhoto);
+//			update.setUserPhoto(userPhoto);
 		}
 
 		update.setModifiedDate(new Date());
@@ -165,8 +166,8 @@ public class UserService {
 	public User checkLogin(JSONObject obj) {
 		String userName = obj.isNull("username") ? null : obj.getString("username");
 		String userPassword = obj.isNull("password") ? null : obj.getString("password");
-		// 透過Email,Phone找是否有該使用者
-		User dbusers = userRepository.findByEmailOrPhone(userName, userName);
+		// 透過Email找是否有該使用者
+		User dbusers = userRepository.findByEmail(userName);
 		if (dbusers == null) {
 			// 沒有找到返回
 			return null;
@@ -219,13 +220,21 @@ public class UserService {
 		}
 		return null;
 	}
-	public User findUsersById(Integer id) {
-		Optional<User>optional = userRepository.findById(id);
-		if(optional.isPresent()) {
-			return optional.get();
+	
+
+	public User updatePhoto (Integer userid,MultipartFile photoFile) throws IOException {
+		
+		Optional<User> optional = userRepository.findById(userid);
+		if (optional.isPresent()) {
+			User user = optional.get();
+			user.setUserPhoto(photoFile.getBytes());
+			userRepository.save(user);
+			return user;
 		}
 		return null;
 	}
-
+	
+	
+	
 
 }
