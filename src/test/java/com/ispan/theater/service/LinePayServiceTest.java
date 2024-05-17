@@ -12,7 +12,8 @@ public class LinePayServiceTest {
 	LinePayService linePayService;
     @Test
 	public void test1() {
-		System.out.println(linePayService.test().get("info").get("paymentUrl").get("web"));
+//		System.out.println(linePayService.test().get("info").get("paymentUrl").get("web"));
+		System.out.println(linePayService.confirm("2024051702120888110", null));
 	}
 	
 }

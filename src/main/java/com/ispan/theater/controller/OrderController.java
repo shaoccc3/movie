@@ -1,6 +1,5 @@
 package com.ispan.theater.controller;
 
-import java.util.Date;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -14,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ispan.theater.domain.Order;
-import com.ispan.theater.domain.Ticket;
 import com.ispan.theater.dto.InsertOrderDTO;
 import com.ispan.theater.repository.TicketRepository;
 import com.ispan.theater.service.CinemaService;
+import com.ispan.theater.service.LinePayService;
 import com.ispan.theater.service.OrderService;
 
 @RestController
@@ -29,6 +28,8 @@ public class OrderController {
 	TicketRepository ticketRepository;
 	@Autowired
 	CinemaService cinemaService;
+	@Autowired
+	LinePayService linePayService;
 	
 	@GetMapping("/movie/order")
 //	@Cacheable(cacheNames = "Order",key="#id")
@@ -63,32 +64,32 @@ public class OrderController {
 	}
 	
 	//test
-	@GetMapping("/movie/locktest")
-	public String lockTest() {
-		Order order=orderService.findOrderByOrderId(3);
-		synchronized (this) {
-			if(order.getOrderAmount()==5) {
-				return new JSONObject().put("success", false).toString();
-			}
-			orderService.updeteOrderAmount(order);
-		}
-		return new JSONObject().put("success",true).toString();
-	}
+//	@GetMapping("/movie/locktest")
+//	public String lockTest() {
+//		Order order=orderService.findOrderByOrderId(3);
+//		synchronized (this) {
+//			if(order.getOrderAmount()==5) {
+//				return new JSONObject().put("success", false).toString();
+//			}
+//			orderService.updeteOrderAmount(order);
+//		}
+//		return new JSONObject().put("success",true).toString();
+//	}
 	
 	//test
-	@GetMapping("/movie/addOrderTest") 
-	public String addOrderTest(@RequestParam("ticketId")Integer ticketId) {
-		Ticket ticket=ticketRepository.findById(ticketId).orElse(null);
-		synchronized (this) {
-			if(!"未售出".equals(ticket.getIsAvailable())) {
-				System.out.println(new Date(System.currentTimeMillis())+"未買到");
-				return new JSONObject().put("success", false).toString();
-			}
-			orderService.setTicket(ticket);
-			System.out.println(new Date(System.currentTimeMillis())+"買到");
-		}
-		return new JSONObject().put("success", true).toString();
-	}
+//	@GetMapping("/movie/addOrderTest") 
+//	public String addOrderTest(@RequestParam("ticketId")Integer ticketId) {
+//		Ticket ticket=ticketRepository.findById(ticketId).orElse(null);
+//		synchronized (this) {
+//			if(!"未售出".equals(ticket.getIsAvailable())) {
+//				System.out.println(new Date(System.currentTimeMillis())+"未買到");
+//				return new JSONObject().put("success", false).toString();
+//			}
+//			orderService.setTicket(ticket);
+//			System.out.println(new Date(System.currentTimeMillis())+"買到");
+//		}
+//		return new JSONObject().put("success", true).toString();
+//	}
 	
 	@GetMapping("/movie/findAllCinema")
 	public String findAllCinema() {
@@ -127,6 +128,16 @@ public class OrderController {
 			json = orderService.createOrder(insertOrderDto);
 		}
 		return json;
+	}
+//	@GetMapping("/movie/linePayRequestTest")
+//	public String LinePayRequestTest() {
+//		return linePayService.test().get("info").get("paymentUrl").get("web");
+//	}
+	//@RequestParam("screeningId")String transactionId,String orderId
+	@GetMapping("/movie/linePayConfirm")
+	public String LinePayConfirmTest(@RequestParam("transactionId")String transactionId,@RequestParam("orderId")Integer orderId) {
+		System.out.println(transactionId+","+orderId);
+		return orderService.orderCompleted(orderId);
 	}
 }
 

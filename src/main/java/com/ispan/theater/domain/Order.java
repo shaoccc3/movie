@@ -48,6 +48,9 @@ public class Order implements Persistable{
 
     @Column(name = "order_amount", nullable = false)
     private Double orderAmount;
+    
+    @Column(name = "payment_condition", nullable = false,columnDefinition = "false")
+    private boolean paymentCondition;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "movie_id", nullable = false)
@@ -69,7 +72,7 @@ public class Order implements Persistable{
 	@Override
 	public String toString() {
 		return "Order [id=" + id + ", user_id=" + user.getId() + ", createDate=" + createDate + ", modifyDate=" + modifyDate
-				+ ", orderAmount=" + orderAmount + ", movie=" + movie.getName() + "]";
+				+ ", orderAmount=" + orderAmount + ", movie=" + movie.getName() + ", paymentCondition=" + paymentCondition+"]";
 	}
 
 	@Override

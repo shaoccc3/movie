@@ -39,6 +39,8 @@ public class OrderService {
 	TicketRepository ticketRepository;
 	@Autowired
 	OrderDetailRepository orderDetailRepository;
+	@Autowired
+	LinePayService linePayService;
 	@Transactional(isolation=Isolation.READ_COMMITTED)
 	public Order findOrderByOrderId(Integer id) {
 		Optional<Order> order=orderRepository.findById(id);
@@ -109,7 +111,7 @@ public class OrderService {
 	public String createOrder(InsertOrderDTO insertOrderDto) {
 		String Date=DatetimeConverter.createSqlDatetime(new Date());
 		Order order=null;
-		Integer count=orderRepository.createOrder(Date,Date,900.0,insertOrderDto.getMovieId(),insertOrderDto.getUserId());
+		Integer count=orderRepository.createOrder(Date,Date,(300.0*(insertOrderDto.getTicketId().size())),insertOrderDto.getMovieId(),insertOrderDto.getUserId(),0);
 		if(count>0) {
 			order=orderRepository.findOrderByUserIdAndCreateDate(Date, insertOrderDto.getUserId()).get();
 		}
@@ -125,7 +127,11 @@ public class OrderService {
 			}
 		}
 		ticketRepository.setTicketAvailable("已售出", insertOrderDto.getTicketId());
-		return new JSONObject().put("success", true).toString();
+		return linePayService.request(order,insertOrderDto.getTicketId().size()).get("info").get("paymentUrl").get("web");
+	}
+	
+	public String orderCompleted(Integer orderId) {
+		return new JSONObject().put("Order", orderRepository.orderCompleted(orderId)).toString();
 	}
 	
 }
