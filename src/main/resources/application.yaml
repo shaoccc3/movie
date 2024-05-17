@@ -32,5 +32,6 @@ paypal:
     secret: ECcSI5sbHlTM2V6b_K83_EU0Sn5P2qy5EpVbzDzIhVCeasY7GppEhQ_zBqttuzSSsBtbU_bG2a0TT73E
   mode: sandbox
 jwt:
-  secret: granbluefantasy
+  token:
+    expire: 100
 
