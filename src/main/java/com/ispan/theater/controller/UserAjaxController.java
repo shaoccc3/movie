@@ -169,7 +169,7 @@ public class UserAjaxController {
 				String userId = payload.getSubject();
 				// Get profile information from payload
 				String email = payload.getEmail();
-				// 可 透過URL下載客戶圖片上傳DB
+				// URL暫時無用
 				String pictureUrl = (String) payload.get("picture");
 				String familyName = (String) payload.get("family_name");
 				String givenName = (String) payload.get("given_name");

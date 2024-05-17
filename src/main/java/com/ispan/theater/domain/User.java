@@ -55,6 +55,7 @@ public class User {
     @Column(name = "modifiedDate", nullable = false)
     private Date modifiedDate;
 
+    //尚未定義消費
     @Column(name = "consumption")
     private Double consumption;
     

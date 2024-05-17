@@ -8,5 +8,5 @@ import com.ispan.theater.domain.User;
 
 public interface UserDao {
 	
-//	public List<User> find (JSONObject json);
+	 List<User> find (JSONObject json);
 }
