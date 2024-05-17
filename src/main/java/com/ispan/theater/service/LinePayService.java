@@ -50,7 +50,7 @@ public class LinePayService {
 		ProductPackageForm productPackageForm = new ProductPackageForm();
 		productPackageForm.setId("package_id");
 		productPackageForm.setName("shop_movie");
-		productPackageForm.setAmount(new BigDecimal("300"));
+		productPackageForm.setAmount(new BigDecimal(order.getOrderAmount()));
 
 		ProductForm productForm = new ProductForm();
 		productForm.setId("product_id");
@@ -66,25 +66,14 @@ public class LinePayService {
 		redirectUrls.setCancelUrl("");
 		form.setRedirectUrls(redirectUrls);
 	
-		//Request API
 		ObjectMapper mapper=new ObjectMapper();
 		String ChannelSecret = "cc93c047b1eb1ec2d9cad8561b942310";
 		String requestUri = "/v3/payments/request";
 		String nonce = UUID.randomUUID().toString();
-//		String reponse=null;
+
 		Map<String,Map<String,Map<String,String>>> reponse=null;
 		try {
-			//Request API			
-//			System.out.println("body->"+mapper.writeValueAsString(form));
-//			System.out.println("nonce->"+nonce);
 			String signature = encrypt(ChannelSecret, ChannelSecret + requestUri + mapper.writeValueAsString(form) + nonce);
-//			System.out.println("signature->"+signature);
-			//Confiirm API
-//			System.out.println("bodyConfirm->"+mapper.writeValueAsString(confirrmData));
-//			System.out.println("nonceConfirm->"+confirmNonce);
-//			String signatureConfirm = encrypt(ChannelSecret, ChannelSecret + comfirmUrl + mapper.writeValueAsString(confirrmData) + confirmNonce);
-//			System.out.println("signatureConfirm->"+signatureConfirm);
-
 			HttpHeaders httpHeaders=new HttpHeaders();
 			httpHeaders.add("X-LINE-ChannelId", "2005109267");
 			httpHeaders.add("X-LINE-Authorization-Nonce", nonce);
@@ -92,7 +81,7 @@ public class LinePayService {
 			httpHeaders.add("Content-Type", "application/json");
 			HttpEntity<String> httpEntity=new HttpEntity<>(mapper.writeValueAsString(form),httpHeaders);
 			reponse=restTemplate.postForObject("https://sandbox-api-pay.line.me/v3/payments/request", httpEntity, Map.class);
-			
+			System.out.println(reponse);
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}

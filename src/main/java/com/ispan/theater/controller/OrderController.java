@@ -63,34 +63,6 @@ public class OrderController {
 		return orderJson.put("orders", array).put("success", true).toString();
 	}
 	
-	//test
-//	@GetMapping("/movie/locktest")
-//	public String lockTest() {
-//		Order order=orderService.findOrderByOrderId(3);
-//		synchronized (this) {
-//			if(order.getOrderAmount()==5) {
-//				return new JSONObject().put("success", false).toString();
-//			}
-//			orderService.updeteOrderAmount(order);
-//		}
-//		return new JSONObject().put("success",true).toString();
-//	}
-	
-	//test
-//	@GetMapping("/movie/addOrderTest") 
-//	public String addOrderTest(@RequestParam("ticketId")Integer ticketId) {
-//		Ticket ticket=ticketRepository.findById(ticketId).orElse(null);
-//		synchronized (this) {
-//			if(!"未售出".equals(ticket.getIsAvailable())) {
-//				System.out.println(new Date(System.currentTimeMillis())+"未買到");
-//				return new JSONObject().put("success", false).toString();
-//			}
-//			orderService.setTicket(ticket);
-//			System.out.println(new Date(System.currentTimeMillis())+"買到");
-//		}
-//		return new JSONObject().put("success", true).toString();
-//	}
-	
 	@GetMapping("/movie/findAllCinema")
 	public String findAllCinema() {
 		return new JSONObject().put("allCinemaName", cinemaService.findAllCinemaName()).toString(); 
@@ -116,11 +88,6 @@ public class OrderController {
 		return new JSONObject().put("tickets", orderService.ticketList(screeningId)).toString();
 	}
 	
-//	@GetMapping("/movie/tickets1")
-//	public String findTickets1(@RequestParam("screeningId")Integer screeningId) {
-//		return new JSONObject().put("tickets", orderService.ticketList1(screeningId)).toString();
-//	}
-	
 	@PostMapping("/movie/booking")
 	public String booking(@RequestBody InsertOrderDTO insertOrderDto) {
 		String json=null;
@@ -129,11 +96,7 @@ public class OrderController {
 		}
 		return json;
 	}
-//	@GetMapping("/movie/linePayRequestTest")
-//	public String LinePayRequestTest() {
-//		return linePayService.test().get("info").get("paymentUrl").get("web");
-//	}
-	//@RequestParam("screeningId")String transactionId,String orderId
+
 	@GetMapping("/movie/linePayConfirm")
 	public String LinePayConfirmTest(@RequestParam("transactionId")String transactionId,@RequestParam("orderId")Integer orderId) {
 		System.out.println(transactionId+","+orderId);
