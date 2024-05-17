@@ -24,7 +24,7 @@ public interface TicketRepository extends JpaRepository<Ticket, Integer> {
 //	public List<Ticket> getTickets1(@Param("screeningId")Integer screeningId);
 //	//t.screening.id
 	
-	@Query(value="select t.auditorium_id,t.seat_id,t.Screening_id,t.Ticket_id,t.is_available,t.movie_id,m.name,s.Start_time from Ticket as t join movie as m on m.movie_id=t.movie_id join Screening as s on s.Screening_id=t.Screening_id where t.Screening_id = :screeningId ",nativeQuery = true)
+	@Query(value="select t.auditorium_id,t.seat_id,t.Screening_id,t.Ticket_id,t.is_available,t.movie_id,m.name,substring(CONVERT( varchar,s.Start_time),1,19)  as Start_time from Ticket as t join movie as m on m.movie_id=t.movie_id join Screening as s on s.Screening_id=t.Screening_id where t.Screening_id = :screeningId ",nativeQuery = true)
 	public List<Map<String,Object>> getTickets(@Param("screeningId")Integer screeningId);
 	
 	@Query(value="select * from Ticket as t where t.Ticket_id in(:Ticket_id) ",nativeQuery = true)

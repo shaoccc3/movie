@@ -131,7 +131,7 @@ public class OrderService {
 	}
 	@Transactional
 	public String orderCompleted(Integer orderId) {
-		orderRepository.findById(orderId).get().setPaymentCondition(true);
+		orderRepository.setOrderConditionByUserId(orderId);
 		return new JSONObject().put("Order", orderRepository.orderCompleted(orderId)).toString();
 	}
 	
