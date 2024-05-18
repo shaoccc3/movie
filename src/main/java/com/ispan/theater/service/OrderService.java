@@ -77,21 +77,11 @@ public class OrderService {
 	}
 	
 	public List<Map<String,Object>> findScreeningByDate(Integer cinemaId,Integer movieId){
-		List<Map<String,Object>> list=screeningRepository.findScreeningByDate(cinemaId,movieId);
-		for(int i=0;i<list.size();i++) {
-			list.set(i,new HashMap<String,Object>(list.get(i)));
-			list.get(i).put("Start_time", list.get(i).get("Start_time").toString().substring(0, 10));
-		}
-		return list;
+		return screeningRepository.findScreeningByDate(cinemaId,movieId);
 	}
 	
 	public List<Map<String,Object>> findScreeningByTime(Integer cinemaId,String Date,Integer movieId){
-		List<Map<String,Object>> list=screeningRepository.findScreeningByTime(cinemaId, Date,movieId);
-		for(int i=0;i<list.size();i++) {
-			list.set(i,new HashMap<String,Object>(list.get(i)));
-			list.get(i).put("Start_time", list.get(i).get("Start_time").toString().substring(11,19));
-		}
-		return list;
+		return screeningRepository.findScreeningByTime(cinemaId, Date,movieId);
 	}
 	
 	public List<Map<String,Object>> ticketList(Integer id){
