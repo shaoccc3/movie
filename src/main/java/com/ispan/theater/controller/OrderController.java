@@ -102,6 +102,13 @@ public class OrderController {
 		System.out.println(transactionId+","+orderId);
 		return orderService.orderCompleted(orderId);
 	}
+	
+	@PostMapping("/movie/test")
+	public String test(@RequestBody InsertOrderDTO insertOrderDto) {
+		System.out.println(insertOrderDto);
+		return"success";
+	}
+	
 }
 
 

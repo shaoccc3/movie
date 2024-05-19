@@ -7,6 +7,7 @@ public class InsertOrderDTO {
 	private List<Integer> ticketId;
 	private Integer userId;
 	private Integer movieId;
+	private String paymentOptions;
 	
 	public InsertOrderDTO() {
 		super();
@@ -36,9 +37,18 @@ public class InsertOrderDTO {
 		this.movieId = movieId;
 	}
 
+	public String getPaymentOptions() {
+		return paymentOptions;
+	}
+
+	public void setPaymentOptions(String paymentOptions) {
+		this.paymentOptions = paymentOptions;
+	}
+
 	@Override
 	public String toString() {
-		return "InsertOrderDTO [ticketId=" + ticketId + ", userId=" + userId + ", movieId=" + movieId + "]";
+		return "InsertOrderDTO [ticketId=" + ticketId + ", userId=" + userId + ", movieId=" + movieId
+				+ ", paymentOptions=" + paymentOptions + "]";
 	}
 
 }
