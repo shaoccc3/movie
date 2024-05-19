@@ -172,7 +172,7 @@ public class CommentController {
 	}
 
 	@PutMapping("/{commentId}")
-	public void update(@PathVariable Integer commentId, @RequestBody Comment updatedComment, @RequestParam String token) {
+	public ResponseEntity<String> update(@PathVariable Integer commentId, @RequestBody Comment updatedComment, @RequestParam String token) {
 	    if (token != null) {
 	        System.out.println(token);
 	        // 解碼TOKEN
@@ -192,9 +192,9 @@ public class CommentController {
 	                existingComment.setContent(updatedComment.getContent());
 	                existingComment.setRate(updatedComment.getRate());
 	                commentRepository.save(existingComment);
+	                return ResponseEntity.ok("Comment deleted successfully");
 	            } else {
-	                // 如果評論不存在或不屬於該使用者，拒絕更新
-	                System.out.println("使用者不存在,評論不屬於該用戶");
+	            	return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token.");
 	            }
 	        } else {
 	            // 錯誤的TOKEN
@@ -204,6 +204,7 @@ public class CommentController {
 	        // 遺失
 	        System.out.println("Token is missing.");
 	    }
+    	return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token.");
 	}
 
 }
