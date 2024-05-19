@@ -18,8 +18,9 @@ public class PaypalOrder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-//    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "order_id", nullable = false)
+    //    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+//    @JoinColumn(name = "order_id", nullable = false)
+    @Column(name = "orderidint", nullable = false)
     private Integer orderId;
 //    @JsonIgnore
 //    private Order order;
@@ -39,16 +40,19 @@ public class PaypalOrder {
     @Column(name = "paymentId", nullable = false)
     private String paymentId;
 
-    @Column(name = "status",nullable = false)
+    @Column(name = "saleId", nullable = false)
+    private String saleId;
+
+    @Column(name = "status", nullable = false)
     private String status;
 
     @PrePersist
     public void onCreate() {
-        if(createDate==null) {
-            createDate=new Date();
+        if (createDate == null) {
+            createDate = new Date();
         }
-        if(modifyDate==null) {
-            modifyDate=new Date();
+        if (modifyDate == null) {
+            modifyDate = new Date();
         }
     }
 

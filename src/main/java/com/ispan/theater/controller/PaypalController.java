@@ -52,15 +52,16 @@ public class PaypalController {
         //String data = jsonWebTokenUtility.validateEncryptedToken(token);
         try {
             Payment payment = paypalService.executePayment(paymentId, PayerID);
+            String saleid = paypalService.getSaleIdFromPayment(payment);
             System.out.println(paymentId);
             if ("approved".equals(payment.getState())) {
-                paypalService.insertPaypalOrder(paymentId,PayerID,6,"付款成功");
+                paypalService.insertPaypalOrder(paymentId,PayerID,1,"付款成功",saleid);
                 return ResponseEntity.ok(new HashMap<String, String>() {{
                     put("status", "success");
                     put("url", "http://localhost:5173/movie/findlist");
                 }});
             } else {
-                paypalService.insertPaypalOrder(paymentId,PayerID,1,"付款失敗");
+                paypalService.insertPaypalOrder(paymentId,PayerID,1,"付款失敗",saleid);
                 return ResponseEntity.ok(new HashMap<String, String>() {{
                     put("status", "failure");
                     put("url", "http://localhost:5173/");
@@ -77,11 +78,11 @@ public class PaypalController {
     public ResponseEntity<?> refundPaypal(@RequestParam("orderId") Integer orderId) {
         try {
             PaypalOrder paypalOrder = paypalService.findByOrderId(orderId);
-            String paymentId = paypalOrder.getPaymentId().trim();
-            System.out.println(paymentId);
-            String refundstatus = paypalService.refundPayment(paymentId);
-            if ("success".equals(refundstatus)) {
+            String saleId = paypalOrder.getSaleId();
+            String refundStatus = paypalService.refundPayment(saleId);
+            if ("success".equals(refundStatus)) {
                 paypalOrder.setStatus("已退款");
+                paypalService.updatePaypalorder(paypalOrder);
                 return ResponseEntity.ok(new HashMap<String, Object>() {{
                     put("status", "success");
                     put("message", "Refund successful");
