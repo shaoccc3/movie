@@ -4,6 +4,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -49,7 +50,8 @@ public class OrderServiceTest {
 	@Transactional
 	public void test() {
 //		System.out.println(os.findOrder(11).toString());
-		System.out.println(or.findById(11));
+		//1043
+		System.out.println(new JSONObject().put("Order", or.orderCompleted(1043)).toString());
 	}
 	
 	

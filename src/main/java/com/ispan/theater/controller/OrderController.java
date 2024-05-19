@@ -16,6 +16,7 @@ import com.ispan.theater.domain.Order;
 import com.ispan.theater.dto.InsertOrderDTO;
 import com.ispan.theater.repository.TicketRepository;
 import com.ispan.theater.service.CinemaService;
+import com.ispan.theater.service.ECPayService;
 import com.ispan.theater.service.LinePayService;
 import com.ispan.theater.service.OrderService;
 
@@ -30,6 +31,8 @@ public class OrderController {
 	CinemaService cinemaService;
 	@Autowired
 	LinePayService linePayService;
+	@Autowired
+	ECPayService ecPayService;
 	
 	@GetMapping("/movie/order")
 //	@Cacheable(cacheNames = "Order",key="#id")
@@ -90,6 +93,7 @@ public class OrderController {
 	
 	@PostMapping("/movie/booking")
 	public String booking(@RequestBody InsertOrderDTO insertOrderDto) {
+		System.out.println(insertOrderDto);
 		String json=null;
 		synchronized (this) {
 			json = orderService.createOrder(insertOrderDto);
@@ -100,14 +104,16 @@ public class OrderController {
 	@GetMapping("/movie/linePayConfirm")
 	public String LinePayConfirmTest(@RequestParam("transactionId")String transactionId,@RequestParam("orderId")Integer orderId) {
 		System.out.println(transactionId+","+orderId);
-		return orderService.orderCompleted(orderId);
+		return orderService.orderCompleted(transactionId,orderId);
 	}
 	
-	@PostMapping("/movie/test")
-	public String test(@RequestBody InsertOrderDTO insertOrderDto) {
-		System.out.println(insertOrderDto);
-		return"success";
-	}
+//	@PostMapping("/movie/test")
+//	public String test(@RequestBody InsertOrderDTO insertOrderDto) {
+//		System.out.println(insertOrderDto);
+//		System.out.println("linePay".equals(insertOrderDto.getPaymentOptions()));
+//		System.out.println("ecPay".equals(insertOrderDto.getPaymentOptions()));
+//		return ecPayService.ecpayCheckout();
+//	}
 	
 }
 

@@ -2,10 +2,10 @@ package com.ispan.theater.service;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +41,8 @@ public class OrderService {
 	OrderDetailRepository orderDetailRepository;
 	@Autowired
 	LinePayService linePayService;
+	@Autowired
+	ECPayService ecPayService;
 	@Transactional(isolation=Isolation.READ_COMMITTED)
 	public Order findOrderByOrderId(Integer id) {
 		Optional<Order> order=orderRepository.findById(id);
@@ -101,6 +103,7 @@ public class OrderService {
 	public String createOrder(InsertOrderDTO insertOrderDto) {
 		String Date=DatetimeConverter.createSqlDatetime(new Date());
 		Order order=null;
+		String result="";
 		Integer count=orderRepository.createOrder(Date,Date,(300.0*(insertOrderDto.getTicketId().size())),insertOrderDto.getMovieId(),insertOrderDto.getUserId(),0);
 		if(count>0) {
 			order=orderRepository.findOrderByUserIdAndCreateDate(Date, insertOrderDto.getUserId()).get();
@@ -117,10 +120,19 @@ public class OrderService {
 			}
 		}
 		ticketRepository.setTicketAvailable("已售出", insertOrderDto.getTicketId());
-		return linePayService.request(order,insertOrderDto.getTicketId().size()).get("info").get("paymentUrl").get("web");
+		if("linePay".equals(insertOrderDto.getPaymentOptions())) {
+			result=linePayService.request(order,insertOrderDto.getTicketId().size()).get("info").get("paymentUrl").get("web");
+		}
+		if("ecPay".equals(insertOrderDto.getPaymentOptions())) {
+			String uuId = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 20);
+			order.setEcpayNo(uuId);
+			result=ecPayService.ecpayCheckout(order, insertOrderDto.getTicketId().size());
+		}
+		return result;
 	}
 	@Transactional
-	public String orderCompleted(Integer orderId) {
+	public String orderCompleted(String transactionId,Integer orderId) {
+//		linePayService.confirm(transactionId,orderId); //成功碼為0000
 		orderRepository.setOrderConditionByUserId(orderId);
 		return new JSONObject().put("Order", orderRepository.orderCompleted(orderId)).toString();
 	}

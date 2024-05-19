@@ -52,6 +52,9 @@ public class Order implements Persistable{
     @Column(name = "payment_condition", nullable = false,columnDefinition = "false")
     private boolean paymentCondition;
 
+    @Column(name = "ecpay_no")
+    private String ecpayNo;
+    
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "movie_id", nullable = false)
     private Movie movie;
