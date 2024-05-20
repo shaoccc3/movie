@@ -51,7 +51,7 @@ public class CommentController {
 	@Autowired
 	private JsonWebTokenUtility jwtu;
 	@PostMapping
-	public void save(@RequestBody Comment comment ,@RequestParam String token) {
+	public ResponseEntity<String> save(@RequestBody Comment comment ,@RequestParam String token) {
 		
 		if (token != null) {
 	    	System.out.println(token);
@@ -74,12 +74,13 @@ public class CommentController {
 
 	        } else {
 	            // 錯誤的TOKEN
-	            System.out.println("未認證token.");
+	            System.out.println("Ttoken遺失");
+			        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Ttoken遺失");
+
 	        }
-	    } else {
-	        // 遺失
-	        System.out.println("Ttoken遺失");
-	        }
+	    } 
+	    return ResponseEntity.ok("Comment de successfully");
+
 	    }
 
 	
