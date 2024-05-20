@@ -47,7 +47,7 @@ public class PaypalController {
 
     }
 
-    @GetMapping("/execute")
+    @GetMapping("/execute")//訂單ID目前用int假設 使用時Entity需修改成Order
     public  ResponseEntity<?> executePayment(@RequestParam String PayerID, @RequestParam String paymentId) {
         //String data = jsonWebTokenUtility.validateEncryptedToken(token);
         try {
