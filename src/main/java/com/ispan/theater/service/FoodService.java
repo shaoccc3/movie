@@ -30,6 +30,16 @@ public class FoodService {
 		return false;
 	}
 	
+	public long count(String json) {
+		try {
+			JSONObject responseJson = new JSONObject(json);
+			return foodRepository.count(responseJson);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
 	public boolean existFoodById(Integer id) {
 		if (id!=null) {
 			return foodRepository.existsById(id);
@@ -42,19 +52,11 @@ public class FoodService {
 		return food != null;
 	}
 	
-	public long count(String json) {
-		try {
-			JSONObject responseJson = new JSONObject(json);
-			foodRepository.count(responseJson);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		return 0;
-	}
 	
-	public void saveFood(Food food) {
-		foodRepository.save(food);
-	}
+	
+//	public void saveFood(Food food) {
+//		foodRepository.save(food);
+//	}
 	
 	public Food insertFood(Food food) {
 		if (food != null && food.getId() != null ) {
@@ -245,7 +247,7 @@ public class FoodService {
 	
 	public List<Food> find(String json){
 		try {
-			JSONObject obj = new JSONObject();
+			JSONObject obj = new JSONObject(json);
 			 return foodRepository.find(obj);
 		} catch (JSONException e) {
 			e.printStackTrace();

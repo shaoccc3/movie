@@ -13,7 +13,7 @@ public interface FoodRepository extends JpaRepository<Food, Integer>,FoodDao {
 	@Query("select f from Food f where f.name = :name")
 	public Food findByName(@Param("name") String name);	
 	
-	@Query("select count(*) from Food f where f.name = :name")
+	@Query("select count(*) from Food where name = :name")
 	public long countByName(String name);
 		
 	
