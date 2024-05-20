@@ -121,19 +121,21 @@ public class OrderService {
 		}
 		ticketRepository.setTicketAvailable("已售出", insertOrderDto.getTicketId());
 		if("linePay".equals(insertOrderDto.getPaymentOptions())) {
+			order.setSupplier("linepay");
 			result=linePayService.request(order,insertOrderDto.getTicketId().size()).get("info").get("paymentUrl").get("web");
 		}
 		if("ecPay".equals(insertOrderDto.getPaymentOptions())) {
 			String uuId = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 20);
-			order.setEcpayNo(uuId);
+			order.setPaymentNo(uuId);
+			order.setSupplier("ecpay");
 			result=ecPayService.ecpayCheckout(order, insertOrderDto.getTicketId().size());
 		}
 		return result;
 	}
 	@Transactional
 	public String orderCompleted(String transactionId,Integer orderId) {
-//		linePayService.confirm(transactionId,orderId); //成功碼為0000
-		orderRepository.setOrderConditionByUserId(orderId);
+		System.out.println(linePayService.confirm(transactionId,orderId).get("returnCode"));//returnCode為0000
+		orderRepository.setPaymentNoAndConditionByOrderId(transactionId, orderId);
 		return new JSONObject().put("Order", orderRepository.orderCompleted(orderId)).toString();
 	}
 	

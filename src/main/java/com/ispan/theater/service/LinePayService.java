@@ -54,7 +54,7 @@ public class LinePayService {
 
 		ProductForm productForm = new ProductForm();
 		productForm.setId("product_id");
-		productForm.setName("product_movie");
+		productForm.setName("電影票"+quantity+"張");
 		productForm.setImageUrl("");
 		productForm.setQuantity(new BigDecimal(quantity));
 		productForm.setPrice(new BigDecimal("300"));
@@ -81,7 +81,7 @@ public class LinePayService {
 			httpHeaders.add("Content-Type", "application/json");
 			HttpEntity<String> httpEntity=new HttpEntity<>(mapper.writeValueAsString(form),httpHeaders);
 			reponse=restTemplate.postForObject("https://sandbox-api-pay.line.me/v3/payments/request", httpEntity, Map.class);
-			System.out.println(reponse);
+//			System.out.println(reponse);
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}

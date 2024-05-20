@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ispan.theater.domain.Order;
 import com.ispan.theater.dto.InsertOrderDTO;
+import com.ispan.theater.repository.OrderRepository;
 import com.ispan.theater.repository.TicketRepository;
 import com.ispan.theater.service.CinemaService;
 import com.ispan.theater.service.ECPayService;
@@ -33,7 +34,8 @@ public class OrderController {
 	LinePayService linePayService;
 	@Autowired
 	ECPayService ecPayService;
-	
+	@Autowired
+	OrderRepository orderRepository;
 	@GetMapping("/movie/order")
 //	@Cacheable(cacheNames = "Order",key="#id")
 	public String getOrderById(@RequestParam(name="id")Integer id) {
@@ -106,6 +108,12 @@ public class OrderController {
 		System.out.println(transactionId+","+orderId);
 		return orderService.orderCompleted(transactionId,orderId);
 	}
+	
+	@GetMapping("/movie/ecPayConfirm")
+	public String ECPayConfirmTest(@RequestParam("MerchantTradeNo")String merchantTradeNo) {
+		return new JSONObject().put("Order",orderRepository.orderCompletedByECPay(merchantTradeNo)).toString();
+	}
+	
 	
 //	@PostMapping("/movie/test")
 //	public String test(@RequestBody InsertOrderDTO insertOrderDto) {
