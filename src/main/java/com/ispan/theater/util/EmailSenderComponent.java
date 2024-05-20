@@ -28,38 +28,38 @@ public class EmailSenderComponent {
     private boolean smtpTLS;
     
     public void sendEmail(String useremail,String token) {
-        // 配置邮件服务器
+        // 配置郵件服務器
         Mailer mailer = MailerBuilder
                 .withSMTPServer(smtpHost, smtpPort, smtpUsername, smtpPassword)
                 .withTransportStrategy(TransportStrategy.SMTP_TLS)
                 .buildMailer();
         
-        // 构建邮件
+        // 建構郵件模板
         Email email = EmailBuilder.startingBlank()
                 .from(smtpUsername)
                 .to(useremail)
                 .withSubject("ispanmove認證信")
                 .withPlainText("請點擊以下連接進行驗證：http://localhost:5173/verify-email/" + token)
                 .buildEmail();
-        // 发送邮件
+        // 發送郵件
         mailer.sendMail(email,/* async = */true);
     	
     }
     
     public void sendForgetPasswordEmail(String useremail,String token) {
-        // 配置邮件服务器
+        // 配置郵件服務器
         Mailer mailer = MailerBuilder
                 .withSMTPServer(smtpHost, smtpPort, smtpUsername, smtpPassword)
                 .withTransportStrategy(TransportStrategy.SMTP_TLS)
                 .buildMailer();
-        // 构建邮件
+        // 建構郵件模板
         Email email = EmailBuilder.startingBlank()
                 .from(smtpUsername)
                 .to(useremail)
                 .withSubject("星爆影城:忘記密碼重製信")
                 .withPlainText("請點擊以下連接進行忘記密碼重製：http://localhost:5173/reset-password/" + token)
                 .buildEmail();
-        // 发送邮件
+        // 發送郵件
         mailer.sendMail(email,/* async = */true);
     	
     }

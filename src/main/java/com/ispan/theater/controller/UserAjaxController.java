@@ -3,6 +3,8 @@ package com.ispan.theater.controller;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -149,7 +151,7 @@ public class UserAjaxController {
 	}
 
 	@PostMapping("/login/google")
-	public String testGoolgle(@RequestBody String credentialJSON) {
+	public String GoolgleLogin(@RequestBody String credentialJSON) {
 		String credential = new JSONObject(credentialJSON).getString("credential");
 		GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new GsonFactory())
 				// Specify the CLIENT_ID of the app that accesses the backend:
@@ -268,7 +270,7 @@ public class UserAjaxController {
 	
 	//圖片上傳
 	@PostMapping("uploadUserPhoto/{token}")
-	public String testupload(@PathVariable(name = "token") String token, @RequestParam MultipartFile file)
+	public String uploadPohto(@PathVariable(name = "token") String token, @RequestParam MultipartFile file)
 			throws IOException {
 		String data = jsonWebTokenUtility.validateEncryptedToken(token);
 		if (data != null && data.length() != 0) {
@@ -280,7 +282,7 @@ public class UserAjaxController {
 
 	//圖片讀取
 	@GetMapping("finduserphoto/{email}")
-	public ResponseEntity<?> testfindphoto(@PathVariable(name = "email") String email) {
+	public ResponseEntity<?> downloadPhoto(@PathVariable(name = "email") String email) {
 
 		User user = userService.findUserByEmail(email);
 		if (user!=null) {
@@ -325,7 +327,20 @@ public class UserAjaxController {
 	
 	
 	
+	//多條件查詢
+	@GetMapping("/backside/findUsers")
+	public ResponseEntity<List<User>> findUsers(@RequestParam Map<String, String> param){
+		JSONObject obj =new JSONObject(param);
+		return ResponseEntity.ok(userService.findUsers(obj)) ;
+	}
 	
-	
+	//找到有多少人
+	@GetMapping("/backside/countUsers")
+	public ResponseEntity<Long> countUsers(@RequestParam Map<String, String> param){
+		JSONObject obj =new JSONObject(param);
+		return ResponseEntity.ok(userService.countUsers(obj));
+	}
+
+		
 
 }

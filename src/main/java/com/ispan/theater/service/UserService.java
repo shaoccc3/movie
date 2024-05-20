@@ -4,14 +4,17 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.google.gson.JsonObject;
 import com.ispan.theater.domain.User;
 import com.ispan.theater.repository.UserRepository;
 
@@ -228,6 +231,7 @@ public class UserService {
 		if (optional.isPresent()) {
 			User user = optional.get();
 			user.setUserPhoto(photoFile.getBytes());
+			user.setModifiedDate(new Date());
 			userRepository.save(user);
 			return user;
 		}
@@ -235,6 +239,12 @@ public class UserService {
 	}
 	
 	
+	public List<User> findUsers (JSONObject obj){
+			return userRepository.find(obj);
+	}
 	
+	public long countUsers(JSONObject obj) {
+		return userRepository.count(obj);
+	}
 
 }

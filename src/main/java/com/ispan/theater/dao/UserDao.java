@@ -9,4 +9,7 @@ import com.ispan.theater.domain.User;
 public interface UserDao {
 	
 	 List<User> find (JSONObject json);
+	 
+	 long count(JSONObject obj);
+
 }

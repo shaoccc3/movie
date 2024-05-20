@@ -1,8 +1,10 @@
 package com.ispan.theater.dao;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -27,15 +29,121 @@ public class UserDaoImpl implements UserDao {
 		return this.session;
 	}
 
+	
 	@Override
-	public List<User> find(JSONObject obj) {
-		Integer id = obj.isNull("id") ? null : obj.getInt("id");
+	public long count(JSONObject obj) {
+
+		Integer id =obj.isNull("id") ? null : obj.getInt("id");
 		String userFirstname = obj.isNull("userFirstname") ? null : obj.getString("userFirstname");
 		String userLastname = obj.isNull("userLastname") ? null : obj.getString("userLastname");
 		String email = obj.isNull("email") ? null : obj.getString("email");
 		String phone = obj.isNull("phone") ? null : obj.getString("phone");
-		String registrationDateStart = obj.isNull("registrationDateStart") ? null
-				: obj.getString("registrationDateStart");
+		String registrationDateStart = obj.isNull("registrationDateStart") ? null: obj.getString("registrationDateStart");
+		String registrationDateEnd = obj.isNull("registrationDateEnd") ? null : obj.getString("registrationDateEnd");
+		Double consumptionStart = obj.isNull("consumptionStart") ? null : obj.getDouble("consumptionStart");
+		Double consumptionEnd = obj.isNull("consumptionEnd") ? null : obj.getDouble("consumptionEnd");
+
+		Integer userlevel = obj.isNull("userlevel") ? null : obj.getInt("userlevel");
+
+		Integer birthMonth = obj.isNull("birthMonth") ? null : obj.getInt("birthMonth");
+		String gender = obj.isNull("gender") ? null : obj.getString("gender");
+		Boolean isverified = obj.isNull("isverified") ? null : obj.getBoolean("isverified");
+
+		CriteriaBuilder criteriaBuilder = this.session.getCriteriaBuilder();
+		CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
+
+//		from User
+		Root<User> table = criteriaQuery.from(User.class);
+
+//		select count(*)		
+		criteriaQuery = criteriaQuery.select(criteriaBuilder.count(table));
+
+//		where start
+		List<Predicate> predicates = new ArrayList<>();
+		if (id != null) {
+			predicates.add(criteriaBuilder.equal(table.get("id"), id));
+		}
+		if (userFirstname != null && userFirstname.length() != 0) {
+			predicates.add(criteriaBuilder.equal(table.get("userFirstname"), userFirstname));
+		}
+		if (userLastname != null && userLastname.length() != 0) {
+			predicates.add(criteriaBuilder.equal(table.get("userLastname"), userLastname));
+		}
+		if (email != null && email.length() != 0) {
+			predicates.add(criteriaBuilder.like(table.get("email"), "%" + email + "%"));
+		}
+		if (phone != null && phone.length() != 0) {
+			predicates.add(criteriaBuilder.like(table.get("phone"), "%" + phone + "%"));
+		}
+		if (registrationDateStart != null && registrationDateStart.length() != 0) {
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			try {
+				predicates.add(criteriaBuilder.greaterThan(table.get("registrationDate"), formatter.parse(registrationDateStart)));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		}
+		if (registrationDateEnd != null && registrationDateEnd.length() != 0) {
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			try {
+				predicates.add(criteriaBuilder.greaterThan(table.get("registrationDate"), formatter.parse(registrationDateStart)));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		if (consumptionStart != null) {
+			predicates.add(criteriaBuilder.greaterThan(table.get("consumption"), consumptionStart));
+		}
+		if (consumptionEnd != null) {
+			predicates.add(criteriaBuilder.greaterThan(table.get("consumption"), consumptionEnd));
+		}
+
+		if (userlevel != null) {
+			predicates.add(criteriaBuilder.equal(table.get("userlevel"), userlevel));
+		}
+
+		if (birthMonth != null) {
+			predicates.add(criteriaBuilder.equal(criteriaBuilder.function("MONTH", Integer.class, table.get("birth")),
+					birthMonth));
+		}
+
+		if (gender != null && gender.length() != 0) {
+			predicates.add(criteriaBuilder.equal(table.get("gender"), gender));
+		}
+
+		if (isverified != null) {
+			predicates.add(criteriaBuilder.equal(table.get("isverified"), isverified));
+		}
+
+		if (predicates != null && !predicates.isEmpty()) {
+			Predicate[] array = predicates.toArray(new Predicate[0]);
+			criteriaQuery = criteriaQuery.where(array);
+		}
+
+		TypedQuery<Long> typedQuery = this.getSession().createQuery(criteriaQuery);
+
+		Long result = typedQuery.getSingleResult();
+		if (result != null ) {
+			return result;
+		} else {
+			return 0;
+		}
+
+	}
+	
+	
+	
+	@Override
+	public List<User> find(JSONObject obj) {
+
+		Integer id =obj.isNull("id") ? null : obj.getInt("id");
+		String userFirstname = obj.isNull("userFirstname") ? null : obj.getString("userFirstname");
+		String userLastname = obj.isNull("userLastname") ? null : obj.getString("userLastname");
+		String email = obj.isNull("email") ? null : obj.getString("email");
+		String phone = obj.isNull("phone") ? null : obj.getString("phone");
+		String registrationDateStart = obj.isNull("registrationDateStart") ? null: obj.getString("registrationDateStart");
 		String registrationDateEnd = obj.isNull("registrationDateEnd") ? null : obj.getString("registrationDateEnd");
 		Double consumptionStart = obj.isNull("consumptionStart") ? null : obj.getDouble("consumptionStart");
 		Double consumptionEnd = obj.isNull("consumptionEnd") ? null : obj.getDouble("consumptionEnd");
@@ -75,12 +183,21 @@ public class UserDaoImpl implements UserDao {
 			predicates.add(criteriaBuilder.like(table.get("phone"), "%" + phone + "%"));
 		}
 		if (registrationDateStart != null && registrationDateStart.length() != 0) {
-			LocalDate temp = LocalDate.parse(registrationDateStart, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-			predicates.add(criteriaBuilder.greaterThan(table.get("registrationDate"), temp));
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			try {
+				predicates.add(criteriaBuilder.greaterThan(table.get("registrationDate"), formatter.parse(registrationDateStart)));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
 		}
 		if (registrationDateEnd != null && registrationDateEnd.length() != 0) {
-			LocalDate temp = LocalDate.parse(registrationDateEnd, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-			predicates.add(criteriaBuilder.lessThan(table.get("registrationDate"), temp));
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			try {
+				predicates.add(criteriaBuilder.greaterThan(table.get("registrationDate"), formatter.parse(registrationDateStart)));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 
 		if (consumptionStart != null) {
