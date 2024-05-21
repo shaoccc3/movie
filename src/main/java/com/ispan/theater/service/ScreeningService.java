@@ -191,4 +191,7 @@ public class ScreeningService {
             return insert.getId();
         }
     }
+    public List<Map<String, Object>> getScreeningsByAuditoriumId(Integer auditoriumId) {
+        return screeningRepository.findScreeningsByAuditorium(auditoriumId);
+    }
 }

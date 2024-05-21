@@ -131,6 +131,21 @@ public class ScreeningAjaxController {
         }
         return response.toString();
     }
+    @GetMapping("/backstage/screenbya")
+    public String screeningByAuditorium(@RequestParam("aid") Integer aid) {
+        JSONObject response = new JSONObject();
+        List<Map<String,Object>> result = screeningService.getScreeningsByAuditoriumId(aid);
+        if(!result.isEmpty()) {
+            response.put("list", result);
+            response.put("count", result.size());
+            response.put("success", "success");
+        }
+        else{
+            response.put("fail", "fail");
+            response.put("message", "Not Found");
+        }
+        return response.toString();
+    }
     //從日曆獲得資料CRUD
     @PostMapping("/backstage/screen/calendar")
     public String modifyCalendar(@RequestBody String json) {

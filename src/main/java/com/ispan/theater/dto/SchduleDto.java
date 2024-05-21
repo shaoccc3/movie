@@ -17,4 +17,5 @@ public class SchduleDto {
         private String startDate;
         private String endDate;
         private Integer audotoriumId;
+        private String frequency;
 }
