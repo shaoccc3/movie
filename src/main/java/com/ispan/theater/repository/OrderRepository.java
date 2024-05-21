@@ -16,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Integer> {
 	
+	//分頁  select * FROM Seat order by seat_id desc offset 0 rows fetch next 10 rows only 
+	
 	@Query(value="select o from Order o where o.user.id=:id")
 	Optional<Order> findOrderByUserId(@Param("id")Integer id);
 	
@@ -59,5 +61,11 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 	@Transactional
 	@Query(value="update \"Order\" set payment_no=:paymentNo,payment_condition=1 where order_id= :orderId",nativeQuery=true)
 	void setPaymentNoAndConditionByOrderId(@Param("paymentNo")String paymentNo,@Param("orderId")Integer orderId);
+	
+	@Query(value="select ROW_NUMBER() over(order by o.create_date desc) as 'no',o.order_id,m.name,SUBSTRING(convert(varchar(19),o.create_date),1,19) as create_date,o.order_amount,o.supplier FROM \"Order\" as o join movie as m on o.movie_id=m.movie_id where o.user_id=:userId order by o.create_date desc offset :page rows fetch next 10 rows only ",nativeQuery=true)
+	List<Map<String,String>> getOrderByUser(@Param("userId")Integer userId,@Param("page")Integer page);
+	
+	@Query(value="select count(order_id) as order_total from \"Order\" where user_id=:userId",nativeQuery=true)
+	Map<String,Integer> orderTotalByUserId(@Param("userId")Integer userId);
 	
 }

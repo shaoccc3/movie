@@ -104,14 +104,24 @@ public class OrderController {
 	}
 
 	@GetMapping("/movie/linePayConfirm")
-	public String LinePayConfirmTest(@RequestParam("transactionId")String transactionId,@RequestParam("orderId")Integer orderId) {
+	public String LinePayConfirm(@RequestParam("transactionId")String transactionId,@RequestParam("orderId")Integer orderId) {
 		System.out.println(transactionId+","+orderId);
 		return orderService.orderCompleted(transactionId,orderId);
 	}
 	
 	@GetMapping("/movie/ecPayConfirm")
-	public String ECPayConfirmTest(@RequestParam("MerchantTradeNo")String merchantTradeNo) {
+	public String ECPayConfirm(@RequestParam("MerchantTradeNo")String merchantTradeNo) {
 		return new JSONObject().put("Order",orderRepository.orderCompletedByECPay(merchantTradeNo)).toString();
+	}
+	
+	@GetMapping("/movie/getOrder")
+	public String getOrder(@RequestParam("userId")Integer userId,@RequestParam("page")Integer page) {
+		return orderService.getOrder(userId, page);
+	}
+	
+	@GetMapping("/movie/getOrderDetail")
+	public String getOrderDetail(@RequestParam("orderId")Integer orderId) {
+		return orderService.getOrderDetail(orderId);
 	}
 	
 	

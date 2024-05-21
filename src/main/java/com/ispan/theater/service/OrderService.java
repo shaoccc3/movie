@@ -94,11 +94,6 @@ public class OrderService {
 		return ticketRepository.getTickets(id);
 	}
 	
-//	@Transactional
-//	public void setTicketAvailable(List<Integer> list) {
-//		ticketRepository.setTicketAvailable("已售出", list);
-//	}
-	
 	@Transactional
 	public String createOrder(InsertOrderDTO insertOrderDto) {
 		String Date=DatetimeConverter.createSqlDatetime(new Date());
@@ -132,6 +127,7 @@ public class OrderService {
 		}
 		return result;
 	}
+	
 	@Transactional
 	public String orderCompleted(String transactionId,Integer orderId) {
 		System.out.println(linePayService.confirm(transactionId,orderId).get("returnCode"));//returnCode為0000
@@ -139,4 +135,18 @@ public class OrderService {
 		return new JSONObject().put("Order", orderRepository.orderCompleted(orderId)).toString();
 	}
 	
+	public String getOrder(Integer userId,Integer page) {
+		Integer total=orderRepository.orderTotalByUserId(userId).get("order_total");
+		Integer pages=1;
+		if(total%10==0&&total/10!=0) {
+			pages=total/10;
+		}else if(total%10!=0&&total/10!=0) {
+			pages=(total/10)+1;
+		}
+		return new JSONObject().put("orders", orderRepository.getOrderByUser(userId,(page-1)*10)).put("pages", pages).toString();
+	}
+	
+	public String getOrderDetail(Integer orderId){
+		return new JSONObject().put("details", orderRepository.orderCompleted(orderId)).toString();
+	}
 }

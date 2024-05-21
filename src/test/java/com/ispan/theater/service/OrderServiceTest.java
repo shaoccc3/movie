@@ -46,15 +46,21 @@ public class OrderServiceTest {
 		countDownLatch.await();
 		executor.shutdown();
 	}
-	@Test
-	@Transactional
-	public void test() {
+//	@Test
+//	@Transactional
+	public void test1() {
 //		System.out.println(os.findOrder(11).toString());
 		//1043
 		System.out.println(new JSONObject().put("Order", or.orderCompleted(1043)).toString());
 	}
-	
-	
+//	@Test
+	public void test2() {
+		or.getOrderByUser(3,(2-1)*10).forEach(map->System.out.println(map.entrySet()));
+	}
+	@Test
+	public void test3() {
+		System.out.println(or.orderTotalByUserId(3).get("order_total"));
+	}
 }
 
 
