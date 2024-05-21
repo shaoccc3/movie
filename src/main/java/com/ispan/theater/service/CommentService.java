@@ -30,9 +30,9 @@ public class CommentService {
 		return commentRepository.save(comment);
 	}
 
-//	public Comment findNewComment() {
-//		Pageable pgb = PageRequest.of(0, 1,Direction.ASC,"createTime");
-//		Page<Comment> page = commentRepository.findNewComment(pgb);
-//		 return page.get(Comment);
-//	}
+	public Page<Comment> findNewComment() {
+		Pageable pgb = PageRequest.of(0, 1,Direction.DESC,"createTime");
+		Page<Comment> page = commentRepository.findAll(pgb);
+		 return page;
+	}
 }

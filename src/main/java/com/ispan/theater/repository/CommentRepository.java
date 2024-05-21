@@ -26,6 +26,5 @@ public interface CommentRepository extends JpaRepository<Comment, Integer> {
 
 	
 	
-//	@Query("from comment")
-//	Page<Comment>findNewComment(Pageable pgb);
+
 
