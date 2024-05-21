@@ -6,6 +6,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.RandomStringUtils;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -28,7 +30,6 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
-import com.google.gson.JsonObject;
 import com.ispan.theater.DTO.UserDTO;
 import com.ispan.theater.domain.User;
 import com.ispan.theater.service.UserService;
@@ -69,10 +70,10 @@ public class UserAjaxController {
 //			emailSenderComponent.sendEmail(user.getEmail(),token);
 
 			repJson.put("success", true);
-			repJson.put("message", "新增成功");
+			repJson.put("message", "註冊成功");
 		} else {
 			repJson.put("success", false);
-			repJson.put("message", "新增失敗");
+			repJson.put("message", "註冊失敗");
 		}
 		return repJson.toString();
 	}
@@ -187,13 +188,13 @@ public class UserAjaxController {
 					result.put("success", true);
 				} else {// 沒註冊過
 					JSONObject insertUser = new JSONObject().put("userFirstname", familyName)
-							.put("userLastname", givenName).put("email", email).put("password", userId)
+							.put("userLastname", givenName).put("email", email).put("password",  RandomStringUtils.randomAlphabetic(15))
 							.put("phone", "09" + userId.substring(0, 8)).put("birth", LocalDate.now().toString())
 							.put("gender", "M").put("isverified", true).put("image", "");
 					User user = userService.InsertUser(insertUser);
 					if (user != null) {
 						result.put("success", true);
-						result.put("message", "新增成功");
+						result.put("message", "註冊成功，手機號與生日為系統預設值，請修改您的個人資料");
 						JSONObject inputjson = new JSONObject().put("userid", user.getId())
 								.put("email", user.getEmail()).put("birth", user.getBirth());
 						String token = jsonWebTokenUtility.createEncryptedToken(inputjson.toString(), null);
@@ -328,17 +329,48 @@ public class UserAjaxController {
 	
 	
 	//多條件查詢
-	@GetMapping("/backside/findUsers")
-	public ResponseEntity<List<User>> findUsers(@RequestParam Map<String, String> param){
-		JSONObject obj =new JSONObject(param);
-		return ResponseEntity.ok(userService.findUsers(obj)) ;
-	}
+//	@GetMapping("/backside/findUsers")
+//	public ResponseEntity<List<User>> findUsers(@RequestParam Map<String, String> param){
+//		JSONObject obj =new JSONObject(param);
+//		return ResponseEntity.ok(userService.findUsers(obj)) ;
+//	}
 	
-	//找到有多少人
-	@GetMapping("/backside/countUsers")
-	public ResponseEntity<Long> countUsers(@RequestParam Map<String, String> param){
+//	//找到有多少人
+//	@GetMapping("/backside/countUsers")
+//	public ResponseEntity<Long> countUsers(@RequestParam Map<String, String> param){
+//		JSONObject obj =new JSONObject(param);
+//		return ResponseEntity.ok(userService.countUsers(obj));
+//	}
+	
+	//多條件查詢
+	@GetMapping("/backside/findUsers")
+	public String findUsers(@RequestParam Map<String, String> param){
 		JSONObject obj =new JSONObject(param);
-		return ResponseEntity.ok(userService.countUsers(obj));
+		List<User> users = userService.findUsers(obj);
+		long count = userService.countUsers(obj);
+		JSONArray array =new JSONArray();
+		
+		 JSONObject result = new JSONObject();
+		
+		if(users!=null && !users.isEmpty()) {
+			for(User user:users) {
+				JSONObject iteam=new JSONObject();
+				iteam.put("id", user.getId())
+					 .put("userFirstname", user.getUserFirstname())
+					 .put("userLastname", user.getUserLastname())
+					 .put("email", user.getEmail())
+					 .put("phone", user.getPhone())
+					 .put("birth", user.getBirth())
+					 .put("gender", user.getGender())
+					 .put("consumption", user.getConsumption())
+					 .put("userlevel", user.getUserlevel())
+					 .put("registrationDate", user.getRegistrationDate());
+				array.put(iteam);
+			}
+			result.put("list",array);
+		}
+		result.put("count", count);
+		return result.toString();	
 	}
 
 		

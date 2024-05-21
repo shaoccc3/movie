@@ -1,7 +1,10 @@
 package com.ispan.theater.service;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Random;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,63 +20,74 @@ public class testUser {
 	UserService userService;
 	@Autowired
 	UserRepository userRepository;
-	
+
 //	@Test
-    public void testInsertUser() {
-		JSONObject userJson = new JSONObject()
-				.put("userFirstname","1111")
-				.put("userLastname","小名")
-				.put("password","2225")
-				.put("email","3331@gmail.com")
-				.put("phone","09811787165")
-				.put("birth","1999-01-06")
-				.put("gender","M");
-		 System.out.print(userJson);
-		 User user = userService.InsertUser(userJson);
+	public void testInsertUser() {
+		JSONObject userJson = new JSONObject().put("userFirstname", "1111").put("userLastname", "小名")
+				.put("password", "2225").put("email", "3331@gmail.com").put("phone", "09811787165")
+				.put("birth", "1999-01-06").put("gender", "M");
+		System.out.print(userJson);
+		User user = userService.InsertUser(userJson);
 	}
+
 //	@Test
 	public void testFindByEmailOrPhone() {
 		User user = userRepository.findByEmailOrPhone("email", "phone");
 		System.out.println(user);
 	}
-	
+
 //	@Test
 	public void testUserUpdate() {
-		JSONObject userJson = new JSONObject()
-				.put("id", "1")
-				.put("userFirstname","777")
-				.put("userLastname","小名")
-				.put("password","6666")
-				.put("email","333@gmail.com")
-				.put("phone","0981787165")
-				.put("birth","1988-01-06")
-				.put("gender","M")
-				.put("isverified","false");
+		JSONObject userJson = new JSONObject().put("id", "1").put("userFirstname", "777").put("userLastname", "小名")
+				.put("password", "6666").put("email", "333@gmail.com").put("phone", "0981787165")
+				.put("birth", "1988-01-06").put("gender", "M").put("isverified", "false");
 		User user = userService.updateUser(userJson);
 	}
+
 //	@Test
 	public void testDeleteUser() {
-		boolean	result = userService.deleteByUserId(1);
+		boolean result = userService.deleteByUserId(1);
 		System.out.println(result);
-		
+
 	}
-	
+
 //	@Test
 	public void testLogin() {
-		JSONObject userJson = new JSONObject()
-				.put("userName", "3331@gmail.com")
-				.put("password", "2225");
+		JSONObject userJson = new JSONObject().put("userName", "3331@gmail.com").put("password", "2225");
 		System.out.println(userService.checkLogin(userJson).getId());
-		
+
 	}
-	@Test
+
+//	@Test
 	public void testExistByEmail() {
 		System.out.println(userService.existByEmail("3331@gmail.com"));
 	}
-	
-	
-	
-	
-	
+
+	//大量產生測試資料
+//	@Test  
+	public void testLogInsertUser() throws Exception {
+		int randomInt = new Random().nextInt(15) + 3;
+
+		//隨機日期最大最小值
+		int minDay = (int) LocalDate.of(1970, 1, 1).toEpochDay();
+		int maxDay = (int) LocalDate.of(2024, 5, 20).toEpochDay();
+
+		for (int i = 0; i <= 35; i++) {
+			//隨機產生日期
+			Random rand = new Random();
+			long randDay = minDay + rand.nextInt(maxDay - minDay);
+			LocalDate randBirthDay = LocalDate.ofEpochDay(randDay);
+			
+			JSONObject userJson = new JSONObject()
+					.put("userFirstname", RandomStringUtils.random(1, 0x4e00, 0x9fff, false, false))
+					.put("userLastname", RandomStringUtils.random(2, 0x4e00, 0x9fff, false, false))
+					.put("password", RandomStringUtils.randomAlphabetic(randomInt))
+					.put("email", RandomStringUtils.randomAlphabetic(randomInt) + "@gmail.com")
+					.put("phone", "09" + RandomStringUtils.randomNumeric(8))
+					.put("birth", randBirthDay.toString()).put("gender", "M");
+			System.out.println(userJson);
+			User user = userService.InsertUser(userJson);
+		}
+	}
 
 }

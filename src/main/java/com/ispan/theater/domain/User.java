@@ -29,10 +29,10 @@ public class User {
     @Column(name = "user_id", nullable = false)
     private Integer id;
 
-    @Column(name = "user_firstname",  length = 20)
+    @Column(name = "user_firstname" , columnDefinition = "nvarchar(20)")
     private String userFirstname;
     
-    @Column(name = "user_lastname",  length = 20)
+    @Column(name = "user_lastname",  columnDefinition = "nvarchar(20)")
     private String userLastname;
     
     @JsonIgnore

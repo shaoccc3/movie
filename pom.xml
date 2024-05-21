@@ -156,6 +156,14 @@
 		</dependency>
 		<!-- -->
 
+
+		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 正式上線可刪除 -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+		</dependency>
+
+
 	</dependencies>
 
 	<build>
