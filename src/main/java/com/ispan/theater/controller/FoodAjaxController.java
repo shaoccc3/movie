@@ -25,6 +25,20 @@ public class FoodAjaxController {
 	@Autowired
 	private FoodService foodService;
 	
+	@GetMapping("/backstage/food/name/{name}")
+	public String existsByName(@PathVariable("name") String name) {
+		JSONObject responseJson = new JSONObject();
+		boolean exist = foodService.existByName(name);
+		if (exist) {
+			responseJson.put("success", false);
+			responseJson.put("message", "名稱存在");
+		}else {
+			responseJson.put("success", true);
+			responseJson.put("message", "名稱不存在");
+		}
+		return responseJson.toString();
+	}
+	
 	@PostMapping("/backstage/food")//postman test
 	public String createFood (@RequestBody String foodjson) {
 		JSONObject response = new JSONObject();
@@ -46,7 +60,7 @@ public class FoodAjaxController {
 		return response.toString();
 	}
 	
-	@PostMapping("/backstage/food/find")
+	@PostMapping("/backstage/food/find")//postman test
 	public String find(@RequestBody String json) {
 		JSONObject responseJson = new JSONObject();
 		JSONArray array = new JSONArray();

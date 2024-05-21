@@ -20,6 +20,7 @@ public class FoodService {
 	@Autowired
 	private FoodRepository foodRepository;
 	
+	// controller existsByName
 	public boolean existByName(String name) {
 		if (name!=null && name.length()!=0) {
 			long result = foodRepository.countByName(name);
@@ -29,7 +30,7 @@ public class FoodService {
 		}
 		return false;
 	}
-	
+	// controller find
 	public long count(String json) {
 		try {
 			JSONObject responseJson = new JSONObject(json);
@@ -39,35 +40,20 @@ public class FoodService {
 		}
 		return 0;
 	}
-	
+	// controller modifyFood
 	public boolean existFoodById(Integer id) {
 		if (id!=null) {
 			return foodRepository.existsById(id);
 		}
 		return false;
 	}
-	
+	//controller createFood
 	public boolean existsFoodByName(String name) {
 		Food food = foodRepository.findByName(name);
 		return food != null;
 	}
 	
-	
-	
-//	public void saveFood(Food food) {
-//		foodRepository.save(food);
-//	}
-	
-	public Food insertFood(Food food) {
-		if (food != null && food.getId() != null ) {
-			Optional<Food> optional = foodRepository.findById(food.getId());
-			if (optional.isEmpty()) {
-				return foodRepository.save(food);
-			}
-		}
-		return null;
-	}
-	
+	// controller createFood
 	public Food createFood(String json) {
 		try {
 			JSONObject obj = new JSONObject(json);
@@ -129,7 +115,7 @@ public class FoodService {
 		}
 		return null;
 	}
-	
+	// controller modifyFood
 	public Food modifyFood(String json) {
 		
 		try {
@@ -194,6 +180,52 @@ public class FoodService {
 		
 	}
 	
+	//	controller findByFoodId & deleteFood
+	public Food findByFoodId(Integer id) {
+		if (id!=null) {
+			Optional<Food> optional = foodRepository.findById(id);
+			if (optional.isPresent()) {
+				return optional.get();
+			}
+		}
+		return null;
+	}
+	//controller find
+	public List<Food> find(String json){
+		try {
+			JSONObject obj = new JSONObject(json);
+			 return foodRepository.find(obj);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	// controller deleteFood
+	public boolean deleteByFoodId(Integer id) {
+		if(id!=null && id!=null) {
+			Optional<Food> optional = foodRepository.findById(id);
+			if(optional.isPresent()) {
+				foodRepository.deleteById(id);
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	
+	
+	
+	
+	public Food insertFood(Food food) {
+		if (food != null && food.getId() != null ) {
+			Optional<Food> optional = foodRepository.findById(food.getId());
+			if (optional.isEmpty()) {
+				return foodRepository.save(food);
+			}
+		}
+		return null;
+	}
+	
 	public Food jsonToFood(JSONObject jsonObject) {
 		Food food = null;
 		if (foodRepository.findByName(jsonObject.getString("name")) == null) {
@@ -217,53 +249,6 @@ public class FoodService {
 		}
 		
 	}
-			
-//	public JSONObject foodToJson(Food food) {
-//		JSONObject jsonObject = new JSONObject()
-//				.put("id",food.getId())
-//				.put("name",food.getName())
-//				.put("price",food.getPrice())
-//				.put("make", food.getMake())
-//				.put("expired", food.getExpired())
-//				.put("createDate", food.getCreateDate())
-//				.put("modifyDate", food.getModifyDate());
-//		
-//		return jsonObject;
-//			
-//	}
-	
-
-	
-	//	查詢餐點id
-	public Food findByFoodId(Integer id) {
-		if (id!=null) {
-			Optional<Food> optional = foodRepository.findById(id);
-			if (optional.isPresent()) {
-				return optional.get();
-			}
-		}
-		return null;
-	}
-	
-	public List<Food> find(String json){
-		try {
-			JSONObject obj = new JSONObject(json);
-			 return foodRepository.find(obj);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	public boolean deleteByFoodId(Integer id) {
-		if(id!=null && id!=null) {
-			Optional<Food> optional = foodRepository.findById(id);
-			if(optional.isPresent()) {
-				foodRepository.deleteById(id);
-				return true;
-			}
-		}
-		return false;
-	}
+		
 
 }
