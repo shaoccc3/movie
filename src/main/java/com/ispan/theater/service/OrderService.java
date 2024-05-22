@@ -17,6 +17,7 @@ import com.ispan.theater.domain.Order;
 import com.ispan.theater.domain.OrderDetail;
 import com.ispan.theater.domain.Ticket;
 import com.ispan.theater.dto.InsertOrderDTO;
+import com.ispan.theater.listener.OrderConditionPublisher;
 import com.ispan.theater.repository.MovieRepository;
 import com.ispan.theater.repository.OrderDetailRepository;
 import com.ispan.theater.repository.OrderRepository;
@@ -87,12 +88,13 @@ public class OrderService {
 	}
 	
 	public List<Map<String,Object>> ticketList(Integer id){
+		orderRepository.orderDetailCountByPaymentCondition().forEach(map->System.out.println(map.entrySet()));
 		return ticketRepository.getTickets(id);
 	}
 	
-	public List<Map<String,Object>> ticketList1(Integer id){
-		return ticketRepository.getTickets(id);
-	}
+//	public List<Map<String,Object>> ticketList1(Integer id){
+//		return ticketRepository.getTickets(id);
+//	}
 	
 	@Transactional
 	public String createOrder(InsertOrderDTO insertOrderDto) {
@@ -149,4 +151,19 @@ public class OrderService {
 	public String getOrderDetail(Integer orderId){
 		return new JSONObject().put("details", orderRepository.orderCompleted(orderId)).toString();
 	}
+	
+	@Transactional
+	public void deleteOrder() {
+		orderRepository.deleteOrderStep1();
+		orderRepository.deleteOrderStep2();
+		orderRepository.deleteOrderStep3();
+	}
+	
+	@Transactional
+	public void deleteOrderV2(Integer userId) {
+		orderRepository.deleteOrderStep1Version2(userId);
+		orderRepository.deleteOrderStep2Version2(userId);
+		orderRepository.deleteOrderStep3Version2(userId);
+	}
+	
 }

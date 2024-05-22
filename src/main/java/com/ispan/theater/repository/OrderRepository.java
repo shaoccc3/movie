@@ -27,7 +27,6 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 	
 	@Query(value="select top(1) o.* from \"Order\" as o where create_date like :createDate% and user_id=:id order by create_date desc",nativeQuery = true)
 	Optional<Order> findOrderByUserIdAndCreateDate(@Param("createDate")String createDate,@Param("id")Integer id);
-	//distinct
 	
 	//select ROW_NUMBER() over(order by Seat.seat_id asc) as 'no',od.order_id,c.location_category+c.name as 'location',m.name as movie_name,substring(CONVERT(varchar,s.Start_time),1,19) as Start_time,CONVERT(varchar, a.auditorium_number)+'廳'+CONVERT(varchar, Seat.seat_row)+'排'+CONVERT(varchar, seat_column)+'位' as seat,substring(CONVERT(varchar,o.create_date),1,19) as create_date from OrderDetail as od join Ticket as t on od.ticket_id=t.Ticket_id join Screening as s on t.Screening_id=s.Screening_id join movie as m on m.movie_id=t.movie_id  join Seat on Seat.seat_id=t.seat_id join auditorium as a on a.auditorium_id=s.auditorium_id join cinema as c on a.cinema_id=c.cinema_id join \"Order\" as o on o.order_id=od.order_id where od.order_id= :orderId
 	@Query(value="select ROW_NUMBER() over(order by Seat.seat_id asc) as 'no',od.order_id,c.location_category+c.name as 'location',m.name as movie_name,substring(CONVERT(varchar,s.Start_time),1,19) as Start_time,CONVERT(varchar, a.auditorium_number)+'廳'+CONVERT(varchar, Seat.seat_row)+'排'+CONVERT(varchar, seat_column)+'位' as seat,substring(CONVERT(varchar,o.create_date),1,19) as create_date from OrderDetail as od join \"Order\" as o on o.order_id=od.order_id join Ticket as t on od.ticket_id=t.Ticket_id join Screening as s on t.Screening_id=s.Screening_id  join Seat on Seat.seat_id=t.seat_id join auditorium as a on a.auditorium_id=s.auditorium_id join cinema as c on a.cinema_id=c.cinema_id join movie as m on m.movie_id=o.movie_id  where od.order_id= :orderId",nativeQuery=true)
@@ -43,6 +42,9 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 	
 	@Query(value="select od.order_id,count(*) as \"count\" from OrderDetail as od join \"Order\" as o on od.order_id=o.order_id where o.order_id= :orderId group by od.order_id",nativeQuery=true)
 	List<Map<String,Integer>> orderDetailCountByOrderId(@Param("orderId")Integer orderId);
+	
+	@Query(value="select od.order_id,count(*) as \"count\" from OrderDetail as od join \"Order\" as o on od.order_id=o.order_id where o.payment_condition=0 group by od.order_id",nativeQuery=true)
+	List<Map<String,Integer>> orderDetailCountByPaymentCondition();
 	
 	@Modifying
 	@Query(value="update \"Order\" set payment_condition=1 where order_id= :orderId",nativeQuery=true)
@@ -68,5 +70,25 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 	
 	@Query(value="select count(order_id) as order_total from \"Order\" where user_id=:userId",nativeQuery=true)
 	Map<String,Integer> orderTotalByUserId(@Param("userId")Integer userId);
+	
+	@Modifying
+	@Query(value="update t set t.is_available= '未售出' from  Ticket as t join OrderDetail as od on t.Ticket_id=od.ticket_id where od.order_id in (select od.order_id from OrderDetail as od join \"Order\" as o on o.order_id=od.order_id where o.payment_condition=0 and DATEDIFF(s,substring(convert(varchar,o.create_date),1,19),convert(nvarchar,getDate(),120)) > 600 group by od.order_id)",nativeQuery=true)
+	void deleteOrderStep1();
+	@Modifying
+	@Query(value=" delete from OrderDetail where order_id in (select od.order_id from OrderDetail as od join \"Order\" as o on o.order_id=od.order_id where o.payment_condition=0 and DATEDIFF(s,substring(convert(varchar,o.create_date),1,19),convert(nvarchar,getDate(),120)) > 600 group by od.order_id) ",nativeQuery=true)
+	void deleteOrderStep2();
+	@Modifying
+	@Query(value="delete from \"Order\" where payment_condition=0 and DATEDIFF(s,substring(convert(varchar,create_date),1,19),convert(varchar,getDate(),120))>600",nativeQuery=true)
+	void deleteOrderStep3();
+
+	@Modifying
+	@Query(value="update t set t.is_available= '未售出' from  Ticket as t join OrderDetail as od on t.Ticket_id=od.ticket_id where od.order_id in (select od.order_id from OrderDetail as od join \"Order\" as o on o.order_id=od.order_id where o.payment_condition=0 and o.user_id=:userId)",nativeQuery=true)
+	void deleteOrderStep1Version2(@Param("userId")Integer userId);
+	@Modifying
+	@Query(value=" delete from OrderDetail where order_id in (select od.order_id from OrderDetail as od join \"Order\" as o on o.order_id=od.order_id where o.payment_condition=0 and o.user_id=:userId) ",nativeQuery=true)
+	void deleteOrderStep2Version2(@Param("userId")Integer userId);
+	@Modifying
+	@Query(value="delete from \"Order\" where payment_condition=0 and user_id=:userId",nativeQuery=true)
+	void deleteOrderStep3Version2(@Param("userId")Integer userId);
 	
 }

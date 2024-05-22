@@ -49,7 +49,7 @@ public class Order implements Persistable{
     @Column(name = "order_amount", nullable = false)
     private Double orderAmount;
     
-    @Column(name = "payment_condition", nullable = false,columnDefinition = "false")
+    @Column(name = "payment_condition", nullable = false,columnDefinition ="bit default false")
     private boolean paymentCondition;
 
     @Column(name = "payment_no")

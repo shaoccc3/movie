@@ -51,7 +51,7 @@ public class OrderServiceTest {
 	public void test1() {
 //		System.out.println(os.findOrder(11).toString());
 		//1043
-		System.out.println(new JSONObject().put("Order", or.orderCompleted(1050)).toString());
+		System.out.println(new JSONObject().put("Order", or.orderCompleted(72)).toString());
 	}
 	
 //	@Test
