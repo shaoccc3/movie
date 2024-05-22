@@ -1,22 +1,28 @@
 package com.ispan.theater.service;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.UUID;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ispan.theater.domain.Order;
+import com.ispan.theater.domain.OrderDetail;
 import com.ispan.theater.domain.Ticket;
+import com.ispan.theater.dto.InsertOrderDTO;
 import com.ispan.theater.repository.MovieRepository;
+import com.ispan.theater.repository.OrderDetailRepository;
 import com.ispan.theater.repository.OrderRepository;
 import com.ispan.theater.repository.ScreeningRepository;
 import com.ispan.theater.repository.TicketRepository;
+import com.ispan.theater.util.DatetimeConverter;
 
 
 
@@ -31,6 +37,12 @@ public class OrderService {
 	ScreeningRepository screeningRepository;
 	@Autowired
 	TicketRepository ticketRepository;
+	@Autowired
+	OrderDetailRepository orderDetailRepository;
+	@Autowired
+	LinePayService linePayService;
+	@Autowired
+	ECPayService ecPayService;
 	@Transactional(isolation=Isolation.READ_COMMITTED)
 	public Order findOrderByOrderId(Integer id) {
 		Optional<Order> order=orderRepository.findById(id);
@@ -67,29 +79,74 @@ public class OrderService {
 	}
 	
 	public List<Map<String,Object>> findScreeningByDate(Integer cinemaId,Integer movieId){
-		List<Map<String,Object>> list=screeningRepository.findScreeningByDate(cinemaId,movieId);
-		for(int i=0;i<list.size();i++) {
-			list.set(i,new HashMap<String,Object>(list.get(i)));
-			list.get(i).put("Start_time", list.get(i).get("Start_time").toString().substring(0, 10));
-		}
-		return list;
+		return screeningRepository.findScreeningByDate(cinemaId,movieId);
 	}
 	
 	public List<Map<String,Object>> findScreeningByTime(Integer cinemaId,String Date,Integer movieId){
-		List<Map<String,Object>> list=screeningRepository.findScreeningByTime(cinemaId, Date,movieId);
-		for(int i=0;i<list.size();i++) {
-			list.set(i,new HashMap<String,Object>(list.get(i)));
-			list.get(i).put("Start_time", list.get(i).get("Start_time").toString().substring(11,19));
-		}
-		return list;
+		return screeningRepository.findScreeningByTime(cinemaId, Date,movieId);
 	}
 	
 	public List<Map<String,Object>> ticketList(Integer id){
 		return ticketRepository.getTickets(id);
 	}
 	
-	public List<Ticket> ticketList1(Integer id){
-		return ticketRepository.test(id);
+	public List<Map<String,Object>> ticketList1(Integer id){
+		return ticketRepository.getTickets(id);
 	}
 	
+	@Transactional
+	public String createOrder(InsertOrderDTO insertOrderDto) {
+		String Date=DatetimeConverter.createSqlDatetime(new Date());
+		Order order=null;
+		String result="";
+		Integer count=orderRepository.createOrder(Date,Date,(300.0*(insertOrderDto.getTicketId().size())),insertOrderDto.getMovieId(),insertOrderDto.getUserId(),0);
+		if(count>0) {
+			order=orderRepository.findOrderByUserIdAndCreateDate(Date, insertOrderDto.getUserId()).get();
+		}
+		List<Ticket> tickets=ticketRepository.findTicketsById(insertOrderDto.getTicketId());
+		List<OrderDetail> orderDetails=new ArrayList<OrderDetail>();
+		for(int i=0;i<tickets.size();i++) {
+			orderDetails.add(new OrderDetail(order,tickets.get(i)));
+		}
+		orderDetailRepository.saveAll(orderDetails);
+		for(int i=0;i<tickets.size();i++) {
+			if(!"未售出".equals(tickets.get(i).getIsAvailable())){
+				return new JSONObject().put("success", false).toString();
+			}
+		}
+		ticketRepository.setTicketAvailable("已售出", insertOrderDto.getTicketId());
+		if("linePay".equals(insertOrderDto.getPaymentOptions())) {
+			order.setSupplier("linepay");
+			result=linePayService.request(order,insertOrderDto.getTicketId().size()).get("info").get("paymentUrl").get("web");
+		}
+		if("ecPay".equals(insertOrderDto.getPaymentOptions())) {
+			String uuId = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 20);
+			order.setPaymentNo(uuId);
+			order.setSupplier("ecpay");
+			result=ecPayService.ecpayCheckout(order, insertOrderDto.getTicketId().size());
+		}
+		return result;
+	}
+	
+	@Transactional
+	public String orderCompleted(String transactionId,Integer orderId) {
+		System.out.println(linePayService.confirm(transactionId,orderId).get("returnCode"));//returnCode為0000
+		orderRepository.setPaymentNoAndConditionByOrderId(transactionId, orderId);
+		return new JSONObject().put("Order", orderRepository.orderCompleted(orderId)).toString();
+	}
+	
+	public String getOrder(Integer userId,Integer page) {
+		Integer total=orderRepository.orderTotalByUserId(userId).get("order_total");
+		Integer pages=1;
+		if(total%10==0&&total/10!=0) {
+			pages=total/10;
+		}else if(total%10!=0&&total/10!=0) {
+			pages=(total/10)+1;
+		}
+		return new JSONObject().put("orders", orderRepository.getOrderByUser(userId,(page-1)*10)).put("pages", pages).toString();
+	}
+	
+	public String getOrderDetail(Integer orderId){
+		return new JSONObject().put("details", orderRepository.orderCompleted(orderId)).toString();
+	}
 }

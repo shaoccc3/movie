@@ -27,9 +27,12 @@ public class DatetimeConverter {
 		}
 		return result;
 	}
+		
+	public static String createSqlDatetime(Date datetime) {
+		return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(datetime).toString();
+	}
 	
-//	public static String subString(Date datetime) {
-//		return datetime.toString().substring(0, 11);
-//	}
-	
+	public static String createSqlDatetimeECPay(Date datetime) {
+		return new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(datetime).toString();
+	}
 }

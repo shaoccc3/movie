@@ -1,0 +1,413 @@
+2024-05-14 00:12:16,765 [http-nio-8080-exec-2] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 00:12:26,369 [http-nio-8080-exec-4] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 00:12:27,983 [http-nio-8080-exec-5] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 00:12:29,318 [http-nio-8080-exec-6] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 00:12:30,259 [http-nio-8080-exec-8] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-03-03, 1
+2024-05-14 00:12:31,337 [http-nio-8080-exec-7] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'ticketList' executed with arguments: 2
+2024-05-14 00:13:41,857 [http-nio-8080-exec-10] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 00:13:44,537 [http-nio-8080-exec-1] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 00:13:47,901 [http-nio-8080-exec-3] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 00:13:48,585 [http-nio-8080-exec-4] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-03-03, 1
+2024-05-14 00:13:49,658 [http-nio-8080-exec-5] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'ticketList' executed with arguments: 2
+2024-05-14 00:16:52,423 [http-nio-8080-exec-8] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 00:16:53,215 [http-nio-8080-exec-7] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 00:16:53,920 [http-nio-8080-exec-9] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-03-03, 1
+2024-05-14 00:16:54,732 [http-nio-8080-exec-10] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'ticketList' executed with arguments: 2
+2024-05-14 00:22:26,153 [RMI TCP Connection(122)-127.0.0.1] INFO  o.s.b.a.SpringApplicationAdminMXBeanRegistrar$SpringApplicationAdmin ? - Application shutdown requested.
+2024-05-14 00:22:26,251 [RMI TCP Connection(122)-127.0.0.1] INFO  o.a.coyote.http11.Http11NioProtocol ? - Stopping ProtocolHandler ["http-nio-8080"]
+2024-05-14 00:22:26,338 [RMI TCP Connection(122)-127.0.0.1] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean ? - Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-05-14 00:22:26,483 [RMI TCP Connection(122)-127.0.0.1] INFO  com.zaxxer.hikari.HikariDataSource ? - HikariPool-1 - Shutdown initiated...
+2024-05-14 00:22:26,505 [RMI TCP Connection(122)-127.0.0.1] INFO  com.zaxxer.hikari.HikariDataSource ? - HikariPool-1 - Shutdown completed.
+2024-05-14 00:27:44,245 [restartedMain] INFO  c.ispan.theater.TheaterApplication ? - Starting TheaterApplication using Java 17.0.10 with PID 23660 (C:\Users\as541\OneDrive\桌面\movie\target\classes started by as541 in C:\Users\as541\OneDrive\桌面\movie)
+2024-05-14 00:27:44,247 [restartedMain] INFO  c.ispan.theater.TheaterApplication ? - No active profile set, falling back to 1 default profile: "default"
+2024-05-14 00:27:44,416 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor ? - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-05-14 00:27:44,416 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor ? - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-05-14 00:27:45,913 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate ? - Multiple Spring Data modules found, entering strict repository configuration mode
+2024-05-14 00:27:45,915 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate ? - Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2024-05-14 00:27:45,963 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport ? - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.ispan.theater.repository.ActorRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2024-05-14 00:27:45,965 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport ? - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.ispan.theater.repository.AdminRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2024-05-14 00:27:45,967 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport ? - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.ispan.theater.repository.AuditoriumLevelRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2024-05-14 00:27:45,968 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport ? - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.ispan.theater.repository.AuditoriumRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2024-05-14 00:27:45,970 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport ? - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.ispan.theater.repository.CategoryRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2024-05-14 00:27:45,972 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport ? - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.ispan.theater.repository.CinemaRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2024-05-14 00:27:45,975 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport ? - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.ispan.theater.repository.CollectRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2024-05-14 00:27:45,977 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport ? - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.ispan.theater.repository.CommentRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2024-05-14 00:27:45,979 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport ? - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.ispan.theater.repository.CustomerServiceRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2024-05-14 00:27:45,981 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport ? - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.ispan.theater.repository.EmployeeRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2024-05-14 00:27:45,983 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport ? - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.ispan.theater.repository.LayoutRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2024-05-14 00:27:45,985 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport ? - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.ispan.theater.repository.MovieActRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2024-05-14 00:27:45,987 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport ? - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.ispan.theater.repository.MoviePictureRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2024-05-14 00:27:45,991 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport ? - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.ispan.theater.repository.MovieRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2024-05-14 00:27:45,995 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport ? - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.ispan.theater.repository.OrderDetailRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2024-05-14 00:27:45,999 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport ? - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.ispan.theater.repository.OrderRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2024-05-14 00:27:46,001 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport ? - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.ispan.theater.repository.RatedRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2024-05-14 00:27:46,004 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport ? - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.ispan.theater.repository.ScreeningRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2024-05-14 00:27:46,006 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport ? - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.ispan.theater.repository.SeatRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2024-05-14 00:27:46,008 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport ? - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.ispan.theater.repository.TicketRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2024-05-14 00:27:46,010 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport ? - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.ispan.theater.repository.UserRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2024-05-14 00:27:46,011 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate ? - Finished Spring Data repository scanning in 90 ms. Found 0 JDBC repository interfaces.
+2024-05-14 00:27:46,022 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate ? - Multiple Spring Data modules found, entering strict repository configuration mode
+2024-05-14 00:27:46,023 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate ? - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-05-14 00:27:46,106 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate ? - Finished Spring Data repository scanning in 78 ms. Found 21 JPA repository interfaces.
+2024-05-14 00:27:47,741 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer ? - Tomcat initialized with port 8080 (http)
+2024-05-14 00:27:47,775 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol ? - Initializing ProtocolHandler ["http-nio-8080"]
+2024-05-14 00:27:47,779 [restartedMain] INFO  o.a.catalina.core.StandardService ? - Starting service [Tomcat]
+2024-05-14 00:27:47,779 [restartedMain] INFO  o.a.catalina.core.StandardEngine ? - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2024-05-14 00:27:47,951 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] ? - Initializing Spring embedded WebApplicationContext
+2024-05-14 00:27:47,951 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext ? - Root WebApplicationContext: initialization completed in 3534 ms
+2024-05-14 00:27:48,526 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper ? - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-05-14 00:27:48,665 [restartedMain] INFO  org.hibernate.Version ? - HHH000412: Hibernate ORM core version 6.4.4.Final
+2024-05-14 00:27:48,712 [restartedMain] INFO  o.h.c.i.RegionFactoryInitiator ? - HHH000026: Second-level cache disabled
+2024-05-14 00:27:49,252 [restartedMain] INFO  o.s.o.j.p.SpringPersistenceUnitInfo ? - No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-05-14 00:27:49,315 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource ? - HikariPool-1 - Starting...
+2024-05-14 00:27:49,812 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool ? - HikariPool-1 - Added connection ConnectionID:1 ClientConnectionId: 629066a3-515b-4113-a95a-7ab1d40e82bf
+2024-05-14 00:27:49,815 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource ? - HikariPool-1 - Start completed.
+2024-05-14 00:27:49,889 [restartedMain] WARN  org.hibernate.orm.deprecation ? - HHH90000025: SQLServerDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2024-05-14 00:27:51,990 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator ? - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-05-14 00:27:54,088 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean ? - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-05-14 00:27:54,606 [restartedMain] INFO  o.s.d.j.r.query.QueryEnhancerFactory ? - JSqlParser is in classpath; If applicable, JSqlParser will be used
+2024-05-14 00:27:54,606 [restartedMain] INFO  o.s.d.j.r.query.QueryEnhancerFactory ? - Hibernate is in classpath; If applicable, HQL parser will be used.
+2024-05-14 00:27:56,314 [restartedMain] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration ? - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-05-14 00:27:57,144 [restartedMain] WARN  o.s.data.convert.CustomConversions ? - Registering converter from class microsoft.sql.DateTimeOffset to class java.time.OffsetDateTime as reading converter although it doesn't convert from a store-supported type; You might want to check your annotation setup at the converter implementation
+2024-05-14 00:27:57,404 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer ? - LiveReload server is running on port 35729
+2024-05-14 00:27:57,436 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol ? - Starting ProtocolHandler ["http-nio-8080"]
+2024-05-14 00:27:57,493 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer ? - Tomcat started on port 8080 (http) with context path ''
+2024-05-14 00:27:57,512 [restartedMain] INFO  c.ispan.theater.TheaterApplication ? - Started TheaterApplication in 14.055 seconds (process running for 16.533)
+2024-05-14 00:28:24,756 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] ? - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-05-14 00:28:24,756 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet ? - Initializing Servlet 'dispatcherServlet'
+2024-05-14 00:28:24,758 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet ? - Completed initialization in 2 ms
+2024-05-14 00:28:24,933 [http-nio-8080-exec-1] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 00:28:35,609 [http-nio-8080-exec-3] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 00:28:48,335 [http-nio-8080-exec-5] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 00:28:49,065 [http-nio-8080-exec-6] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 00:28:49,944 [http-nio-8080-exec-7] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-03-03, 1
+2024-05-14 00:28:51,073 [http-nio-8080-exec-8] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'ticketList' executed with arguments: 2
+2024-05-14 00:34:01,721 [http-nio-8080-exec-10] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 00:34:03,395 [http-nio-8080-exec-1] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 00:34:04,218 [http-nio-8080-exec-2] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 00:34:05,177 [http-nio-8080-exec-3] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-03-03, 1
+2024-05-14 00:34:06,798 [http-nio-8080-exec-4] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'ticketList' executed with arguments: 3
+2024-05-14 00:34:44,166 [http-nio-8080-exec-6] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 00:35:08,318 [http-nio-8080-exec-8] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 00:35:11,302 [http-nio-8080-exec-10] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 00:35:55,730 [http-nio-8080-exec-2] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 00:36:00,049 [http-nio-8080-exec-4] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-03-03, 1
+2024-05-14 00:36:03,738 [http-nio-8080-exec-5] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'ticketList' executed with arguments: 2
+2024-05-14 00:37:54,640 [http-nio-8080-exec-8] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'ticketList' executed with arguments: 22
+2024-05-14 00:38:09,817 [http-nio-8080-exec-9] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 00:38:32,898 [http-nio-8080-exec-1] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 00:38:33,955 [http-nio-8080-exec-3] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 00:38:35,297 [http-nio-8080-exec-4] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-03-03, 1
+2024-05-14 00:38:36,616 [http-nio-8080-exec-5] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'ticketList' executed with arguments: 3
+2024-05-14 00:39:06,826 [http-nio-8080-exec-7] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 00:39:07,932 [http-nio-8080-exec-8] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 00:39:08,672 [http-nio-8080-exec-9] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 00:39:09,450 [http-nio-8080-exec-10] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-03-03, 1
+2024-05-14 00:39:17,284 [http-nio-8080-exec-1] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-05-05, 1
+2024-05-14 00:39:21,819 [http-nio-8080-exec-2] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'ticketList' executed with arguments: 22
+2024-05-14 00:41:22,282 [http-nio-8080-exec-4] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 00:41:23,650 [http-nio-8080-exec-5] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 00:41:24,286 [http-nio-8080-exec-6] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 00:41:25,773 [http-nio-8080-exec-7] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-05-05, 1
+2024-05-14 00:41:26,767 [http-nio-8080-exec-8] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'ticketList' executed with arguments: 22
+2024-05-14 00:42:16,182 [http-nio-8080-exec-10] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 00:42:18,223 [http-nio-8080-exec-2] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 00:42:21,002 [http-nio-8080-exec-3] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 00:42:22,219 [http-nio-8080-exec-4] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-05-05, 1
+2024-05-14 00:42:23,810 [http-nio-8080-exec-5] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'ticketList' executed with arguments: 22
+2024-05-14 00:43:08,710 [http-nio-8080-exec-7] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-05-05, 1
+2024-05-14 00:43:09,802 [http-nio-8080-exec-8] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'ticketList' executed with arguments: 22
+2024-05-14 00:43:11,510 [http-nio-8080-exec-9] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-03-03, 1
+2024-05-14 00:43:12,865 [http-nio-8080-exec-10] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'ticketList' executed with arguments: 3
+2024-05-14 00:43:18,548 [http-nio-8080-exec-2] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-05-05, 1
+2024-05-14 00:43:23,015 [http-nio-8080-exec-3] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'ticketList' executed with arguments: 22
+2024-05-14 00:50:56,250 [http-nio-8080-exec-5] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 00:51:01,257 [http-nio-8080-exec-6] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 00:51:02,621 [http-nio-8080-exec-8] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 00:51:04,139 [http-nio-8080-exec-9] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 00:51:06,334 [http-nio-8080-exec-10] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-05-05, 1
+2024-05-14 00:51:09,152 [http-nio-8080-exec-1] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'ticketList' executed with arguments: 22
+2024-05-14 00:52:06,500 [http-nio-8080-exec-3] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 00:52:08,154 [http-nio-8080-exec-4] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 00:52:09,550 [http-nio-8080-exec-5] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 00:52:10,554 [http-nio-8080-exec-6] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-05-05, 1
+2024-05-14 00:52:11,575 [http-nio-8080-exec-7] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'ticketList' executed with arguments: 22
+2024-05-14 00:53:20,848 [http-nio-8080-exec-9] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 00:53:23,115 [http-nio-8080-exec-10] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 00:53:48,650 [http-nio-8080-exec-1] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 00:53:50,180 [http-nio-8080-exec-2] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-05-05, 1
+2024-05-14 00:53:51,044 [http-nio-8080-exec-3] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'ticketList' executed with arguments: 22
+2024-05-14 00:55:48,726 [http-nio-8080-exec-5] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 00:55:49,890 [http-nio-8080-exec-6] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 00:55:50,514 [http-nio-8080-exec-7] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 00:56:49,196 [http-nio-8080-exec-9] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 00:56:49,942 [http-nio-8080-exec-10] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 00:56:51,000 [http-nio-8080-exec-1] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-05-05, 1
+2024-05-14 00:56:52,266 [http-nio-8080-exec-2] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'ticketList' executed with arguments: 22
+2024-05-14 00:57:22,246 [http-nio-8080-exec-4] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 00:57:23,279 [http-nio-8080-exec-5] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 00:57:24,081 [http-nio-8080-exec-6] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 00:57:25,397 [http-nio-8080-exec-7] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-03-03, 1
+2024-05-14 00:57:26,557 [http-nio-8080-exec-8] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'ticketList' executed with arguments: 3
+2024-05-14 00:59:22,202 [http-nio-8080-exec-10] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 00:59:23,734 [http-nio-8080-exec-1] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 00:59:28,261 [http-nio-8080-exec-2] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 00:59:30,817 [http-nio-8080-exec-3] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-05-05, 1
+2024-05-14 00:59:49,015 [http-nio-8080-exec-5] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 01:00:11,174 [http-nio-8080-exec-7] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 01:00:13,195 [http-nio-8080-exec-9] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 01:00:13,990 [http-nio-8080-exec-10] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 01:00:15,931 [http-nio-8080-exec-1] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-05-05, 1
+2024-05-14 01:00:33,186 [http-nio-8080-exec-4] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'ticketList' executed with arguments: 22
+2024-05-14 01:00:40,818 [http-nio-8080-exec-5] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 01:00:41,858 [http-nio-8080-exec-7] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 01:00:42,995 [http-nio-8080-exec-8] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 01:00:44,686 [http-nio-8080-exec-9] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-05-05, 1
+2024-05-14 01:01:29,061 [http-nio-8080-exec-1] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 01:01:29,935 [http-nio-8080-exec-2] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 01:01:32,173 [http-nio-8080-exec-3] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 01:01:33,239 [http-nio-8080-exec-4] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 01:01:35,451 [http-nio-8080-exec-6] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 01:01:36,490 [http-nio-8080-exec-7] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 01:01:38,945 [http-nio-8080-exec-9] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-05-05, 1
+2024-05-14 01:04:13,518 [http-nio-8080-exec-1] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 01:04:16,829 [http-nio-8080-exec-2] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 01:04:17,538 [http-nio-8080-exec-4] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 01:04:18,621 [http-nio-8080-exec-5] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-05-05, 1
+2024-05-14 01:06:25,782 [http-nio-8080-exec-7] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 01:06:30,870 [http-nio-8080-exec-8] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 01:06:31,691 [http-nio-8080-exec-9] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 01:06:32,539 [http-nio-8080-exec-10] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 01:06:34,222 [http-nio-8080-exec-2] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-05-05, 1
+2024-05-14 01:06:55,482 [http-nio-8080-exec-4] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 01:06:58,939 [http-nio-8080-exec-5] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 01:06:59,983 [http-nio-8080-exec-6] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 01:07:01,372 [http-nio-8080-exec-7] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-05-05, 1
+2024-05-14 01:07:35,734 [http-nio-8080-exec-9] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 01:07:36,882 [http-nio-8080-exec-10] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 01:07:37,638 [http-nio-8080-exec-1] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 01:07:39,596 [http-nio-8080-exec-2] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-03-03, 1
+2024-05-14 01:07:40,801 [http-nio-8080-exec-3] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-03-03, 1
+2024-05-14 01:07:43,826 [http-nio-8080-exec-5] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-05-05, 1
+2024-05-14 01:08:21,901 [http-nio-8080-exec-7] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 01:08:26,654 [http-nio-8080-exec-9] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 01:08:27,714 [http-nio-8080-exec-10] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 01:08:28,655 [http-nio-8080-exec-1] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-05-05, 1
+2024-05-14 01:09:09,561 [http-nio-8080-exec-3] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-03-03, 1
+2024-05-14 01:09:20,012 [http-nio-8080-exec-5] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-05-05, 1
+2024-05-14 01:10:24,491 [http-nio-8080-exec-7] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 01:10:27,950 [http-nio-8080-exec-8] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 01:10:28,575 [http-nio-8080-exec-9] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 01:10:29,894 [http-nio-8080-exec-10] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-05-05, 1
+2024-05-14 01:12:08,643 [http-nio-8080-exec-2] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 01:12:09,881 [http-nio-8080-exec-3] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 01:12:10,431 [http-nio-8080-exec-4] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 01:12:11,489 [http-nio-8080-exec-6] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-05-05, 1
+2024-05-14 01:12:14,213 [http-nio-8080-exec-7] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 01:12:47,056 [http-nio-8080-exec-9] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 01:12:48,031 [http-nio-8080-exec-10] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 01:12:48,708 [http-nio-8080-exec-1] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 01:12:49,659 [http-nio-8080-exec-2] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-05-05, 1
+2024-05-14 01:14:33,260 [http-nio-8080-exec-4] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 01:14:39,751 [http-nio-8080-exec-6] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 01:14:40,863 [http-nio-8080-exec-7] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 01:14:41,551 [http-nio-8080-exec-8] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 01:14:42,553 [http-nio-8080-exec-9] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-05-05, 1
+2024-05-14 01:18:38,695 [http-nio-8080-exec-1] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 01:18:40,712 [http-nio-8080-exec-2] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 01:18:41,599 [http-nio-8080-exec-4] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 01:18:42,270 [http-nio-8080-exec-5] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 01:18:43,139 [http-nio-8080-exec-6] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-05-05, 1
+2024-05-14 01:20:23,734 [http-nio-8080-exec-8] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 01:20:36,310 [http-nio-8080-exec-10] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 01:20:55,279 [http-nio-8080-exec-2] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 01:21:32,932 [http-nio-8080-exec-4] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 01:21:36,430 [http-nio-8080-exec-5] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 01:21:37,579 [http-nio-8080-exec-7] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 01:21:38,312 [http-nio-8080-exec-8] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 01:21:40,597 [http-nio-8080-exec-9] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 01:21:41,281 [http-nio-8080-exec-10] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 01:21:42,411 [http-nio-8080-exec-1] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-05-05, 1
+2024-05-14 01:21:44,339 [http-nio-8080-exec-2] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 01:21:45,184 [http-nio-8080-exec-3] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-05-05, 1
+2024-05-14 01:22:37,109 [http-nio-8080-exec-5] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 01:22:38,152 [http-nio-8080-exec-6] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 01:22:39,231 [http-nio-8080-exec-7] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 01:22:40,722 [http-nio-8080-exec-8] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-05-05, 1
+2024-05-14 01:22:45,773 [http-nio-8080-exec-9] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 01:22:48,050 [http-nio-8080-exec-1] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 01:22:48,706 [http-nio-8080-exec-2] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 01:22:49,563 [http-nio-8080-exec-3] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-05-05, 1
+2024-05-14 01:22:51,664 [http-nio-8080-exec-4] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 01:23:56,258 [http-nio-8080-exec-6] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 01:23:58,684 [http-nio-8080-exec-7] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 01:23:59,478 [http-nio-8080-exec-8] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 01:24:00,258 [http-nio-8080-exec-9] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 01:24:01,346 [http-nio-8080-exec-10] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-05-05, 1
+2024-05-14 01:27:24,659 [http-nio-8080-exec-2] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 01:27:54,200 [http-nio-8080-exec-5] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'ticketList' executed with arguments: 22
+2024-05-14 01:28:25,311 [http-nio-8080-exec-7] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 01:28:27,169 [http-nio-8080-exec-8] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 01:28:28,277 [http-nio-8080-exec-9] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 01:28:29,484 [http-nio-8080-exec-10] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-05-05, 1
+2024-05-14 01:29:33,740 [http-nio-8080-exec-2] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 01:29:35,219 [http-nio-8080-exec-3] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 01:29:37,185 [http-nio-8080-exec-5] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 01:29:38,108 [http-nio-8080-exec-6] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-05-05, 1
+2024-05-14 01:30:34,023 [http-nio-8080-exec-8] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 01:31:32,122 [http-nio-8080-exec-10] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 01:31:37,776 [http-nio-8080-exec-2] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 01:31:38,346 [http-nio-8080-exec-3] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 01:31:39,232 [http-nio-8080-exec-4] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-05-05, 1
+2024-05-14 01:31:39,921 [http-nio-8080-exec-5] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'ticketList' executed with arguments: 22
+2024-05-14 01:34:16,414 [http-nio-8080-exec-7] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 01:34:19,663 [http-nio-8080-exec-8] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 01:34:21,506 [http-nio-8080-exec-9] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 01:34:23,054 [http-nio-8080-exec-1] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-05-05, 1
+2024-05-14 01:34:24,039 [http-nio-8080-exec-2] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'ticketList' executed with arguments: 22
+2024-05-14 01:34:34,728 [http-nio-8080-exec-4] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 01:34:35,889 [http-nio-8080-exec-5] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 01:34:36,832 [http-nio-8080-exec-6] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-05-05, 1
+2024-05-14 01:34:37,535 [http-nio-8080-exec-7] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'ticketList' executed with arguments: 22
+2024-05-14 01:42:17,216 [http-nio-8080-exec-9] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 01:42:23,966 [http-nio-8080-exec-1] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 01:42:31,001 [http-nio-8080-exec-3] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 01:42:32,090 [http-nio-8080-exec-4] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 01:42:33,555 [http-nio-8080-exec-5] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-05-05, 1
+2024-05-14 01:46:13,425 [http-nio-8080-exec-7] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 01:46:15,345 [http-nio-8080-exec-9] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 01:46:16,618 [http-nio-8080-exec-10] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 01:46:17,535 [http-nio-8080-exec-1] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 01:46:18,603 [http-nio-8080-exec-2] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-05-05, 1
+2024-05-14 01:51:10,511 [http-nio-8080-exec-4] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 01:51:20,432 [http-nio-8080-exec-6] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 01:51:54,336 [http-nio-8080-exec-8] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 01:52:05,104 [http-nio-8080-exec-10] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 01:52:07,173 [http-nio-8080-exec-2] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 01:52:08,111 [http-nio-8080-exec-3] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-05-05, 1
+2024-05-14 01:52:09,413 [http-nio-8080-exec-4] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'ticketList' executed with arguments: 22
+2024-05-14 01:52:24,602 [http-nio-8080-exec-6] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 01:53:25,714 [http-nio-8080-exec-8] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 01:53:37,294 [http-nio-8080-exec-10] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 01:53:37,978 [http-nio-8080-exec-1] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 01:53:39,016 [http-nio-8080-exec-2] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-05-05, 1
+2024-05-14 01:53:40,030 [http-nio-8080-exec-3] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'ticketList' executed with arguments: 22
+2024-05-14 01:55:09,479 [http-nio-8080-exec-5] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 01:55:16,528 [http-nio-8080-exec-7] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 01:55:17,785 [http-nio-8080-exec-8] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 01:55:19,232 [http-nio-8080-exec-10] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 01:55:20,592 [http-nio-8080-exec-1] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-05-05, 1
+2024-05-14 01:55:21,533 [http-nio-8080-exec-2] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'ticketList' executed with arguments: 22
+2024-05-14 01:56:47,125 [http-nio-8080-exec-4] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 01:57:04,558 [http-nio-8080-exec-5] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 01:57:05,234 [http-nio-8080-exec-6] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 01:57:09,645 [http-nio-8080-exec-7] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 01:57:10,561 [http-nio-8080-exec-8] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 01:57:14,743 [http-nio-8080-exec-9] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 01:57:15,908 [http-nio-8080-exec-10] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 01:57:17,080 [http-nio-8080-exec-1] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-05-05, 1
+2024-05-14 01:57:23,580 [http-nio-8080-exec-2] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 01:57:24,570 [http-nio-8080-exec-3] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-05-05, 1
+2024-05-14 01:57:27,495 [http-nio-8080-exec-4] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 01:57:28,363 [http-nio-8080-exec-5] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 01:57:29,512 [http-nio-8080-exec-6] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-05-05, 1
+2024-05-14 01:57:30,412 [http-nio-8080-exec-7] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'ticketList' executed with arguments: 22
+2024-05-14 01:59:33,365 [http-nio-8080-exec-9] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 01:59:41,812 [http-nio-8080-exec-1] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 01:59:42,588 [http-nio-8080-exec-3] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 01:59:43,451 [http-nio-8080-exec-4] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-05-05, 1
+2024-05-14 01:59:44,322 [http-nio-8080-exec-5] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'ticketList' executed with arguments: 22
+2024-05-14 02:00:55,204 [http-nio-8080-exec-7] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 02:02:09,687 [http-nio-8080-exec-9] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 02:02:46,473 [http-nio-8080-exec-1] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 02:02:54,456 [http-nio-8080-exec-3] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 02:02:55,204 [http-nio-8080-exec-4] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 02:02:56,328 [http-nio-8080-exec-5] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-05-05, 1
+2024-05-14 02:02:59,548 [http-nio-8080-exec-6] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'ticketList' executed with arguments: 22
+2024-05-14 02:04:14,202 [http-nio-8080-exec-8] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 02:04:23,587 [http-nio-8080-exec-9] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 02:04:24,255 [http-nio-8080-exec-10] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 02:04:25,485 [http-nio-8080-exec-1] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-05-05, 1
+2024-05-14 02:04:26,319 [http-nio-8080-exec-2] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'ticketList' executed with arguments: 22
+2024-05-14 02:04:35,696 [http-nio-8080-exec-3] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 02:04:46,122 [http-nio-8080-exec-4] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 02:04:46,795 [http-nio-8080-exec-5] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 02:04:48,050 [http-nio-8080-exec-6] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-05-05, 1
+2024-05-14 02:04:48,934 [http-nio-8080-exec-7] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'ticketList' executed with arguments: 22
+2024-05-14 02:04:52,538 [http-nio-8080-exec-8] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-05-05, 1
+2024-05-14 02:04:53,753 [http-nio-8080-exec-9] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'ticketList' executed with arguments: 22
+2024-05-14 02:05:32,918 [http-nio-8080-exec-1] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 02:05:34,424 [http-nio-8080-exec-2] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 02:05:35,088 [http-nio-8080-exec-3] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 02:05:36,216 [http-nio-8080-exec-4] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-05-05, 1
+2024-05-14 02:05:38,905 [http-nio-8080-exec-6] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'ticketList' executed with arguments: 22
+2024-05-14 02:09:09,638 [http-nio-8080-exec-8] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findAllCinemaName' executed with arguments: 
+2024-05-14 02:09:11,934 [http-nio-8080-exec-9] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findMovieByScreening' executed with arguments: 1
+2024-05-14 02:09:12,933 [http-nio-8080-exec-10] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByDate' executed with arguments: 1, 1
+2024-05-14 02:09:14,050 [http-nio-8080-exec-1] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'findScreeningByTime' executed with arguments: 1, 2024-05-05, 1
+2024-05-14 02:09:16,278 [http-nio-8080-exec-2] INFO  com.ispan.theater.aspects.LogAspect ? - Method 'ticketList' executed with arguments: 22
+2024-05-14 02:09:53,392 [RMI TCP Connection(109)-127.0.0.1] INFO  o.s.b.a.SpringApplicationAdminMXBeanRegistrar$SpringApplicationAdmin ? - Application shutdown requested.
+2024-05-14 02:09:53,474 [RMI TCP Connection(109)-127.0.0.1] INFO  o.a.coyote.http11.Http11NioProtocol ? - Stopping ProtocolHandler ["http-nio-8080"]
+2024-05-14 02:09:53,532 [RMI TCP Connection(109)-127.0.0.1] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean ? - Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-05-14 02:09:53,571 [RMI TCP Connection(109)-127.0.0.1] INFO  com.zaxxer.hikari.HikariDataSource ? - HikariPool-1 - Shutdown initiated...
+2024-05-14 02:09:53,584 [RMI TCP Connection(109)-127.0.0.1] INFO  com.zaxxer.hikari.HikariDataSource ? - HikariPool-1 - Shutdown completed.
+2024-05-14 23:11:47,968 [restartedMain] INFO  c.ispan.theater.TheaterApplication ? - Starting TheaterApplication using Java 17.0.10 with PID 4444 (C:\Users\as541\OneDrive\桌面\movie\target\classes started by as541 in C:\Users\as541\OneDrive\桌面\movie)
+2024-05-14 23:11:47,969 [restartedMain] INFO  c.ispan.theater.TheaterApplication ? - No active profile set, falling back to 1 default profile: "default"
+2024-05-14 23:11:48,053 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor ? - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-05-14 23:11:48,053 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor ? - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-05-14 23:11:49,377 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate ? - Multiple Spring Data modules found, entering strict repository configuration mode
+2024-05-14 23:11:49,378 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate ? - Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2024-05-14 23:11:49,423 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport ? - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.ispan.theater.repository.ActorRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2024-05-14 23:11:49,425 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport ? - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.ispan.theater.repository.AdminRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2024-05-14 23:11:49,427 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport ? - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.ispan.theater.repository.AuditoriumLevelRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2024-05-14 23:11:49,429 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport ? - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.ispan.theater.repository.AuditoriumRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2024-05-14 23:11:49,430 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport ? - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.ispan.theater.repository.CategoryRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2024-05-14 23:11:49,432 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport ? - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.ispan.theater.repository.CinemaRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2024-05-14 23:11:49,436 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport ? - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.ispan.theater.repository.CollectRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2024-05-14 23:11:49,437 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport ? - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.ispan.theater.repository.CommentRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2024-05-14 23:11:49,439 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport ? - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.ispan.theater.repository.CustomerServiceRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2024-05-14 23:11:49,441 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport ? - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.ispan.theater.repository.EmployeeRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2024-05-14 23:11:49,447 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport ? - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.ispan.theater.repository.LayoutRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2024-05-14 23:11:49,451 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport ? - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.ispan.theater.repository.MovieActRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2024-05-14 23:11:49,454 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport ? - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.ispan.theater.repository.MoviePictureRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2024-05-14 23:11:49,458 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport ? - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.ispan.theater.repository.MovieRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2024-05-14 23:11:49,462 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport ? - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.ispan.theater.repository.OrderDetailRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2024-05-14 23:11:49,466 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport ? - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.ispan.theater.repository.OrderRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2024-05-14 23:11:49,469 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport ? - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.ispan.theater.repository.RatedRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2024-05-14 23:11:49,470 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport ? - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.ispan.theater.repository.ScreeningRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2024-05-14 23:11:49,472 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport ? - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.ispan.theater.repository.SeatRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2024-05-14 23:11:49,475 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport ? - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.ispan.theater.repository.TicketRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2024-05-14 23:11:49,477 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport ? - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.ispan.theater.repository.UserRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2024-05-14 23:11:49,478 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate ? - Finished Spring Data repository scanning in 94 ms. Found 0 JDBC repository interfaces.
+2024-05-14 23:11:49,489 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate ? - Multiple Spring Data modules found, entering strict repository configuration mode
+2024-05-14 23:11:49,490 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate ? - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-05-14 23:11:49,583 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate ? - Finished Spring Data repository scanning in 89 ms. Found 21 JPA repository interfaces.
+2024-05-14 23:11:51,185 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer ? - Tomcat initialized with port 8080 (http)
+2024-05-14 23:11:51,201 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol ? - Initializing ProtocolHandler ["http-nio-8080"]
+2024-05-14 23:11:51,204 [restartedMain] INFO  o.a.catalina.core.StandardService ? - Starting service [Tomcat]
+2024-05-14 23:11:51,204 [restartedMain] INFO  o.a.catalina.core.StandardEngine ? - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2024-05-14 23:11:51,338 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] ? - Initializing Spring embedded WebApplicationContext
+2024-05-14 23:11:51,338 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext ? - Root WebApplicationContext: initialization completed in 3285 ms
+2024-05-14 23:11:51,656 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper ? - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-05-14 23:11:51,751 [restartedMain] INFO  org.hibernate.Version ? - HHH000412: Hibernate ORM core version 6.4.4.Final
+2024-05-14 23:11:51,800 [restartedMain] INFO  o.h.c.i.RegionFactoryInitiator ? - HHH000026: Second-level cache disabled
+2024-05-14 23:11:52,225 [restartedMain] INFO  o.s.o.j.p.SpringPersistenceUnitInfo ? - No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-05-14 23:11:52,266 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource ? - HikariPool-1 - Starting...
+2024-05-14 23:11:52,801 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool ? - HikariPool-1 - Added connection ConnectionID:1 ClientConnectionId: 8c304386-3cef-43ff-9608-a65365d9dbbe
+2024-05-14 23:11:52,804 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource ? - HikariPool-1 - Start completed.
+2024-05-14 23:11:52,840 [restartedMain] WARN  org.hibernate.orm.deprecation ? - HHH90000025: SQLServerDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2024-05-14 23:11:54,515 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator ? - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-05-14 23:11:57,311 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean ? - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-05-14 23:11:57,788 [restartedMain] INFO  o.s.d.j.r.query.QueryEnhancerFactory ? - JSqlParser is in classpath; If applicable, JSqlParser will be used
+2024-05-14 23:11:57,788 [restartedMain] INFO  o.s.d.j.r.query.QueryEnhancerFactory ? - Hibernate is in classpath; If applicable, HQL parser will be used.
+2024-05-14 23:11:59,410 [restartedMain] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration ? - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-05-14 23:12:00,172 [restartedMain] WARN  o.s.data.convert.CustomConversions ? - Registering converter from class microsoft.sql.DateTimeOffset to class java.time.OffsetDateTime as reading converter although it doesn't convert from a store-supported type; You might want to check your annotation setup at the converter implementation
+2024-05-14 23:12:00,421 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer ? - LiveReload server is running on port 35729
+2024-05-14 23:12:00,459 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol ? - Starting ProtocolHandler ["http-nio-8080"]
+2024-05-14 23:12:00,528 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer ? - Tomcat started on port 8080 (http) with context path ''
+2024-05-14 23:12:00,539 [restartedMain] INFO  c.ispan.theater.TheaterApplication ? - Started TheaterApplication in 13.319 seconds (process running for 14.472)
+2024-05-14 23:14:51,548 [RMI TCP Connection(10)-127.0.0.1] INFO  o.s.b.a.SpringApplicationAdminMXBeanRegistrar$SpringApplicationAdmin ? - Application shutdown requested.
+2024-05-14 23:14:51,552 [RMI TCP Connection(10)-127.0.0.1] INFO  o.a.coyote.http11.Http11NioProtocol ? - Stopping ProtocolHandler ["http-nio-8080"]
+2024-05-14 23:14:51,569 [RMI TCP Connection(10)-127.0.0.1] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean ? - Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-05-14 23:14:51,573 [RMI TCP Connection(10)-127.0.0.1] INFO  com.zaxxer.hikari.HikariDataSource ? - HikariPool-1 - Shutdown initiated...
+2024-05-14 23:14:51,587 [RMI TCP Connection(10)-127.0.0.1] INFO  com.zaxxer.hikari.HikariDataSource ? - HikariPool-1 - Shutdown completed.

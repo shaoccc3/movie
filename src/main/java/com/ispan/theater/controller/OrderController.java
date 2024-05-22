@@ -1,6 +1,5 @@
 package com.ispan.theater.controller;
 
-import java.util.Date;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -8,13 +7,18 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ispan.theater.domain.Order;
-import com.ispan.theater.domain.Ticket;
+import com.ispan.theater.dto.InsertOrderDTO;
+import com.ispan.theater.repository.OrderRepository;
 import com.ispan.theater.repository.TicketRepository;
 import com.ispan.theater.service.CinemaService;
+import com.ispan.theater.service.ECPayService;
+import com.ispan.theater.service.LinePayService;
 import com.ispan.theater.service.OrderService;
 
 @RestController
@@ -26,7 +30,12 @@ public class OrderController {
 	TicketRepository ticketRepository;
 	@Autowired
 	CinemaService cinemaService;
-	
+	@Autowired
+	LinePayService linePayService;
+	@Autowired
+	ECPayService ecPayService;
+	@Autowired
+	OrderRepository orderRepository;
 	@GetMapping("/movie/order")
 //	@Cacheable(cacheNames = "Order",key="#id")
 	public String getOrderById(@RequestParam(name="id")Integer id) {
@@ -59,34 +68,6 @@ public class OrderController {
 		return orderJson.put("orders", array).put("success", true).toString();
 	}
 	
-	//test
-	@GetMapping("/movie/locktest")
-	public String lockTest() {
-		Order order=orderService.findOrderByOrderId(3);
-		synchronized (this) {
-			if(order.getOrderAmount()==5) {
-				return new JSONObject().put("success", false).toString();
-			}
-			orderService.updeteOrderAmount(order);
-		}
-		return new JSONObject().put("success",true).toString();
-	}
-	
-	//test
-	@GetMapping("/movie/addOrderTest") 
-	public String addOrderTest(@RequestParam("ticketId")Integer ticketId) {
-		Ticket ticket=ticketRepository.findById(ticketId).orElse(null);
-		synchronized (this) {
-			if(!"未售出".equals(ticket.getIsAvailable())) {
-				System.out.println(new Date(System.currentTimeMillis())+"未買到");
-				return new JSONObject().put("success", false).toString();
-			}
-			orderService.setTicket(ticket);
-			System.out.println(new Date(System.currentTimeMillis())+"買到");
-		}
-		return new JSONObject().put("success", true).toString();
-	}
-	
 	@GetMapping("/movie/findAllCinema")
 	public String findAllCinema() {
 		return new JSONObject().put("allCinemaName", cinemaService.findAllCinemaName()).toString(); 
@@ -112,12 +93,46 @@ public class OrderController {
 		return new JSONObject().put("tickets", orderService.ticketList(screeningId)).toString();
 	}
 	
-	
-
-	@GetMapping("/movie/tickets1")
-	public String findTickets1(@RequestParam("screeningId")Integer screeningId) {
-		return new JSONObject().put("tickets", orderService.ticketList1(screeningId)).toString();
+	@PostMapping("/movie/booking")
+	public String booking(@RequestBody InsertOrderDTO insertOrderDto) {
+		System.out.println(insertOrderDto);
+		String json=null;
+		synchronized (this) {
+			json = orderService.createOrder(insertOrderDto);
+		}
+		return json;
 	}
+
+	@GetMapping("/movie/linePayConfirm")
+	public String LinePayConfirm(@RequestParam("transactionId")String transactionId,@RequestParam("orderId")Integer orderId) {
+		System.out.println(transactionId+","+orderId);
+		return orderService.orderCompleted(transactionId,orderId);
+	}
+	
+	@GetMapping("/movie/ecPayConfirm")
+	public String ECPayConfirm(@RequestParam("MerchantTradeNo")String merchantTradeNo) {
+		return new JSONObject().put("Order",orderRepository.orderCompletedByECPay(merchantTradeNo)).toString();
+	}
+	
+	@GetMapping("/movie/getOrder")
+	public String getOrder(@RequestParam("userId")Integer userId,@RequestParam("page")Integer page) {
+		return orderService.getOrder(userId, page);
+	}
+	
+	@GetMapping("/movie/getOrderDetail")
+	public String getOrderDetail(@RequestParam("orderId")Integer orderId) {
+		return orderService.getOrderDetail(orderId);
+	}
+	
+	
+//	@PostMapping("/movie/test")
+//	public String test(@RequestBody InsertOrderDTO insertOrderDto) {
+//		System.out.println(insertOrderDto);
+//		System.out.println("linePay".equals(insertOrderDto.getPaymentOptions()));
+//		System.out.println("ecPay".equals(insertOrderDto.getPaymentOptions()));
+//		return ecPayService.ecpayCheckout();
+//	}
+	
 }
 
 
