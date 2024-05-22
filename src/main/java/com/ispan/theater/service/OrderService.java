@@ -7,8 +7,12 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.paypal.api.payments.Links;
+import com.paypal.api.payments.Payment;
+import com.paypal.base.rest.PayPalRESTException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,6 +47,10 @@ public class OrderService {
 	LinePayService linePayService;
 	@Autowired
 	ECPayService ecPayService;
+	@Autowired
+	PaypalService paypalService;
+	String paypalcancelUrl = "https://httpbin.org/get?paymentStatus=cancelled";
+
 	@Transactional(isolation=Isolation.READ_COMMITTED)
 	public Order findOrderByOrderId(Integer id) {
 		Optional<Order> order=orderRepository.findById(id);
@@ -89,13 +97,10 @@ public class OrderService {
 	public List<Map<String,Object>> ticketList(Integer id){
 		return ticketRepository.getTickets(id);
 	}
-	
-	public List<Map<String,Object>> ticketList1(Integer id){
-		return ticketRepository.getTickets(id);
-	}
+
 	
 	@Transactional
-	public String createOrder(InsertOrderDTO insertOrderDto) {
+	public String createOrder(InsertOrderDTO insertOrderDto) throws PayPalRESTException {
 		String Date=DatetimeConverter.createSqlDatetime(new Date());
 		Order order=null;
 		String result="";
@@ -125,6 +130,23 @@ public class OrderService {
 			order.setSupplier("ecpay");
 			result=ecPayService.ecpayCheckout(order, insertOrderDto.getTicketId().size());
 		}
+		if("paypal".equals(insertOrderDto.getPaymentOptions())){
+			String paypalsuccessUrl =  "http://localhost:5173/order/paymentsuccess?orderId=" + order.getId();
+			try {
+				order.setSupplier("paypal");
+				Payment payment = paypalService.createPayment(order.getOrderAmount(),"TWD","paypal", "sale", "Payment Description", paypalcancelUrl,
+						paypalsuccessUrl);
+				for (Links link : payment.getLinks()) {
+					if (link.getRel().equals("approval_url")) {
+						return link.getHref();
+					}
+				}
+				result =  "No approval URL FOUND";
+			} catch (PayPalRESTException e) {
+				result ="ERROR: " + e.getMessage();
+			}
+
+		}
 		return result;
 	}
 	
@@ -133,6 +155,20 @@ public class OrderService {
 		System.out.println(linePayService.confirm(transactionId,orderId).get("returnCode"));//returnCode為0000
 		orderRepository.setPaymentNoAndConditionByOrderId(transactionId, orderId);
 		return new JSONObject().put("Order", orderRepository.orderCompleted(orderId)).toString();
+	}
+	@Transactional
+	public String completePaypalOrder(String paymentId, String payerId, Integer orderId) {
+		try {
+			Payment payment = paypalService.executePayment(paymentId, payerId);
+			String saleId = paypalService.getSaleIdFromPayment(payment);
+			if (payment.getState().equals("approved")) {
+				orderRepository.setPaymentNoAndConditionByOrderId(saleId, orderId);
+				return new JSONObject().put("success", true).put("order", orderRepository.orderCompleted(orderId)).toString();
+			}
+		} catch (PayPalRESTException e) {
+			return new JSONObject().put("success", false).put("error", e.getMessage()).toString();
+		}
+		return new JSONObject().put("success", false).toString();
 	}
 	
 	public String getOrder(Integer userId,Integer page) {

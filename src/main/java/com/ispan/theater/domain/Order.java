@@ -28,7 +28,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "\"Order\"")
-public class Order implements Persistable{
+public class Order implements Persistable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_id", nullable = false)
@@ -48,43 +48,43 @@ public class Order implements Persistable{
 
     @Column(name = "order_amount", nullable = false)
     private Double orderAmount;
-    
-    @Column(name = "payment_condition", nullable = false,columnDefinition = "false")
+
+    @Column(name = "payment_condition", nullable = false, columnDefinition = "BIT DEFAULT 0")
     private boolean paymentCondition;
 
     @Column(name = "payment_no")
     private String paymentNo;
-    
+
     @Column(name = "supplier")
     private String supplier;
-    
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "movie_id", nullable = false)
     private Movie movie;
-    
-    @OneToMany(cascade = CascadeType.ALL,mappedBy ="order",fetch=FetchType.LAZY)
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "order", fetch = FetchType.LAZY)
     private List<OrderDetail> orderDetails;
-    
+
     @PrePersist
     public void onCreate() {
-    	if(createDate==null) {
-    		createDate=new Date();
-    	}
-    	if(modifyDate==null) {
-    		modifyDate=new Date();
-    	}
+        if (createDate == null) {
+            createDate = new Date();
+        }
+        if (modifyDate == null) {
+            modifyDate = new Date();
+        }
     }
- 
-	@Override
-	public String toString() {
-		return "Order [id=" + id + ", user_id=" + user.getId() + ", createDate=" + createDate + ", modifyDate=" + modifyDate
-				+ ", orderAmount=" + orderAmount + ", movie=" + movie.getName() + ", paymentCondition=" + paymentCondition+"]";
-	}
 
-	@Override
-	public boolean isNew() {
-		return true;
-	}
-	
-	
+    @Override
+    public String toString() {
+        return "Order [id=" + id + ", user_id=" + user.getId() + ", createDate=" + createDate + ", modifyDate=" + modifyDate
+                + ", orderAmount=" + orderAmount + ", movie=" + movie.getName() + ", paymentCondition=" + paymentCondition + "]";
+    }
+
+    @Override
+    public boolean isNew() {
+        return true;
+    }
+
+
 }

@@ -1,7 +1,10 @@
 package com.ispan.theater.controller;
 
+import com.ispan.theater.domain.Order;
 import com.ispan.theater.domain.PaypalOrder;
 import com.ispan.theater.dto.PaymentRequest;
+import com.ispan.theater.repository.OrderRepository;
+import com.ispan.theater.service.OrderService;
 import com.ispan.theater.service.PaypalService;
 import com.ispan.theater.util.JsonWebTokenUtility;
 import com.paypal.api.payments.Links;
@@ -25,6 +28,10 @@ public class PaypalController {
     private JsonWebTokenUtility jsonWebTokenUtility;
     String cancelUrl = "https://httpbin.org/get?paymentStatus=cancelled";
     String successUrl =  "http://localhost:5173/order/paymentsuccess";
+    @Autowired
+    private OrderService orderService;
+    @Autowired
+    private OrderRepository orderRepository;
 
     @PostMapping("/pay")
     public ResponseEntity<?> createPayment(@RequestBody PaymentRequest paymentRequest) {
@@ -47,42 +54,45 @@ public class PaypalController {
 
     }
 
-    @GetMapping("/execute")//訂單ID目前用int假設 使用時Entity需修改成Order
-    public  ResponseEntity<?> executePayment(@RequestParam String PayerID, @RequestParam String paymentId) {
-        //String data = jsonWebTokenUtility.validateEncryptedToken(token);
+    @GetMapping("/execute")
+    public  ResponseEntity<?> executePayment(@RequestParam String PayerID, @RequestParam String paymentId,@RequestParam Integer orderId) {
         try {
             Payment payment = paypalService.executePayment(paymentId, PayerID);
             String saleid = paypalService.getSaleIdFromPayment(payment);
             System.out.println(paymentId);
+            Order order = orderService.findOrderByOrderId(orderId);
             if ("approved".equals(payment.getState())) {
-                paypalService.insertPaypalOrder(paymentId,PayerID,1,"付款成功",saleid);
+                order.setPaymentNo(saleid);
+                order.setPaymentCondition(true);
+                orderRepository.save(order);
                 return ResponseEntity.ok(new HashMap<String, String>() {{
                     put("status", "success");
-                    put("url", "http://localhost:5173/movie/findlist");
+                    put("url", "http://localhost:5173/order/findOrder");
                 }});
             } else {
-                paypalService.insertPaypalOrder(paymentId,PayerID,1,"付款失敗",saleid);
+                order.setPaymentNo(saleid);
+                order.setPaymentCondition(false);
+                orderRepository.save(order);
+                //paypalService.insertPaypalOrder(paymentId,PayerID,1,"付款失敗",saleid);
                 return ResponseEntity.ok(new HashMap<String, String>() {{
                     put("status", "failure");
-                    put("url", "http://localhost:5173/");
+                    put("url", "http://localhost:5173/order/findOrder");
                 }});
             }
         } catch (Exception e) {
             return ResponseEntity.ok(new HashMap<String, String>() {{
                 put("status", "error");
-                put("url", "http://localhost:5173/");
+                put("url", "http://localhost:5173/order/findOrder");
             }});
         }
     }
     @PostMapping("/refund")
     public ResponseEntity<?> refundPaypal(@RequestParam("orderId") Integer orderId) {
         try {
-            PaypalOrder paypalOrder = paypalService.findByOrderId(orderId);
-            String saleId = paypalOrder.getSaleId();
-            String refundStatus = paypalService.refundPayment(saleId);
+            Order order = orderService.findOrderByOrderId(orderId);
+            String saleId = order.getPaymentNo();
+            String refundStatus = paypalService.refundPayment(saleId,order);
             if ("success".equals(refundStatus)) {
-                paypalOrder.setStatus("已退款");
-                paypalService.updatePaypalorder(paypalOrder);
                 return ResponseEntity.ok(new HashMap<String, Object>() {{
                     put("status", "success");
                     put("message", "Refund successful");

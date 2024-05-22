@@ -2,6 +2,7 @@ package com.ispan.theater.controller;
 
 import java.util.List;
 
+import com.paypal.base.rest.PayPalRESTException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,7 +95,7 @@ public class OrderController {
 	}
 	
 	@PostMapping("/movie/booking")
-	public String booking(@RequestBody InsertOrderDTO insertOrderDto) {
+	public String booking(@RequestBody InsertOrderDTO insertOrderDto) throws PayPalRESTException {
 		System.out.println(insertOrderDto);
 		String json=null;
 		synchronized (this) {
@@ -112,6 +113,10 @@ public class OrderController {
 	@GetMapping("/movie/ecPayConfirm")
 	public String ECPayConfirm(@RequestParam("MerchantTradeNo")String merchantTradeNo) {
 		return new JSONObject().put("Order",orderRepository.orderCompletedByECPay(merchantTradeNo)).toString();
+	}
+	@GetMapping("/movie/paypalConfirm")
+	public String paypalConfirm(@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId, @RequestParam("orderId") Integer orderId) {
+		return orderService.completePaypalOrder(paymentId, payerId, orderId);
 	}
 	
 	@GetMapping("/movie/getOrder")

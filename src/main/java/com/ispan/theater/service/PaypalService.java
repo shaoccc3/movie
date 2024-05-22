@@ -1,6 +1,8 @@
 package com.ispan.theater.service;
 
+import com.ispan.theater.domain.Order;
 import com.ispan.theater.domain.PaypalOrder;
+import com.ispan.theater.repository.OrderRepository;
 import com.ispan.theater.repository.PaypalOrderRepository;
 import com.paypal.api.payments.*;
 import com.paypal.base.rest.APIContext;
@@ -20,6 +22,8 @@ public class PaypalService {
     private PaypalOrderRepository paypalOrderRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private OrderRepository orderRepository;
 
     public Payment createPayment(Double total, String currency, String method, String intent, String description
             , String cancelUrl, String successUrl) throws PayPalRESTException {
@@ -55,7 +59,7 @@ public class PaypalService {
         return payment.execute(apiContext, paymentExecution);
     }
 
-    public String refundPayment(String saleId) throws PayPalRESTException {
+    public String refundPayment(String saleId,Order order) throws PayPalRESTException {
         Sale sale = Sale.get(apiContext, saleId);
         String saleAmouunt = sale.getAmount().getTotal();
         String currency = sale.getAmount().getCurrency();
@@ -64,6 +68,8 @@ public class PaypalService {
         refundRequest.setAmount(amount);
         Refund refund = sale.refund(apiContext, refundRequest);
         if (refund.getState().equals("completed")) {
+            order.setPaymentCondition(false);
+            orderRepository.save(order);
             return "success";
         } else {
             return "fail";
@@ -89,14 +95,14 @@ public class PaypalService {
         PaypalOrder paypalOrder = new PaypalOrder();
         paypalOrder.setPaymentId(paymentId);
         paypalOrder.setPayerId(PayerID);
-        paypalOrder.setOrderId(orderId);
+        Order order = orderRepository.findById(orderId).orElse(null);
         paypalOrder.setStatus(status);
         paypalOrder.setSaleId(saleId);
         paypalOrderRepository.save(paypalOrder);
     }
 
-    public PaypalOrder findByOrderId(Integer orderId) throws PayPalRESTException {
-        return paypalOrderRepository.findByOrderId(orderId);
-    }
+//    public PaypalOrder findByOrderId(Integer orderId) throws PayPalRESTException {
+//        return paypalOrderRepository.findByOrderId(orderId);
+//    }
 
 }

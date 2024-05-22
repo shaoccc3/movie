@@ -18,10 +18,8 @@ public class PaypalOrder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    //    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+//    @ManyToOne(fetch = FetchType.EAGER, optional = false)
 //    @JoinColumn(name = "order_id", nullable = false)
-    @Column(name = "orderidint", nullable = false)
-    private Integer orderId;
 //    @JsonIgnore
 //    private Order order;
 

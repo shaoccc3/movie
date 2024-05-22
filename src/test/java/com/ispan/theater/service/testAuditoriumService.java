@@ -1,6 +1,6 @@
 package com.ispan.theater.service;
 
-<<<<<<< HEAD
+
 import com.ispan.theater.domain.Auditorium;
 import com.ispan.theater.domain.AuditoriumLevel;
 import com.ispan.theater.domain.Cinema;
@@ -8,18 +8,16 @@ import com.ispan.theater.domain.Layout;
 import com.ispan.theater.repository.AuditoriumLevelRepository;
 import com.ispan.theater.repository.LayoutRepository;
 import org.json.JSONObject;
-=======
->>>>>>> origin/宇
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-<<<<<<< HEAD
+
 import java.util.List;
-=======
-import com.ispan.theater.domain.Auditorium;
->>>>>>> origin/宇
+
+
 
 @SpringBootTest
 public class testAuditoriumService {
@@ -34,7 +32,7 @@ public class testAuditoriumService {
     @Autowired
     private LayoutRepository layoutRepository;
 
-<<<<<<< HEAD
+
     @Test
     public void testAuditoriumService() {
         AuditoriumLevel auditoriumLevel = new AuditoriumLevel();
@@ -49,7 +47,7 @@ public class testAuditoriumService {
 
         Auditorium auditorium =  auditoriumService.saveAuditorium(jsonObject);
     }
-=======
+
 //    @Test
 //    public void testAuditoriumService() {
 //        AuditoriumLevel auditoriumLevel = new AuditoriumLevel();
@@ -65,7 +63,6 @@ public class testAuditoriumService {
 //        Auditorium auditorium =  auditoriumService.saveAuditorium(jsonObject);
 //    }
     @Transactional
->>>>>>> origin/宇
     @Test
     public void testLayout() {
         Auditorium auditorium = auditoriumService.getAuditorium(3);

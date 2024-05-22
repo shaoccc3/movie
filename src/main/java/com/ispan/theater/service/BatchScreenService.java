@@ -14,8 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class BatchScreenService {
@@ -28,85 +30,33 @@ public class BatchScreenService {
     @Autowired
     private CinemaRepository cinemaRepository;
 
-//    public void batchScreenInsert(SchduleDto request) {
-//        Movie movie = movieRepository.findById(request.getMovieId()).orElseThrow(() -> new RuntimeException("Movie not found"));
-//        Auditorium auditorium = auditoriumRepository.findById(request.getAudotoriumId()).orElseThrow(() -> new RuntimeException("Auditorium not found"));
-//        Calendar calendar = Calendar.getInstance();
-//        calendar.setTime(DatetimeConverter.parse(request.getStartDate(),"yyyy-MM-dd"));
-//        Date endDate = DatetimeConverter.parse(request.getEndDate(),"yyyy-MM-dd");
-//        String frequency = request.getFrequency();
-//        while (!calendar.getTime().after(endDate)){
-//            calendar.set(Calendar.HOUR_OF_DAY, 9);
-//            calendar.set(Calendar.MINUTE, 0);
-//            calendar.set(Calendar.SECOND, 0);
-//            Date dayEnd = (Date) calendar.getTime().clone();
-//            dayEnd.setHours(23);
-//            dayEnd.setMinutes(59);
-//            if(frequency.equals("僅熱門時段")){
-//                if(calendar.getTime().getDay()>0&&calendar.getTime().getDay()<6){
-//                    Date temp = calendar.getTime();
-//                    temp.setHours(16);
-//                    calendar.setTime(temp);
-//                }
-//                Screening screening = new Screening();
-//                screening.setStartTime(calendar.getTime());
-//                calendar.add(Calendar.MINUTE,movie.getDuration());
-//                screening.setMovie(movie);
-//            } else if (frequency.equals("僅早午夜場")) {
-//                if(calendar.getTime().getHours()>10 && calendar.getTime().getHours()<21){
-//                    Date temp = calendar.getTime();
-//                    temp.setHours(21);
-//                    calendar.setTime(temp);
-//                }
-//
-//            }
-//            else {
-//                for(int i=0;i<=request.getDailySessions();i++){
-//                    Screening screening = new Screening();
-//                    screening.setStartTime(calendar.getTime());
-//                    calendar.add(Calendar.MINUTE,movie.getDuration());
-//
-//                    screening.setMovie(movie);
-//                    screening.setEndTime(calendar.getTime());
-//                    calendar.add(Calendar.MINUTE,30);
-//                    if(calendar.getTime().after(dayEnd)){
-//                        break;
-//                    }
-//                    screening.setAuditorium(auditorium);
-//                    screening.setCreateDate(new Date());
-//                    screening.setModifyDate(new Date());
-//                    screeningRepository.save(screening);
-//                }
-//            }
-//            calendar.add(Calendar.DATE, 1);
-//        }
 
-
-    //    }
     @Transactional
-    public void batchScreenInsert(SchduleDto request) {
+    public List<Screening> batchScreenInsert(SchduleDto request) {
         Movie movie = movieRepository.findById(request.getMovieId()).orElseThrow(() -> new RuntimeException("Movie not found"));
         Auditorium auditorium = auditoriumRepository.findById(request.getAudotoriumId()).orElseThrow(() -> new RuntimeException("Auditorium not found"));
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(DatetimeConverter.parse(request.getStartDate(), "yyyy-MM-dd"));
         Date endDate = DatetimeConverter.parse(request.getEndDate(), "yyyy-MM-dd");
-
+        List<Screening> allScreenings = new ArrayList<>();
         while (!calendar.getTime().after(endDate)) {
-            setupDailyScreenings(calendar, movie, auditorium, request.getFrequency(), request.getDailySessions());
+            List<Screening> dailyScreenings = setupDailyScreenings(calendar, movie, auditorium, request.getFrequency(), request.getDailySessions());
+            allScreenings.addAll(dailyScreenings);
             calendar.add(Calendar.DATE, 1);
         }
+        return allScreenings;
     }
 
-    private void setupDailyScreenings(Calendar date, Movie movie, Auditorium auditorium, String frequency, int sessionsPerDay) {
+    private List<Screening> setupDailyScreenings(Calendar date, Movie movie, Auditorium auditorium, String frequency, int sessionsPerDay) {
         Calendar sessionTime = (Calendar) date.clone();
+        List<Screening> screenings = new ArrayList<>();
         sessionTime.set(Calendar.HOUR_OF_DAY, 9);
         sessionTime.set(Calendar.MINUTE, 0);
         sessionTime.set(Calendar.SECOND, 0);
         int endHour = 23;
         int endHourmin = 1;
         int currentDay = sessionTime.get(Calendar.DAY_OF_YEAR);
-        System.out.println(frequency);
         if (frequency.equals("僅熱門時段")) {
             if (sessionTime.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || sessionTime.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
                 // 周末全天
@@ -142,12 +92,14 @@ public class BatchScreenService {
             screening.setModifyDate(new Date());
 
             screeningRepository.save(screening);
+            screenings.add(screening);
             sessionTime.add(Calendar.MINUTE, 30);  // 增加30分鐘緩衝
 
             if (hourOfDay > endHour || hourOfDay < endHourmin || sessionTime.get(Calendar.DAY_OF_YEAR) != currentDay) {
                 break; // 確保不超過指定的結束時間，且不跨越到新的一天
             }
         }
+        return screenings;
     }
 
 
