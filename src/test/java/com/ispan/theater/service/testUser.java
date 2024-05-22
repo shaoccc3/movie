@@ -72,7 +72,7 @@ public class testUser {
 		int minDay = (int) LocalDate.of(1970, 1, 1).toEpochDay();
 		int maxDay = (int) LocalDate.of(2024, 5, 20).toEpochDay();
 
-		for (int i = 0; i <= 35; i++) {
+		for (int i = 0; i <= 150; i++) {
 			//隨機產生日期
 			Random rand = new Random();
 			long randDay = minDay + rand.nextInt(maxDay - minDay);

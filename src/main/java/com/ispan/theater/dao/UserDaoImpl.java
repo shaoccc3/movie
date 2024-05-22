@@ -87,7 +87,7 @@ public class UserDaoImpl implements UserDao {
 		if (registrationDateEnd != null && registrationDateEnd.length() != 0) {
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 			try {
-				predicates.add(criteriaBuilder.lessThan(table.get("registrationDate"), formatter.parse(registrationDateStart)));
+				predicates.add(criteriaBuilder.lessThan(table.get("registrationDate"), formatter.parse(registrationDateEnd)));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -194,7 +194,7 @@ public class UserDaoImpl implements UserDao {
 		if (registrationDateEnd != null && registrationDateEnd.length() != 0) {
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 			try {
-				predicates.add(criteriaBuilder.lessThan(table.get("registrationDate"), formatter.parse(registrationDateStart)));
+				predicates.add(criteriaBuilder.lessThan(table.get("registrationDate"), formatter.parse(registrationDateEnd)));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
