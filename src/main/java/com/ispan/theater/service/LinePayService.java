@@ -22,6 +22,7 @@ import com.ispan.theater.linepay.ConfirmData;
 import com.ispan.theater.linepay.ProductForm;
 import com.ispan.theater.linepay.ProductPackageForm;
 import com.ispan.theater.linepay.RedirectUrls;
+import com.ispan.theater.linepay.RefundData;
 import com.ispan.theater.repository.OrderRepository;
 
 @Service
@@ -115,5 +116,32 @@ public class LinePayService {
 		return reponse;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public Map<String,String> refund(String transactionId){
+		
+		RestTemplate restTemplate=new RestTemplate();
+
+		RefundData refundData=new RefundData("");
+		String refundNonce=UUID.randomUUID().toString();
+		String refundUrl="/v3/payments/"+transactionId+"/refund";
+		String ChannelSecret = "cc93c047b1eb1ec2d9cad8561b942310";
+		ObjectMapper mapper=new ObjectMapper();
+		Map<String,String> reponse=null;
+		
+		try {
+			String signatureRefund = encrypt(ChannelSecret, ChannelSecret + refundUrl + mapper.writeValueAsString(refundData) + refundNonce);
+			HttpHeaders httpHeaders=new HttpHeaders();
+			httpHeaders.add("X-LINE-ChannelId", "2005109267");
+			httpHeaders.add("X-LINE-Authorization-Nonce", refundNonce);
+			httpHeaders.add("X-LINE-Authorization",signatureRefund);
+			httpHeaders.add("Content-Type", "application/json");
+			HttpEntity<String> httpEntity=new HttpEntity<>(mapper.writeValueAsString(refundData),httpHeaders);
+			reponse=restTemplate.postForObject("https://sandbox-api-pay.line.me/v3/payments/"+transactionId+"/refund", httpEntity, Map.class);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		
+		return reponse;
+	}
 	
 }

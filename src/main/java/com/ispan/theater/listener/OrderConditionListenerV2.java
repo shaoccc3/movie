@@ -1,13 +1,14 @@
 package com.ispan.theater.listener;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 import com.ispan.theater.service.OrderService;
+
 @Component
 public class OrderConditionListenerV2 implements ApplicationListener<OrderConditionEventV2> {
-	
 	@Autowired
 	OrderService orderService;
 	@Override

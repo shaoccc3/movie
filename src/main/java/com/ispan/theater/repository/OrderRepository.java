@@ -91,4 +91,14 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 	@Query(value="delete from \"Order\" where payment_condition=0 and user_id=:userId",nativeQuery=true)
 	void deleteOrderStep3Version2(@Param("userId")Integer userId);
 	
+	@Modifying
+	@Query(value="update t set t.is_available= '未售出' from  Ticket as t  where t.Ticket_id in (select od.ticket_id from OrderDetail as od where od.order_id=:orderId)",nativeQuery=true)
+	void orderRefundStep1(@Param("orderId")Integer orderId);
+	@Modifying
+	@Query(value="delete from OrderDetail where order_id =:orderId",nativeQuery=true)
+	void orderRefundStep2(@Param("orderId")Integer orderId);
+	@Modifying
+	@Query(value="delete from \"Order\" where order_id=:orderId",nativeQuery=true)
+	void orderRefundStep3(@Param("orderId")Integer orderId);
+	
 }

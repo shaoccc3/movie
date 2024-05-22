@@ -46,8 +46,8 @@ public class OrderServiceTest {
 		countDownLatch.await();
 		executor.shutdown();
 	}
-	@Test
-	@Transactional
+//	@Test
+//	@Transactional
 	public void test1() {
 //		System.out.println(os.findOrder(11).toString());
 		//1043
@@ -63,6 +63,13 @@ public class OrderServiceTest {
 //	public void test3() {
 //		System.out.println(or.orderTotalByUserId(3).get("order_total"));
 //	}
+	
+	
+	  @Test
+		public void test4() {
+		  os.refund(1061);
+		}
+	
 }
 
 

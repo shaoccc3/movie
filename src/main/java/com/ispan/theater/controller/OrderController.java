@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ispan.theater.domain.Order;
 import com.ispan.theater.dto.InsertOrderDTO;
 import com.ispan.theater.listener.OrderConditionPublisher;
-import com.ispan.theater.listener.OrderConditionPublisherV2;
 import com.ispan.theater.repository.OrderRepository;
 import com.ispan.theater.repository.TicketRepository;
 import com.ispan.theater.service.CinemaService;
@@ -40,8 +39,6 @@ public class OrderController {
 	OrderRepository orderRepository;
 	@Autowired
 	OrderConditionPublisher orderConditionPublisher;
-	@Autowired
-	OrderConditionPublisherV2 orderConditionPublisherV2;
 	@GetMapping("/movie/order")
 //	@Cacheable(cacheNames = "Order",key="#id")
 	public String getOrderById(@RequestParam(name="id")Integer id) {
@@ -123,7 +120,7 @@ public class OrderController {
 	
 	@GetMapping("/movie/getOrder")
 	public String getOrder(@RequestParam("userId")Integer userId,@RequestParam("page")Integer page) {
-		orderConditionPublisherV2.publish(userId);
+		orderConditionPublisher.publishV2(userId);
 		return orderService.getOrder(userId, page);
 	}
 	
