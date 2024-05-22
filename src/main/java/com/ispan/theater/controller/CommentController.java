@@ -10,6 +10,10 @@ import java.util.stream.Collectors;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -85,27 +89,50 @@ public class CommentController {
 
 	
 	@GetMapping
-	public Map<String, Object> list(@RequestParam Movie movieId) {
-		System.out.println(movieId);
-		Map<String,Object> map = new HashMap<>();
-		List<Comment> comments= commentRepository.findAllByMovieId(movieId);
-		
-		comments.forEach((comment)->System.out.println(comment.getRate())); //列印
-		
-		map.put("rate", BigDecimal.ZERO);
-		List<Comment> commentList = comments.stream().filter(comment -> comment.getRate()!=null).collect(Collectors.toList());
-		commentList.stream().map(Comment::getRate).reduce(BigDecimal::add).ifPresent(res ->{
-			map.put("rate", res.divide(BigDecimal.valueOf(commentList.size()),1,RoundingMode.HALF_UP));
-		});
-		
-		List<Comment> rootComments = comments.stream().filter(comment -> comment.getPid()== null).collect(Collectors.toList());
-		for(Comment rootComment :rootComments) {
-			rootComment.setChildren(comments.stream().filter(comment -> rootComment.getCommentId().equals(comment.getPid())).collect(Collectors.toList()));
-		}
-		
-		map.put("comments", rootComments);
-		return map;
+	public Map<String, Object> list(
+	        @RequestParam Movie movieId,
+	        @RequestParam(defaultValue = "0") int page,
+	        @RequestParam(defaultValue = "10") int size) {
+	    
+	    System.out.println(movieId);
+	    Map<String, Object> map = new HashMap<>();
+	    
+	    // Create a Pageable object
+	    Pageable pageable = PageRequest.of(page, size, Sort.by("commentId").ascending());
+	    
+	    // Fetch paginated root comments (comments with pid == null)
+	    Page<Comment> rootCommentPage = commentRepository.findAllByMovieIdAndPidIsNull(movieId, pageable);
+	    List<Comment> rootComments = rootCommentPage.getContent();
+	    
+	    // Fetch all comments for the movie
+	    List<Comment> allComments = commentRepository.findAllByMovieId(movieId);
+	    
+	    // Calculate average rate
+	    map.put("rate", BigDecimal.ZERO);
+	    List<Comment> commentList = allComments.stream()
+	                                            .filter(comment -> comment.getRate() != null)
+	                                            .collect(Collectors.toList());
+	    commentList.stream()
+	               .map(Comment::getRate)
+	               .reduce(BigDecimal::add)
+	               .ifPresent(res -> map.put("rate", res.divide(BigDecimal.valueOf(commentList.size()), 1, RoundingMode.HALF_UP)));
+	    
+	    // Build comment hierarchy
+	    for (Comment rootComment : rootComments) {
+	        rootComment.setChildren(allComments.stream()
+	                                           .filter(comment -> rootComment.getCommentId().equals(comment.getPid()))
+	                                           .collect(Collectors.toList()));
+	    }
+	    
+	    // Add paginated root comments and pagination info to the map
+	    map.put("comments", rootComments);
+	    map.put("currentPage", rootCommentPage.getNumber());
+	    map.put("totalPages", rootCommentPage.getTotalPages());
+	    map.put("totalItems", rootCommentPage.getTotalElements());
+	    
+	    return map;
 	}
+
 	
 	@GetMapping("/rate")
 	public Map<String, Object> findRate(Integer movieId) {
@@ -207,5 +234,13 @@ public class CommentController {
 	    }
     	return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token.");
 	}
+	@GetMapping("path")
+	public String getAllComment(@RequestParam Comment param) {
+		return new String();
+	}
+	
+	
+	}
 
-}
+
+
