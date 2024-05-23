@@ -10,6 +10,8 @@ import com.ispan.theater.util.DatetimeConverter;
 
 import ecpay.payment.integration.AllInOne;
 import ecpay.payment.integration.domain.AioCheckOutALL;
+import ecpay.payment.integration.domain.DoActionObj;
+import ecpay.payment.integration.domain.QueryTradeInfoObj;
 
 @Service
 public class ECPayService {
@@ -30,6 +32,23 @@ public class ECPayService {
 		String form = all.aioCheckOut(obj, null);
 		String temp =form.substring(0, form.indexOf("<script"))+"</form>";
 		return temp;
+	}
+
+	public String postQueryTradeInfo(String merchantTradeNo){
+		AllInOne all=new AllInOne("");
+		QueryTradeInfoObj obj = new QueryTradeInfoObj();
+		obj.setMerchantTradeNo(merchantTradeNo);
+		return all.queryTradeInfo(obj);
+	}
+	
+	public String postDoAction(String merchantTradeNo,String totalAmount,String tradeNo){
+		AllInOne all=new AllInOne("");
+		DoActionObj obj = new DoActionObj();
+		obj.setMerchantTradeNo(merchantTradeNo);
+		obj.setTotalAmount(totalAmount);
+		obj.setTradeNo(tradeNo);
+		obj.setAction("C");
+		return all.doAction(obj);
 	}
 	
 }

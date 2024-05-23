@@ -118,8 +118,7 @@ public class OrderService {
 		ticketRepository.setTicketAvailable("已售出", insertOrderDto.getTicketId());
 		if ("linePay".equals(insertOrderDto.getPaymentOptions())) {
 			order.setSupplier("linepay");
-			result = linePayService.request(order, insertOrderDto.getTicketId().size()).get("info").get("paymentUrl")
-					.get("web");
+			result = linePayService.request(order, insertOrderDto.getTicketId().size()).get("info").get("paymentUrl").get("web");
 		}
 		if ("ecPay".equals(insertOrderDto.getPaymentOptions())) {
 			String uuId = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 20);
@@ -168,18 +167,27 @@ public class OrderService {
 	}
 	
 	@Transactional
-	public void refund(Integer orderId) {
+	public String refund(Integer orderId) {
 		Order order = orderRepository.findById(orderId).get();
 		String returnCode = "";
 		if ("linepay".equals(order.getSupplier())) {
 			returnCode = linePayService.refund(order.getPaymentNo()).get("returnCode");
 			if (!("0000".equals(returnCode) || "1165".equals(returnCode))) {
-				return;
+				return new JSONObject().put("success", false).put("message", "退款失敗！請聯繫金流方").toString();
+			}
+		}else if("ecpay".equals(order.getSupplier())) {
+			String result=ecPayService.postQueryTradeInfo(order.getPaymentNo());
+			String tradeNo=result.substring(result.indexOf("&TradeNo")+9, result.indexOf("&",result.indexOf("&TradeNo")+1));
+			String amount=result.substring(result.indexOf("&amount")+8, result.indexOf("&",result.indexOf("&amount")+1));
+			String resultMessage=ecPayService.postDoAction(order.getPaymentNo(), amount, tradeNo);
+			if(!"1".equals(resultMessage.substring(resultMessage.indexOf("&RtnCode")+9, resultMessage.indexOf("&",resultMessage.indexOf("&RtnCode")+1)))) {
+				return new JSONObject().put("success", false).put("message", "退款失敗！請聯繫金流方").toString();
 			}
 		}
 	    orderRepository.orderRefundStep1(orderId);
 	    orderRepository.orderRefundStep2(orderId);
 	    orderRepository.orderRefundStep3(orderId);
+	    return new JSONObject().put("success", true).put("message", "成功退款！").toString();
 	}
 
 }
