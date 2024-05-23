@@ -63,7 +63,6 @@ public class Comment {
 	private List<Comment>children;
 	@Transient
 	public String getToken(String token) {
-		// TODO Auto-generated method stub
 		return token;
 	}
 }
