@@ -18,7 +18,7 @@ public class testUser {
 	@Autowired
 	UserRepository userRepository;
 	
-//	@Test
+	@Test
     public void testInsertUser() {
 		JSONObject userJson = new JSONObject()
 				.put("userFirstname","1111")
