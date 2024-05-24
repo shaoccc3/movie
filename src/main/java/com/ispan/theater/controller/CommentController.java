@@ -132,47 +132,88 @@ public class CommentController {
 	    
 	    return map;
 	}
+	@GetMapping("/rate")
+	public Map<String, Object> findRate(@RequestParam Integer movieId) {
+	    Map<String, Object> map = new HashMap<>();
 
-	
-	 @GetMapping("/rate")
-	    public Map<String, Object> findRate(@RequestParam Integer movieId) {
-	        Map<String, Object> map = new HashMap<>();
-
-	        if (movieId == null) {
-	            map.put("error", "movieId cannot be null");
-	            return map;
-	        }
-
-	        List<Comment> comments = commentRepository.findCommentsByMovieIdByRate(movieId);
-	        List<Comment> commentList = comments.stream()
-	                .filter(comment -> comment.getRate() != null)
-	                .collect(Collectors.toList());
-
-	        BigDecimal totalRate = commentList.stream()
-	                .map(Comment::getRate)
-	                .reduce(BigDecimal.ZERO, BigDecimal::add);
-
-	        if (!commentList.isEmpty()) {
-	            BigDecimal averageRate = totalRate.divide(BigDecimal.valueOf(commentList.size()), 1, RoundingMode.HALF_UP);
-	            map.put("rate", averageRate);
-	        } else {
-	            map.put("rate", BigDecimal.ZERO);
-	        }
-
-	        List<Comment> rootComments = comments.stream()
-	                .filter(comment -> comment.getPid() == null)
-	                .collect(Collectors.toList());
-
-	        for (Comment rootComment : rootComments) {
-	            List<Comment> children = comments.stream()
-	                    .filter(comment -> rootComment.getCommentId().equals(comment.getPid()))
-	                    .collect(Collectors.toList());
-	            rootComment.setChildren(children);
-	        }
-
-	        map.put("comments", rootComments);
+	    if (movieId == null) {
+	        map.put("error", "movieId cannot be null");
 	        return map;
 	    }
+
+	    List<Comment> comments = commentRepository.findCommentsByMovieIdByRate(movieId);
+	    List<Comment> commentList = comments.stream()
+	            .filter(comment -> comment.getRate() != null)
+	            .collect(Collectors.toList());
+
+	    BigDecimal totalRate = commentList.stream()
+	            .map(Comment::getRate)
+	            .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+	    if (!commentList.isEmpty()) {
+	        BigDecimal averageRate = totalRate.divide(BigDecimal.valueOf(commentList.size()), 1, RoundingMode.HALF_UP);
+	        map.put("rate", averageRate);
+	    } else {
+	        map.put("rate", BigDecimal.ZERO);
+	    }
+
+	    // 這裡按評分排序的評論已經來自於查詢，所以我們只需要處理樹狀結構
+	    List<Comment> rootComments = comments.stream()
+	            .filter(comment -> comment.getPid() == null)
+	            .collect(Collectors.toList());
+
+	    for (Comment rootComment : rootComments) {
+	        List<Comment> children = comments.stream()
+	                .filter(comment -> rootComment.getCommentId().equals(comment.getPid()))
+	                .collect(Collectors.toList());
+	        rootComment.setChildren(children);
+	    }
+
+	    map.put("comments", rootComments);
+	    return map;
+	}
+
+	
+	@GetMapping("/new")
+	public Map<String, Object> findTime(@RequestParam Integer movieId) {
+	    Map<String, Object> map = new HashMap<>();
+
+	    if (movieId == null) {
+	        map.put("error", "movieId cannot be null");
+	        return map;
+	    }
+
+	    List<Comment> comments = commentRepository.findCommentsByMovieIdByTime(movieId);
+	    List<Comment> commentList = comments.stream()
+	            .filter(comment -> comment.getRate() != null)
+	            .collect(Collectors.toList());
+
+	    BigDecimal totalRate = commentList.stream()
+	            .map(Comment::getRate)
+	            .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+	    if (!commentList.isEmpty()) {
+	        BigDecimal averageRate = totalRate.divide(BigDecimal.valueOf(commentList.size()), 1, RoundingMode.HALF_UP);
+	        map.put("rate", averageRate);
+	    } else {
+	        map.put("rate", BigDecimal.ZERO);
+	    }
+
+	    // 這裡按評分排序的評論已經來自於查詢，所以我們只需要處理樹狀結構
+	    List<Comment> rootComments = comments.stream()
+	            .filter(comment -> comment.getPid() == null)
+	            .collect(Collectors.toList());
+
+	    for (Comment rootComment : rootComments) {
+	        List<Comment> children = comments.stream()
+	                .filter(comment -> rootComment.getCommentId().equals(comment.getPid()))
+	                .collect(Collectors.toList());
+	        rootComment.setChildren(children);
+	    }
+
+	    map.put("comments", rootComments);
+	    return map;
+	}
 
 	
 	@DeleteMapping("/{commentId}")
