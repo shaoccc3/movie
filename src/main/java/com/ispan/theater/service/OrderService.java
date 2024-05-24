@@ -100,7 +100,7 @@ public class OrderService {
 		Order order = null;
 		String result = "";
 		Integer count = orderRepository.createOrder(Date, Date, (300.0 * (insertOrderDto.getTicketId().size())),
-				insertOrderDto.getMovieId(), insertOrderDto.getUserId(), 0);
+				insertOrderDto.getMovieId(), insertOrderDto.getUserId(), 0 ,0);
 		if (count > 0) {
 			order = orderRepository.findOrderByUserIdAndCreateDate(Date, insertOrderDto.getUserId()).get();
 		}
@@ -186,7 +186,6 @@ public class OrderService {
 		}
 	    orderRepository.orderRefundStep1(orderId);
 	    orderRepository.orderRefundStep2(orderId);
-	    orderRepository.orderRefundStep3(orderId);
 	    return new JSONObject().put("success", true).put("message", "成功退款！").toString();
 	}
 

@@ -29,6 +29,9 @@ import com.ispan.theater.repository.OrderRepository;
 public class LinePayService {
 	@Autowired
 	OrderRepository orderRepository;
+	@Autowired
+	RestTemplate restTemplate;
+	
 	public static String encrypt(final String keys, final String data) {
 		return toBase64String(HmacUtils.getInitializedMac(HmacAlgorithms.HMAC_SHA_256, keys.getBytes()).doFinal(data.getBytes()));
 	}
@@ -40,8 +43,6 @@ public class LinePayService {
 	
 	@SuppressWarnings("unchecked")
 	public Map<String,Map<String,Map<String,String>>> request(Order order,Integer quantity) {
-		RestTemplate restTemplate=new RestTemplate();
-		
 		CheckoutPaymentRequestForm form = new CheckoutPaymentRequestForm();
 
 		form.setAmount(new BigDecimal(order.getOrderAmount()));
@@ -91,7 +92,6 @@ public class LinePayService {
 	
 	@SuppressWarnings({ "unused", "unchecked" })
 	public Map<String,Map<String,Map<String,String>>> confirm(String transactionId,Integer orderId) {
-		RestTemplate restTemplate=new RestTemplate();
 		//Confiirm API
 		ConfirmData confirrmData=new ConfirmData();
 		confirrmData.setAmount(new BigDecimal(orderRepository.findById(orderId).get().getOrderAmount()));

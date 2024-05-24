@@ -22,8 +22,8 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 	Optional<Order> findOrderByUserId(@Param("id")Integer id);
 	
 	@Modifying
-	@Query(value="insert into \"Order\"(create_date,modify_date,order_amount,movie_id,user_id,payment_condition) values(:createDate,:modifyDate,:orderAmount,:movieId,:userId,:condition)",nativeQuery=true)
-	Integer createOrder(@Param("createDate")String createDate,@Param("modifyDate")String modifyDate,@Param("orderAmount")Double orderAmount,@Param("movieId")Integer movieId,@Param("userId")Integer userId,@Param("condition")Integer condition);
+	@Query(value="insert into \"Order\"(create_date,modify_date,order_amount,movie_id,user_id,payment_condition,order_status) values(:createDate,:modifyDate,:orderAmount,:movieId,:userId,:condition,:orderStatus)",nativeQuery=true)
+	Integer createOrder(@Param("createDate")String createDate,@Param("modifyDate")String modifyDate,@Param("orderAmount")Double orderAmount,@Param("movieId")Integer movieId,@Param("userId")Integer userId,@Param("condition")Integer condition,@Param("orderStatus")Integer orderStatus);
 	
 	@Query(value="select top(1) o.* from \"Order\" as o where create_date like :createDate% and user_id=:id order by create_date desc",nativeQuery = true)
 	Optional<Order> findOrderByUserIdAndCreateDate(@Param("createDate")String createDate,@Param("id")Integer id);
@@ -52,7 +52,7 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 	
 	@Modifying
 	@Transactional
-	@Query(value="update \"Order\" set payment_condition=1 where payment_no= :paymentNo",nativeQuery=true)
+	@Query(value="update \"Order\" set payment_condition=1,order_status=1 where payment_no= :paymentNo",nativeQuery=true)
 	void setOrderConditionByPaymentNo(@Param("paymentNo")String paymentNo);
 	
 	@Modifying
@@ -62,10 +62,10 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 	
 	@Modifying
 	@Transactional
-	@Query(value="update \"Order\" set payment_no=:paymentNo,payment_condition=1 where order_id= :orderId",nativeQuery=true)
+	@Query(value="update \"Order\" set payment_no=:paymentNo,payment_condition=1,order_status=1 where order_id= :orderId",nativeQuery=true)
 	void setPaymentNoAndConditionByOrderId(@Param("paymentNo")String paymentNo,@Param("orderId")Integer orderId);
 	
-	@Query(value="select ROW_NUMBER() over(order by o.create_date desc) as 'no',o.order_id,m.name,SUBSTRING(convert(varchar(19),o.create_date),1,19) as create_date,o.order_amount,o.supplier FROM \"Order\" as o join movie as m on o.movie_id=m.movie_id where o.user_id=:userId order by o.create_date desc offset :page rows fetch next 10 rows only ",nativeQuery=true)
+	@Query(value="select ROW_NUMBER() over(order by o.create_date desc) as 'no',o.order_id,m.name,SUBSTRING(convert(varchar(19),o.create_date),1,19) as create_date,o.order_amount,o.supplier,o.order_status FROM \"Order\" as o join movie as m on o.movie_id=m.movie_id where o.user_id=:userId order by o.create_date desc offset :page rows fetch next 10 rows only ",nativeQuery=true)
 	List<Map<String,String>> getOrderByUser(@Param("userId")Integer userId,@Param("page")Integer page);
 	
 	@Query(value="select count(order_id) as order_total from \"Order\" where user_id=:userId",nativeQuery=true)
@@ -80,7 +80,7 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 	@Modifying
 	@Query(value="delete from \"Order\" where payment_condition=0 and DATEDIFF(s,substring(convert(varchar,create_date),1,19),convert(varchar,getDate(),120))>600",nativeQuery=true)
 	void deleteOrderStep3();
-
+	
 	@Modifying
 	@Query(value="update t set t.is_available= '未售出' from  Ticket as t join OrderDetail as od on t.Ticket_id=od.ticket_id where od.order_id in (select od.order_id from OrderDetail as od join \"Order\" as o on o.order_id=od.order_id where o.payment_condition=0 and o.user_id=:userId)",nativeQuery=true)
 	void deleteOrderStep1Version2(@Param("userId")Integer userId);
@@ -95,10 +95,13 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 	@Query(value="update t set t.is_available= '未售出' from  Ticket as t  where t.Ticket_id in (select od.ticket_id from OrderDetail as od where od.order_id=:orderId)",nativeQuery=true)
 	void orderRefundStep1(@Param("orderId")Integer orderId);
 	@Modifying
-	@Query(value="delete from OrderDetail where order_id =:orderId",nativeQuery=true)
+	@Query(value="update \"Order\" set order_status=0 where order_id=:orderId",nativeQuery=true)
 	void orderRefundStep2(@Param("orderId")Integer orderId);
-	@Modifying
-	@Query(value="delete from \"Order\" where order_id=:orderId",nativeQuery=true)
-	void orderRefundStep3(@Param("orderId")Integer orderId);
+//	@Modifying
+//	@Query(value="delete from OrderDetail where order_id =:orderId",nativeQuery=true)
+//	void orderRefundStep2(@Param("orderId")Integer orderId);
+//	@Modifying
+//	@Query(value="delete from \"Order\" where order_id=:orderId",nativeQuery=true)
+//	void orderRefundStep3(@Param("orderId")Integer orderId);
 	
 }

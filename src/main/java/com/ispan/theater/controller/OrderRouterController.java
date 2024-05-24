@@ -22,7 +22,7 @@ public class OrderRouterController {
 		return "redirect:"+"http://localhost:5173/order/ecpay-complete?MerchantTradeNo="+request.getParameter("MerchantTradeNo");
 	}
 
-	@PostMapping("/ecpayResultt")
+	@PostMapping("/ecpayResult")
 	public String test(HttpServletRequest request) {
 		System.out.println(request);
 		return "test";
