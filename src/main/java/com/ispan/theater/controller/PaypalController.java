@@ -6,17 +6,22 @@ import com.ispan.theater.dto.PaymentRequest;
 import com.ispan.theater.repository.OrderRepository;
 import com.ispan.theater.service.OrderService;
 import com.ispan.theater.service.PaypalService;
+import com.ispan.theater.service.TicketService;
 import com.ispan.theater.util.JsonWebTokenUtility;
 import com.paypal.api.payments.Links;
 import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalRESTException;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -32,6 +37,8 @@ public class PaypalController {
     private OrderService orderService;
     @Autowired
     private OrderRepository orderRepository;
+    @Autowired
+    private TicketService ticketService;
 
     @PostMapping("/pay")
     public ResponseEntity<?> createPayment(@RequestBody PaymentRequest paymentRequest) {
@@ -88,11 +95,24 @@ public class PaypalController {
     }
     @PostMapping("/refund")
     public ResponseEntity<?> refundPaypal(@RequestParam("orderId") Integer orderId) {
+        String Orderdetail = orderService.getTicketfromDetail(orderId);
+        System.out.println(Orderdetail);
         try {
             Order order = orderService.findOrderByOrderId(orderId);
             String saleId = order.getPaymentNo();
             String refundStatus = paypalService.refundPayment(saleId,order);
+//            String refundStatus = "success";
             if ("success".equals(refundStatus)) {
+
+                JSONObject obj = new JSONObject(Orderdetail);
+                JSONArray details = obj.getJSONArray("details");
+                List<Integer> orderIds = new ArrayList<>();
+                for (int i = 0; i < details.length(); i++) {
+                    JSONObject detail = details.getJSONObject(i);
+                    int id = detail.getInt("ticket_id");
+                    orderIds.add(id);
+                }
+                ticketService.setTicketStatuaToNotSale(orderIds);
                 return ResponseEntity.ok(new HashMap<String, Object>() {{
                     put("status", "success");
                     put("message", "Refund successful");

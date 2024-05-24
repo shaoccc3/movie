@@ -68,5 +68,7 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 	
 	@Query(value="select count(order_id) as order_total from \"Order\" where user_id=:userId",nativeQuery=true)
 	Map<String,Integer> orderTotalByUserId(@Param("userId")Integer userId);
-	
+
+
+
 }

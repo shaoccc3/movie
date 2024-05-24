@@ -185,4 +185,7 @@ public class OrderService {
 	public String getOrderDetail(Integer orderId){
 		return new JSONObject().put("details", orderRepository.orderCompleted(orderId)).toString();
 	}
+	public String getTicketfromDetail(Integer orderId){
+		return new JSONObject().put("details", orderDetailRepository.getTicketDetail(orderId)).toString();
+	}
 }

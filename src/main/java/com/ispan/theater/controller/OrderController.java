@@ -126,6 +126,7 @@ public class OrderController {
 	
 	@GetMapping("/movie/getOrderDetail")
 	public String getOrderDetail(@RequestParam("orderId")Integer orderId) {
+		System.out.println(orderService.getOrderDetail(orderId));
 		return orderService.getOrderDetail(orderId);
 	}
 	

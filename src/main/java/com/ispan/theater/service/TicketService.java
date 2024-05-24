@@ -90,6 +90,15 @@ public class TicketService {
         }
 
     }
+    @Transactional
+    public void setTicketStatuaToNotSale(List<Integer> ticketIds){
+        for(Integer ticketId : ticketIds){
+            Ticket ticket = ticketRepository.findById(ticketId).get();
+            ticket.setIsAvailable("未售出");
+            ticket.setModifyDate(new Date());
+            ticketRepository.save(ticket);
+        }
+    }
 //    @Async
 //    public void deleteTicketByScreening(Screening screening){
 //        if(screening!=null){
