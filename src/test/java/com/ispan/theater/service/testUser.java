@@ -67,7 +67,7 @@ public class testUser {
 	}
 
 	// 大量產生測試資料
-	@Test  
+//	@Test  
 	public void testLogInsertUser() throws Exception {
 		int randomInt = new Random().nextInt(15) + 3;
 
