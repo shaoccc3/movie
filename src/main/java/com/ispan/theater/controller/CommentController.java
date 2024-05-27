@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -32,10 +34,9 @@ import com.ispan.theater.domain.Movie;
 import com.ispan.theater.repository.CommentRepository;
 import com.ispan.theater.repository.MovieRepository;
 import com.ispan.theater.service.CommentService;
+import com.ispan.theater.service.MovieService;
 import com.ispan.theater.service.UserService;
 import com.ispan.theater.util.JsonWebTokenUtility;
-
-import jakarta.servlet.http.HttpSession;
 
 
 @CrossOrigin
@@ -51,11 +52,11 @@ public class CommentController {
 	@Autowired
 	private UserService userService;
 	@Autowired
-    private HttpSession httpSession;
+	private MovieService movieService;
 	@Autowired
 	private JsonWebTokenUtility jwtu;
 	@PostMapping
-	public ResponseEntity<String> save(@RequestBody Comment comment ,@RequestParam String token) {
+	public ResponseEntity<String> save(@RequestBody Comment comment ,@RequestParam String token,@RequestParam Integer movieid) {
 		
 		if (token != null) {
 	    	System.out.println(token);
@@ -71,7 +72,7 @@ public class CommentController {
 
 	            	//輸入USERID
 					comment.getUserId().setId(userId);
-					comment.getMovieId().setId(2);//設置電影ID
+					comment.getMovieId().setId(movieid);//設置電影ID
 					comment.setCreatetime(LocalDateTime.now());
 					// Call service class method to save the comment
 					commentService.insertComment(comment);
@@ -293,13 +294,65 @@ public class CommentController {
 	    }
     	return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token.");
 	}
-	@GetMapping("path")
-	public String getAllComment(@RequestParam Comment param) {
-		return new String();
+	
+//	找全部評論
+	@GetMapping("/path")
+	public Map<String, Object> getAllComments(
+	        @ModelAttribute Comment commentId,
+	        @RequestParam(defaultValue = "0") int page,
+	        @RequestParam(defaultValue = "20") int size) {
+	    
+	    System.out.println(commentId);
+	    Map<String, Object> map = new HashMap<>();
+	    
+	    // Create a Pageable object
+	    Pageable pageable = PageRequest.of(page, size, Sort.by("commentId").ascending());
+	    
+	    // Assuming your repository has a method that accepts a Comment object and a Pageable object
+	    Page<Comment> commentPage = commentRepository.findAll(pageable);
+	    List<Comment> comments = commentPage.getContent();
+	    
+	    // Adding additional pagination information
+	    map.put("comments", comments);
+	    map.put("currentPage", commentPage.getNumber());
+	    map.put("totalItems", commentPage.getTotalElements());
+	    map.put("totalPages", commentPage.getTotalPages());
+	    
+	    return map;
 	}
 	
 	
+	@GetMapping("/backstage/movie/findAll")
+	public ResponseEntity<?> findMovie(
+	        @RequestParam Map<String, String> requestParams,
+	        @RequestParam(defaultValue = "0") int page,
+	        @RequestParam(defaultValue = "10") int size
+	) {
+	    JSONObject jsonObject = new JSONObject(requestParams);
+	    JSONObject response = new JSONObject();
+	    
+	    Pageable pageable = PageRequest.of(page, size);
+        Page<Movie> result = movieService.findMulti1(jsonObject);
+	    List<Movie> movies = result.getContent();
+	    long count = result.getTotalElements();
+	    JSONArray array = new JSONArray();
+	    if (!movies.isEmpty()) {
+	        for (Movie m : movies) {
+	            JSONObject movie = movieService.movieToJson(m);
+	            array.put(movie);
+	        }
+	        response.put("movies", array);
+	        response.put("count", count);
+	        System.out.println(array);
+	        return ResponseEntity.ok().body(response);
+	    } else {
+	        return ResponseEntity.notFound().build();
+	    }
 	}
 
+
+}
+	
+	
 
 
