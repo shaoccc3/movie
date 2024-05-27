@@ -382,7 +382,24 @@ public class UserAjaxController {
 		}
 		 return ResponseEntity.notFound().build();
 	}
+	
+	@PutMapping("/backside/update-user/{id}")
+	public ResponseEntity<?>  updateUser (@PathVariable(name = "id") Integer id,@RequestBody String json){
+	
+		JSONObject obj =new JSONObject(json).put("userid", id);
+		User user =userService.updateUser(obj);
+		 if (user!=null) {
+			 return ResponseEntity.ok(user);
+		}
+		 return ResponseEntity.notFound().build();
+	}
 
+	@GetMapping("/backside/find-user/{id}")
+	public ResponseEntity<?> findUserById (@PathVariable(name = "id") Integer id){
 		
+		User user = userService.getUserById(id);
+		
+		return ResponseEntity.ok(user);
+	}
 
 }

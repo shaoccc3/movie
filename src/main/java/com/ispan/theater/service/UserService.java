@@ -1,6 +1,8 @@
 package com.ispan.theater.service;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -95,6 +97,9 @@ public class UserService {
 		String email = obj.isNull("email") ? null : obj.getString("email");
 		String phone = obj.isNull("phone") ? null : obj.getString("phone");
 		String birth = obj.isNull("birth") ? null : obj.getString("birth");
+		
+		String registrationDate =obj.isNull("registrationDate") ? null: obj.getString("registrationDate");
+		
 		String gender = obj.isNull("gender") ? null : obj.getString("gender");
 		Double consumption = obj.isNull("consumption") ? null : obj.getDouble("consumption");
 		Integer userlevel = obj.isNull("userlevel") ? null : obj.getInt("userlevel");
@@ -128,6 +133,16 @@ public class UserService {
 			LocalDate temp = LocalDate.parse(obj.getString("birth"), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 			update.setBirth(temp);
 		}
+		
+		if(registrationDate!=null&&registrationDate.length()>0) {
+			try {
+				Date date = new SimpleDateFormat("yyyy-MM-dd").parse(registrationDate);
+				update.setRegistrationDate(date);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
+		
 		if (gender != null && gender.length() > 0) {
 			update.setGender(gender);
 		}

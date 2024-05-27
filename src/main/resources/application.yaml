@@ -3,9 +3,9 @@ spring:
     name: movie
 #database connection
   datasource:
-    url: jdbc:sqlserver://10.113.0.3:1433;database=test1;trustServerCertificate=true;encrypt=true
-    password: u7u4vrhur12fmjujfubctji8eflv4usn
-    username: sqlserver
+    url: jdbc:sqlserver://localhost:1433;database=test1;trustServerCertificate=true;encrypt=true
+    password: p@ssw0rd
+    username: sa
   jpa:
     properties:
       hibernate:
@@ -20,12 +20,16 @@ spring:
   output:
     ansi:
       enabled: always
+  profiles:
+    active: '@production@'
 server:
   port: 8080
 logging:
   config: classpath:logback-spring.xml
   level:
     root: INFO
+
+
 jwt:
   token:
     expire: 100
