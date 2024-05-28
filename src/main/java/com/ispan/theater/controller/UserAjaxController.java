@@ -235,7 +235,7 @@ public class UserAjaxController {
 		return ResponseEntity.notFound().build();
 	}
 
-	// 修改個人資料 (要跟修改密碼做區別) 未完成
+	// 修改個人資料 
 	@PutMapping("/check/changeUserProfile/{token}")
 	public ResponseEntity<?> changeUserProfile(@PathVariable(name = "token") String token, @RequestBody UserDTO userDTO) {
 		String data = jsonWebTokenUtility.validateEncryptedToken(token);
@@ -396,10 +396,11 @@ public class UserAjaxController {
 
 	@GetMapping("/backside/find-user/{id}")
 	public ResponseEntity<?> findUserById (@PathVariable(name = "id") Integer id){
-		
 		User user = userService.getUserById(id);
-		
+		if(user!=null) {
 		return ResponseEntity.ok(user);
+		}
+		return ResponseEntity.notFound().build();
 	}
 
 }

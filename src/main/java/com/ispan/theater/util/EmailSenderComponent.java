@@ -28,7 +28,7 @@ public class EmailSenderComponent {
     private boolean smtpTLS;
     
     public void sendEmail(String useremail,String token) {
-        // 配置郵件服務器
+        // 連接郵件服務器
         Mailer mailer = MailerBuilder
                 .withSMTPServer(smtpHost, smtpPort, smtpUsername, smtpPassword)
                 .withTransportStrategy(TransportStrategy.SMTP_TLS)
@@ -47,7 +47,7 @@ public class EmailSenderComponent {
     }
     
     public void sendForgetPasswordEmail(String useremail,String token) {
-        // 配置郵件服務器
+        // 連接郵件服務器
         Mailer mailer = MailerBuilder
                 .withSMTPServer(smtpHost, smtpPort, smtpUsername, smtpPassword)
                 .withTransportStrategy(TransportStrategy.SMTP_TLS)
