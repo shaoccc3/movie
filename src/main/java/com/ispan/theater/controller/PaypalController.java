@@ -131,6 +131,10 @@ public class PaypalController {
             }});
         }
     }
+    @GetMapping("/")
+    public String home() {
+        return "Welcome to the Spring Boot App!";
+    }
 
 
 }

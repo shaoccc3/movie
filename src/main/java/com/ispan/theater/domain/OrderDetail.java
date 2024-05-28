@@ -8,6 +8,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.transaction.annotation.Transactional;
 
 @NoArgsConstructor
 @Getter
@@ -27,16 +28,18 @@ public class OrderDetail {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "ticket_id", nullable = false)
     private Ticket ticket;
-    
-	@Override
-	public String toString() {
-		return "OrderDetail [id=" + id + ", order=" + order + ", ticket=" + ticket + "]";
-	}
+    @Column(name = "used", columnDefinition = "bit")
+    private Boolean used;
 
-	public OrderDetail(Order order, Ticket ticket) {
-		super();
-		this.order = order;
-		this.ticket = ticket;
-	}
+    @Override
+    public String toString() {
+        return "OrderDetail [id=" + id + ", order=" + order + ", ticket=" + ticket + "]";
+    }
+
+    public OrderDetail(Order order, Ticket ticket) {
+        super();
+        this.order = order;
+        this.ticket = ticket;
+    }
 
 }
