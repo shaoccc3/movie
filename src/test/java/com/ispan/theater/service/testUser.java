@@ -68,7 +68,7 @@ public class testUser {
 	}
 
 	// 大量產生測試資料
-//	@Test  
+	@Test  
 	public void testLogInsertUser() throws Exception {
 		int randomInt = new Random().nextInt(15) + 3;
 
@@ -76,7 +76,7 @@ public class testUser {
 		int minDay = (int) LocalDate.of(1970, 1, 1).toEpochDay();
 		int maxDay = (int) LocalDate.of(2024, 5, 20).toEpochDay();
 
-		for (int i = 0; i <= 300; i++) {
+		for (int i = 0; i <= 5; i++) {
 			// 隨機產生日期
 			Random rand = new Random();
 			long randDay = minDay + rand.nextInt(maxDay - minDay);
