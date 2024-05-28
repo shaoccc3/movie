@@ -306,7 +306,7 @@ public class CommentController {
 	    Map<String, Object> map = new HashMap<>();
 	    
 	    // Create a Pageable object
-	    Pageable pageable = PageRequest.of(page, size, Sort.by("commentId").ascending());
+	    Pageable pageable = PageRequest.of(page, size, Sort.by("movieId").ascending());
 	    
 	    // Assuming your repository has a method that accepts a Comment object and a Pageable object
 	    Page<Comment> commentPage = commentRepository.findAll(pageable);
@@ -331,7 +331,6 @@ public class CommentController {
 	    JSONObject jsonObject = new JSONObject(requestParams);
 	    JSONObject response = new JSONObject();
 	    
-	    Pageable pageable = PageRequest.of(page, size);
         Page<Movie> result = movieService.findMulti1(jsonObject);
 	    List<Movie> movies = result.getContent();
 	    long count = result.getTotalElements();
@@ -349,6 +348,42 @@ public class CommentController {
 	        return ResponseEntity.notFound().build();
 	    }
 	}
+	@DeleteMapping("/delete/{commentId}")
+	public ResponseEntity<String>delete(@PathVariable Integer commentId){
+		if(commentId!=null&&commentId!=0) {	    
+			commentRepository.deleteById(commentId);
+		    System.out.println("Comment deleted successfully");
+		    return ResponseEntity.ok("Comment deleted successfully");
+			
+		}
+		return ResponseEntity.notFound().build();
+	}
+
+	@GetMapping("/search")
+	public Map<String, Object> searchComments(
+            @RequestParam String keyword,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size) {
+        
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Comment> commentPage = commentService.searchComments(keyword, pageable);
+        List<Comment> comments = commentPage.getContent();
+        
+        Map<String, Object> response = new HashMap<>();
+        response.put("comments", comments);
+        response.put("currentPage", commentPage.getNumber());
+        response.put("totalItems", commentPage.getTotalElements());
+        response.put("totalPages", commentPage.getTotalPages());
+        
+        return response;
+    }
+	@PostMapping("/good")
+	public ResponseEntity<String>good(){
+		
+		return null;
+		
+	}
+	
 
 
 }

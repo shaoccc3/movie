@@ -35,4 +35,7 @@ public class CommentService {
 		Page<Comment> page = commentRepository.findAll(pgb);
 		 return page;
 	}
+	 public Page<Comment> searchComments(String keyword, Pageable pageable) {
+	        return commentRepository.searchByKeyword(keyword, pageable);
+	    }
 }
