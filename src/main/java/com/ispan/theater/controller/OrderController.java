@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,6 +22,8 @@ import com.ispan.theater.service.CinemaService;
 import com.ispan.theater.service.ECPayService;
 import com.ispan.theater.service.LinePayService;
 import com.ispan.theater.service.OrderService;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @CrossOrigin
@@ -72,7 +75,8 @@ public class OrderController {
 	}
 	
 	@GetMapping("/movie/findAllCinema")
-	public String findAllCinema() {
+	public String findAllCinema(HttpServletRequest request) {
+		System.out.println("Authorization="+request.getHeader("Authorization"));
 		return new JSONObject().put("allCinemaName", cinemaService.findAllCinemaName()).toString(); 
 	}
 	
@@ -107,7 +111,7 @@ public class OrderController {
 		return json;
 	}
 
-	@GetMapping("/movie/linePayConfirm")
+	@GetMapping("/movie/confirm/linePayConfirm")
 	public String LinePayConfirm(@RequestParam("transactionId")String transactionId,@RequestParam("orderId")Integer orderId) {
 		System.out.println(transactionId+","+orderId);
 		return orderService.orderCompleted(transactionId,orderId);

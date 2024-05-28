@@ -14,6 +14,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,11 +36,13 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
-import com.ispan.theater.dto.UserDTO;
 import com.ispan.theater.domain.User;
+import com.ispan.theater.dto.UserDTO;
 import com.ispan.theater.service.UserService;
 import com.ispan.theater.util.EmailSenderComponent;
 import com.ispan.theater.util.JsonWebTokenUtility;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @CrossOrigin
@@ -51,6 +58,11 @@ public class UserAjaxController {
 	@Autowired
 	JsonWebTokenUtility jsonWebTokenUtility;
 
+	@Autowired
+    private AuthenticationManager authenticationManager;
+	@Autowired
+    private PasswordEncoder passwordEncoder;
+	
 	@PostMapping("/register") // testpage
 	public String userRegister(@RequestBody String json) {
 		JSONObject repJson = new JSONObject();
@@ -85,13 +97,16 @@ public class UserAjaxController {
 		JSONObject result = new JSONObject();
 		User user = userService.checkLogin(jsonobj);
 		if (user != null) {
+			//----security----
+	        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(),jsonobj.getString("password")));
+	        SecurityContextHolder.getContext().setAuthentication(authentication);
+	        //----security----
 			result.put("success", true);
 			result.put("message", "登入成功");
 			JSONObject inputjson = new JSONObject().put("userid", user.getId()).put("email", user.getEmail());
-			String token = jsonWebTokenUtility.createEncryptedToken(inputjson.toString(), null);
+			String token = jsonWebTokenUtility.createEncryptedToken(inputjson.toString(), null);			
 			result.put("token", token);
 			result.put("username", user.getUserFirstname() + user.getUserLastname());
-
 		} else {
 			result.put("success", false);
 			result.put("message", "登入失敗");
@@ -285,7 +300,6 @@ public class UserAjaxController {
 	//圖片讀取
 	@GetMapping("finduserphoto/{email}")
 	public ResponseEntity<?> downloadPhoto(@PathVariable(name = "email") String email) {
-
 		User user = userService.findUserByEmail(email);
 		if (user!=null) {
 			byte[] photoFile = user.getUserPhoto();
