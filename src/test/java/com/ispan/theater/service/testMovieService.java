@@ -40,6 +40,7 @@ public class testMovieService {
                 put("ratedCode","c").
                 put("releaseDate","1998-09-26").
                 put("endDate","1998-11-26");
+
         JSONObject movieJson1 = new JSONObject().
                 put("name","Brokeback Mountain").
                 put("description","TextText").
@@ -54,7 +55,7 @@ public class testMovieService {
 //        Movie movie = movieService.jsonToMovie(movieJson);
 //        Movie movie1 = movieService.jsonToMovie(movieJson1);
     }
-    
+
 //    @Test
     public void testUpdateMovie(){
         JSONObject updateJson1 = new JSONObject().put("id",2)

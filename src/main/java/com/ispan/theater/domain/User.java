@@ -16,15 +16,23 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name = "\"user\"")
 public class User {
-    @Id
+    @Override
+	public String toString() {
+		return "[id=" + id + ", userFirstname=" + userFirstname + ", userLastname=" + userLastname + ", email="
+				+ email + ", phone=" + phone + ", consumption=" + consumption + ", userlevel=" + userlevel + ", birth="
+				+ birth + ", gender=" + gender + ", isverified=" + isverified + "]";
+	}
+
+
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id", nullable = false)
     private Integer id;
 
-    @Column(name = "user_firstname",  length = 20)
+    @Column(name = "user_firstname" , columnDefinition = "nvarchar(20)")
     private String userFirstname;
     
-    @Column(name = "user_lastname",  length = 20)
+    @Column(name = "user_lastname",  columnDefinition = "nvarchar(20)")
     private String userLastname;
     
     @JsonIgnore
@@ -41,11 +49,13 @@ public class User {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "registrationDate", nullable = false)
     private Date registrationDate;
-
+    
+    @JsonIgnore
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "modifiedDate", nullable = false)
     private Date modifiedDate;
 
+    //尚未定義消費
     @Column(name = "consumption")
     private Double consumption;
     
@@ -70,6 +80,6 @@ public class User {
     @JsonIgnore
     @Lob
     @Column(name = "user_photo")
-    private String userPhoto;
+    private byte[] userPhoto;
     
 }
