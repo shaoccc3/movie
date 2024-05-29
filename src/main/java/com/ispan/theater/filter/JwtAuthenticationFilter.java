@@ -50,7 +50,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private String getTokenFromRequest(HttpServletRequest request){
-
         String bearerToken = request.getHeader("Authorization");
         System.out.println("filter3:"+bearerToken);
         if(StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")){
@@ -63,10 +62,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
 		return request.getRequestURI().equals("/user/login")||request.getRequestURI().startsWith("/movie/findMovie")
 				||request.getRequestURI().startsWith("/movie/findAllCinema")||request.getRequestURI().startsWith("/movie/dates")
-				||request.getRequestURI().startsWith("/movie/times")||request.getRequestURI().startsWith("/movie/getOrderDetail")
-				||request.getRequestURI().startsWith("/order-redirect")||request.getRequestURI().startsWith("/movie/linePayConfirm")
-				||request.getRequestURI().startsWith("/movie/ecPayConfirm")||request.getRequestURI().startsWith("/user/finduserphoto")
-				||request.getRequestURI().startsWith("/movie/tickets");
+				||request.getRequestURI().startsWith("/movie/times")||request.getRequestURI().startsWith("/order-redirect")
+				||request.getRequestURI().startsWith("/movie/linePayConfirm")||request.getRequestURI().startsWith("/movie/ecPayConfirm")
+				||request.getRequestURI().startsWith("/user/finduserphoto")||request.getRequestURI().startsWith("/movie/tickets");
 	}
     
     

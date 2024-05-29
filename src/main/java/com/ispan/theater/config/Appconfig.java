@@ -35,7 +35,7 @@ public class Appconfig {
         http.csrf(csrf->csrf.disable())
         .addFilterBefore(JwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
         .authorizeHttpRequests((authorize) -> {
-        	authorize.requestMatchers("/user/**","/order-redirect","/movie/linePayConfirm","/movie/findMovie","/movie/findAllCinema","/movie/dates","/movie/times","/movie/getOrderDetail","/movie/ecPayConfirm","/movie/tickets").permitAll().anyRequest().authenticated();
+        	authorize.requestMatchers("/user/**","/order-redirect","/movie/linePayConfirm","/movie/findMovie","/movie/findAllCinema","/movie/dates","/movie/times","/movie/ecPayConfirm","/movie/tickets").permitAll().anyRequest().authenticated();
 //          authorize.anyRequest().permitAll();
         });
         return http.build();

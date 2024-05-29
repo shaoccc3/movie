@@ -36,7 +36,7 @@ logging:
 
 jwt:
   token:
-    expire: 100
+    expire: 1
     
 # email SMTP 服务器配置
 
