@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ispan.theater.domain.Order;
 import com.ispan.theater.domain.OrderDetail;
 import com.ispan.theater.domain.Ticket;
-import com.ispan.theater.dto.InsertOrderDTO;
+import com.ispan.theater.DTO.InsertOrderDTO;
 import com.ispan.theater.repository.MovieRepository;
 import com.ispan.theater.repository.OrderDetailRepository;
 import com.ispan.theater.repository.OrderRepository;

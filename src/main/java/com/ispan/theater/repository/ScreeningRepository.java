@@ -12,12 +12,8 @@ import org.springframework.stereotype.Repository;
 import com.ispan.theater.domain.Movie;
 import com.ispan.theater.domain.Screening;
 @Repository
-<<<<<<< HEAD
 public interface ScreeningRepository extends JpaRepository<Screening, Integer>, JpaSpecificationExecutor<Screening> {
-=======
-public interface ScreeningRepository extends JpaRepository<Screening, Integer> {
-	
->>>>>>> origin/宇
+
     @Query("select c from Screening c where c.movie = :movie")
     List<Screening> findByMovie(@Param("movie") Movie movie);
     

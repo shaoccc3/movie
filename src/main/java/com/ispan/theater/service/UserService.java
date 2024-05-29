@@ -1,11 +1,9 @@
 package com.ispan.theater.service;
 
 import java.io.IOException;
-<<<<<<< HEAD
-=======
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
->>>>>>> origin/宇
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -225,10 +223,7 @@ public class UserService {
 		return false;
 	}
 
-<<<<<<< HEAD
-=======
 
->>>>>>> origin/宇
 	public Boolean existByPhoneOrEmail(String email, String phone) {
 		if (email != null && email.length() != 0 || phone != null && phone.length() != 0) {
 			User result = userRepository.findByEmailOrPhone(email, phone);
@@ -253,10 +248,8 @@ public class UserService {
 		if (optional.isPresent()) {
 			User user = optional.get();
 			user.setUserPhoto(photoFile.getBytes());
-<<<<<<< HEAD
-=======
+
 			user.setModifiedDate(new Date());
->>>>>>> origin/宇
 			userRepository.save(user);
 			return user;
 		}
@@ -264,9 +257,7 @@ public class UserService {
 	}
 	
 	
-<<<<<<< HEAD
-	
-=======
+
 	public List<User> findUsers (JSONObject obj){
 			return userRepository.find(obj);
 	}
@@ -274,6 +265,5 @@ public class UserService {
 	public long countUsers(JSONObject obj) {
 		return userRepository.count(obj);
 	}
->>>>>>> origin/宇
 
 }

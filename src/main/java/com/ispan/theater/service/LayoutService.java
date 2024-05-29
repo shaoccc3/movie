@@ -22,15 +22,10 @@ public class LayoutService {
     private final static int MAX_COL = 24;
     public void insertLayout(Auditorium auditorium) {//測試版 還未加上版型
 
-<<<<<<< HEAD
-        for(int i=1;i<=13;i++){//row
-            for(int j=1;j<=18;j++){//col
-                Integer seatid = (i-1)*MAX_COL+j;
-=======
+
         for(int i=1;i<=13;i++){
             for(int j=1;j<=18;j++){
                 Integer seatid = (i-1)*24+j;
->>>>>>> origin/宇
                 Optional<Seat> optionalSeat = seatRepository.findById(seatid);
                 if(optionalSeat.isPresent()){
                     Layout layout = new Layout();

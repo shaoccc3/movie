@@ -23,22 +23,7 @@ public class testUser {
 	UserService userService;
 	@Autowired
 	UserRepository userRepository;
-<<<<<<< HEAD
-	
-	@Test
-    public void testInsertUser() {
-		JSONObject userJson = new JSONObject()
-				.put("userFirstname","1111")
-				.put("userLastname","小名")
-				.put("password","2225")
-				.put("username", "test")
-				.put("email","3331@gmail.com")
-				.put("phone","09811787165")
-				.put("birth","1999-01-06")
-				.put("gender","M");
-		 System.out.print(userJson);
-		 User user = userService.InsertUser(userJson);
-=======
+
 
 
 //	@Test
@@ -48,7 +33,6 @@ public class testUser {
 				.put("birth", "1999-01-06").put("gender", "M");
 		System.out.print(userJson);
 		User user = userService.InsertUser(userJson);
->>>>>>> origin/宇
 	}
 
 //	@Test
@@ -78,10 +62,8 @@ public class testUser {
 		System.out.println(userService.checkLogin(userJson).getId());
 
 	}
-<<<<<<< HEAD
-=======
 
->>>>>>> origin/宇
+
 //	@Test
 	public void testExistByEmail() {
 		System.out.println(userService.existByEmail("3331@gmail.com"));

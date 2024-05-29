@@ -1,8 +1,8 @@
 package com.ispan.theater.domain;
 
+import jakarta.persistence.Transient;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-<<<<<<< HEAD
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -16,17 +16,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
-=======
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
->>>>>>> origin/宇
 import lombok.Getter;
 import lombok.Setter;
 
@@ -37,7 +26,6 @@ import lombok.Setter;
 public class Comment {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-<<<<<<< HEAD
 	@Column(name="commentId")
 	private Integer commentId;
 	@Column(name="content")
@@ -73,20 +61,10 @@ public class Comment {
 //	在資料庫不存在而外的添加資源
 	@Transient
 	private List<Comment>children;
+	
 	@Transient
 	public String getToken(String token) {
 		return token;
 	}
-=======
-	private Integer commentId;
-	private String content;
-	private String username;
-	private Integer userId;
-	private BigDecimal rate;
-	private Integer foreignId;
-	private Integer pid;
-	private String target;
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-	private LocalDateTime createtime;
->>>>>>> origin/宇
+
 }

@@ -4,11 +4,8 @@ spring:
 #database connection
   datasource:
     url: jdbc:sqlserver://localhost:1433;database=test1;trustServerCertificate=true;encrypt=true
-<<<<<<< HEAD
     password: P@ssw0rd
-=======
-    password: sa123456
->>>>>>> origin/宇
+
     username: sa
   jpa:
     properties:
@@ -31,27 +28,16 @@ spring:
   profiles:
     active: '@production@'
 server:
-  port: 8080
+  port: 8082
 logging:
   config: classpath:logback-spring.xml
   level:
     root: INFO
-jwt:
-  token:
-    expire: 100
-# email SMTP 服务器配置
 
-mail:
-  smtp:
-    host: smtp.gmail.com
-    port: 587
-    username: ispanmove@gmail.com
-    password: czdn gmwi vvtn onrx
-    tls: true
 
 jwt:
   token:
-    expire: 100
+    expire: 1
     
 # email SMTP 服务器配置
 
@@ -62,4 +48,3 @@ mail:
     username: ispanmove@gmail.com
     password: czdn gmwi vvtn onrx
     tls: true
-

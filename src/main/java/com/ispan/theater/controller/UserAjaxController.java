@@ -3,15 +3,12 @@ package com.ispan.theater.controller;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Collections;
-<<<<<<< HEAD
 
-=======
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.json.JSONArray;
->>>>>>> origin/宇
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -35,12 +32,10 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
-<<<<<<< HEAD
+
 import com.google.gson.JsonObject;
+
 import com.ispan.theater.DTO.UserDTO;
-=======
-import com.ispan.theater.dto.UserDTO;
->>>>>>> origin/宇
 import com.ispan.theater.domain.User;
 import com.ispan.theater.service.UserService;
 import com.ispan.theater.util.EmailSenderComponent;
@@ -80,11 +75,8 @@ public class UserAjaxController {
 //			emailSenderComponent.sendEmail(user.getEmail(),token);
 
 			repJson.put("success", true);
-<<<<<<< HEAD
-			repJson.put("message", "新增成功");
-=======
+
 			repJson.put("message", "註冊成功");
->>>>>>> origin/宇
 		} else {
 			repJson.put("success", false);
 			repJson.put("message", "註冊失敗");
@@ -166,11 +158,8 @@ public class UserAjaxController {
 	}
 
 	@PostMapping("/login/google")
-<<<<<<< HEAD
-	public String testGoolgle(@RequestBody String credentialJSON) {
-=======
+
 	public String GoolgleLogin(@RequestBody String credentialJSON) {
->>>>>>> origin/宇
 		String credential = new JSONObject(credentialJSON).getString("credential");
 		GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new GsonFactory())
 				// Specify the CLIENT_ID of the app that accesses the backend:
@@ -190,11 +179,8 @@ public class UserAjaxController {
 				String userId = payload.getSubject();
 				// Get profile information from payload
 				String email = payload.getEmail();
-<<<<<<< HEAD
-				// 可 透過URL下載客戶圖片上傳DB
-=======
+
 				// URL暫時無用
->>>>>>> origin/宇
 				String pictureUrl = (String) payload.get("picture");
 				String familyName = (String) payload.get("family_name");
 				String givenName = (String) payload.get("given_name");
@@ -210,21 +196,15 @@ public class UserAjaxController {
 					result.put("success", true);
 				} else {// 沒註冊過
 					JSONObject insertUser = new JSONObject().put("userFirstname", familyName)
-<<<<<<< HEAD
-							.put("userLastname", givenName).put("email", email).put("password", userId)
-=======
+
 							.put("userLastname", givenName).put("email", email).put("password",  RandomStringUtils.randomAlphabetic(15))
->>>>>>> origin/宇
 							.put("phone", "09" + userId.substring(0, 8)).put("birth", LocalDate.now().toString())
 							.put("gender", "M").put("isverified", true).put("image", "");
 					User user = userService.InsertUser(insertUser);
 					if (user != null) {
 						result.put("success", true);
-<<<<<<< HEAD
-						result.put("message", "新增成功");
-=======
+
 						result.put("message", "註冊成功，手機號與生日為系統預設值，請修改您的個人資料");
->>>>>>> origin/宇
 						JSONObject inputjson = new JSONObject().put("userid", user.getId())
 								.put("email", user.getEmail()).put("birth", user.getBirth());
 						String token = jsonWebTokenUtility.createEncryptedToken(inputjson.toString(), null);
@@ -264,11 +244,8 @@ public class UserAjaxController {
 		return ResponseEntity.notFound().build();
 	}
 
-<<<<<<< HEAD
-	// 修改個人資料 (要跟修改密碼做區別) 未完成
-=======
+
 	// 修改個人資料 
->>>>>>> origin/宇
 	@PutMapping("/check/changeUserProfile/{token}")
 	public ResponseEntity<?> changeUserProfile(@PathVariable(name = "token") String token, @RequestBody UserDTO userDTO) {
 		String data = jsonWebTokenUtility.validateEncryptedToken(token);
@@ -305,11 +282,8 @@ public class UserAjaxController {
 	
 	//圖片上傳
 	@PostMapping("uploadUserPhoto/{token}")
-<<<<<<< HEAD
-	public String testupload(@PathVariable(name = "token") String token, @RequestParam MultipartFile file)
-=======
+
 	public String uploadPohto(@PathVariable(name = "token") String token, @RequestParam MultipartFile file)
->>>>>>> origin/宇
 			throws IOException {
 		String data = jsonWebTokenUtility.validateEncryptedToken(token);
 		if (data != null && data.length() != 0) {
@@ -321,11 +295,8 @@ public class UserAjaxController {
 
 	//圖片讀取
 	@GetMapping("finduserphoto/{email}")
-<<<<<<< HEAD
-	public ResponseEntity<?> testfindphoto(@PathVariable(name = "email") String email) {
-=======
+
 	public ResponseEntity<?> downloadPhoto(@PathVariable(name = "email") String email) {
->>>>>>> origin/宇
 
 		User user = userService.findUserByEmail(email);
 		if (user!=null) {
@@ -384,8 +355,7 @@ public class UserAjaxController {
 //		return ResponseEntity.ok(userService.countUsers(obj));
 //	}
 	
-<<<<<<< HEAD
-=======
+
 	//多條件查詢
 	@GetMapping("/backside/findUsers")
 	public String findUsers(@RequestParam Map<String, String> param){
@@ -445,6 +415,5 @@ public class UserAjaxController {
 		}
 		return ResponseEntity.notFound().build();
 	}
->>>>>>> origin/宇
 
 }

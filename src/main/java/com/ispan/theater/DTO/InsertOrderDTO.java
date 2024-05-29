@@ -1,4 +1,4 @@
-package com.ispan.theater.dto;
+package com.ispan.theater.DTO;
 
 import java.util.List;
 

@@ -1,8 +1,5 @@
-<<<<<<< HEAD
+
 package com.ispan.theater.DTO;
-=======
-package com.ispan.theater.dto;
->>>>>>> origin/宇
 
 import lombok.Getter;
 import lombok.Setter;

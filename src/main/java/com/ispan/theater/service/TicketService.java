@@ -79,10 +79,5 @@ public class TicketService {
         }
 
     }
-    @Async
-    public void deleteTicketByScreening(Screening screening){
-        if(screening!=null){
-            ticketRepository.deleteByScreening(screening);
-        }
-    }
+
 }
