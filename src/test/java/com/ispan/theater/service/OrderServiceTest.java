@@ -65,9 +65,14 @@ public class OrderServiceTest {
 //	}
 	
 	
-	  @Test
+//	  @Test
 		public void test4() {
 		  os.refund(1061);
+		}
+		@Test
+		@Transactional
+		public void test5() {
+			or.setUserConsumptionECPay("aaa4ff026f254301a5c6");
 		}
 	
 }

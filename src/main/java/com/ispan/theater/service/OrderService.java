@@ -133,6 +133,7 @@ public class OrderService {
 	public String orderCompleted(String transactionId, Integer orderId) {
 		System.out.println(linePayService.confirm(transactionId, orderId).get("returnCode"));// returnCode為0000
 		orderRepository.setPaymentNoAndConditionByOrderId(transactionId, orderId);
+		orderRepository.setUserConsumption(orderId);
 		return new JSONObject().put("Order", orderRepository.orderCompleted(orderId)).toString();
 	}
 

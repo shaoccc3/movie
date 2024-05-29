@@ -5,11 +5,11 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -140,12 +140,11 @@ public class OrderController {
 	}
 	
 	
-//	@PostMapping("/movie/test")
-//	public String test(@RequestBody InsertOrderDTO insertOrderDto) {
-//		System.out.println(insertOrderDto);
-//		System.out.println("linePay".equals(insertOrderDto.getPaymentOptions()));
-//		System.out.println("ecPay".equals(insertOrderDto.getPaymentOptions()));
-//		return ecPayService.ecpayCheckout();
+//	@GetMapping("/movie/test")
+//	@Transactional
+//	public String test(@RequestParam("orderId")String orderId) {
+//		orderRepository.setUserConsumptionECPay(orderId);
+//		return "Success";
 //	}
 	
 }

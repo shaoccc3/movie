@@ -15,9 +15,12 @@ public class OrderRouterController {
 	OrderRepository orderRepository;
 	
 	@PostMapping("/order-redirect")
+	@Transactional
 	public String redirectFront(HttpServletRequest request) {
 		if("1".equals(request.getParameter("RtnCode"))) {
 			orderRepository.setOrderConditionByPaymentNo(request.getParameter("MerchantTradeNo"));
+			System.out.println(request.getParameter("MerchantTradeNo"));
+			orderRepository.setUserConsumptionECPay(request.getParameter("MerchantTradeNo"));
 		}
 		return "redirect:"+"http://localhost:5173/order/ecpay-complete?MerchantTradeNo="+request.getParameter("MerchantTradeNo");
 	}
