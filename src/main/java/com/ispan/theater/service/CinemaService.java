@@ -21,14 +21,15 @@ public class CinemaService {
     public List<Cinema> getAllCinema() {
         return cinemaRepository.findAll();
     }
+
     public Cinema getCinemaById(Integer id) {
-        if(cinemaRepository.findById(id).isPresent()) {
+        if (cinemaRepository.findById(id).isPresent()) {
             return cinemaRepository.findById(id).get();
-        }
-        else{
+        } else {
             return null;
         }
     }
+
     public Cinema saveCinemaJson(JSONObject cinema) {//test passed
         Cinema cinemaObj = new Cinema();
         cinemaObj.setName(cinema.getString("name"));
@@ -37,28 +38,39 @@ public class CinemaService {
         cinemaObj.setPhone(cinema.getString("phone"));
         return cinemaRepository.save(cinemaObj);
     }
+
     public Cinema updateCinemaJson(JSONObject cinema) {//test passed
         Optional<Cinema> optiona = cinemaRepository.findById(cinema.getInt("id"));
-        if(optiona.isPresent()) {
+        if (optiona.isPresent()) {
             Cinema cinemaObj = optiona.get();
             cinemaObj.setName(cinema.getString("name"));
             cinemaObj.setAddress(cinema.getString("address"));
             cinemaObj.setLocationCategory(cinema.getString("location_category"));
             cinemaObj.setPhone(cinema.getString("phone"));
             return cinemaRepository.save(cinemaObj);
-        }
-        else{
+        } else {
             return null;
         }
     }
 
-    public List<Map<String,Object>> findAllCinemaName() {
-    	List<Map<String,Object>> list=cinemaRepository.findAllCinemaName();
-    	for(Map<String,Object> map:list) {
-    		System.out.println(map.entrySet());
-    	}
-    	return cinemaRepository.findAllCinemaName();
+    public List<Map<String, Object>> findAllCinemaName() {
+        List<Map<String, Object>> list = cinemaRepository.findAllCinemaName();
+        for (Map<String, Object> map : list) {
+            System.out.println(map.entrySet());
+        }
+        return cinemaRepository.findAllCinemaName();
     }
-    
-    
+
+    public List<Map<String, Object>> findAllCinema() {
+//        List<Map<String, Object>> list = cinemaRepository.findAllCinema();
+//        for (Map<String, Object> map : list) {
+//            System.out.println(map.entrySet());
+//        }
+        return cinemaRepository.findAllCinema();
+    }
+    public void saveCinema(Cinema cinema){
+        cinemaRepository.save(cinema);
+    }
+
+
 }

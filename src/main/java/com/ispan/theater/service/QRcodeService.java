@@ -24,7 +24,7 @@ public class QRcodeService {
     @Autowired
     private OrderRepository orderRepository;
     public byte[] generateQRCode(Integer orderId, String token) throws WriterException, IOException {
-        String url = "http://192.168.61.135:8082/backstage/orderdetailQrcode?id=" + orderId + "&token=Bearer " + token;
+        String url = "http://localhost:8082/backstage/orderdetailQrcode?id=" + orderId + "&token=Bearer " + token;
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
         BitMatrix bitMatrix = qrCodeWriter.encode(url, BarcodeFormat.QR_CODE, 350, 350);
 

@@ -73,6 +73,10 @@ public class OrderController {
 	public String findAllCinema() {
 		return new JSONObject().put("allCinemaName", cinemaService.findAllCinemaName()).toString(); 
 	}
+	@GetMapping("/movie/findAllCinemaData")
+	public String findAllCinemaData() {
+		return new JSONObject().put("allCinemaName", cinemaService.findAllCinema()).toString();
+	}
 	
 	@GetMapping("/movie/findMovie")
 	public String findMovie(@RequestParam("cinemaId")Integer cinemaId) {

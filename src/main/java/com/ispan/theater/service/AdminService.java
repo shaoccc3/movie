@@ -44,6 +44,6 @@ public class AdminService implements UserDetailsService {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 userCredentials.username, userCredentials.password));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return jsonWebTokenUtility.createEncryptedToken(authentication.getName(),null);
+        return jsonWebTokenUtility.createToken(authentication.getName(),null);
     }
 }

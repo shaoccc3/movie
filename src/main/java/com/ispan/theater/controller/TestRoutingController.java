@@ -9,4 +9,5 @@ public class TestRoutingController {
 	public String loginAjx() {
 		return "test/user-resign";
 	}
+
 }
