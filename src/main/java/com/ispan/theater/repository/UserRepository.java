@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 import com.ispan.theater.dao.UserDao;
 import com.ispan.theater.domain.User;
 
-public interface UserRepository extends JpaRepository<User, Integer> ,UserDao{
+public interface UserRepository extends UserDao, JpaRepository<User, Integer>{
 	
 	@Query("from User where email = :email")
 	public User findByEmail(@Param("email") String email);

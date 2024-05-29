@@ -31,10 +31,10 @@ public class User {
     @Column(name = "user_id", nullable = false)
     private Integer id;
 
-    @Column(name = "user_firstname",  length = 20)
+    @Column(name = "user_firstname" , columnDefinition = "nvarchar(20)")
     private String userFirstname;
     
-    @Column(name = "user_lastname",  length = 20)
+    @Column(name = "user_lastname",  columnDefinition = "nvarchar(20)")
     private String userLastname;
     
     @JsonIgnore
@@ -57,6 +57,7 @@ public class User {
     @Column(name = "modifiedDate", nullable = false)
     private Date modifiedDate;
 
+    //尚未定義消費
     @Column(name = "consumption")
     private Double consumption;
     
@@ -82,10 +83,13 @@ public class User {
     @Lob
     @Column(name = "user_photo")
     private byte[] userPhoto;
+<<<<<<< HEAD
     
     
     
 //    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
 //	private List<Comment> comment = new ArrayList<>();
+=======
+>>>>>>> origin/宇
     
 }

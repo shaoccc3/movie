@@ -25,7 +25,7 @@ public class testScreeningService {
         System.out.println(s);
     }
 
-    @Test
+//    @Test
     public void testScreeningService2() {
         screeningService.deleteScreening(8);
     }

@@ -1,17 +1,25 @@
 package com.ispan.theater.service;
 
 import java.io.IOException;
+<<<<<<< HEAD
+=======
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+>>>>>>> origin/宇
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.google.gson.JsonObject;
 import com.ispan.theater.domain.User;
 import com.ispan.theater.repository.UserRepository;
 
@@ -92,6 +100,9 @@ public class UserService {
 		String email = obj.isNull("email") ? null : obj.getString("email");
 		String phone = obj.isNull("phone") ? null : obj.getString("phone");
 		String birth = obj.isNull("birth") ? null : obj.getString("birth");
+		
+		String registrationDate =obj.isNull("registrationDate") ? null: obj.getString("registrationDate");
+		
 		String gender = obj.isNull("gender") ? null : obj.getString("gender");
 		Double consumption = obj.isNull("consumption") ? null : obj.getDouble("consumption");
 		Integer userlevel = obj.isNull("userlevel") ? null : obj.getInt("userlevel");
@@ -125,6 +136,16 @@ public class UserService {
 			LocalDate temp = LocalDate.parse(obj.getString("birth"), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 			update.setBirth(temp);
 		}
+		
+		if(registrationDate!=null&&registrationDate.length()>0) {
+			try {
+				Date date = new SimpleDateFormat("yyyy-MM-dd").parse(registrationDate);
+				update.setRegistrationDate(date);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
+		
 		if (gender != null && gender.length() > 0) {
 			update.setGender(gender);
 		}
@@ -204,6 +225,10 @@ public class UserService {
 		return false;
 	}
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/宇
 	public Boolean existByPhoneOrEmail(String email, String phone) {
 		if (email != null && email.length() != 0 || phone != null && phone.length() != 0) {
 			User result = userRepository.findByEmailOrPhone(email, phone);
@@ -228,6 +253,10 @@ public class UserService {
 		if (optional.isPresent()) {
 			User user = optional.get();
 			user.setUserPhoto(photoFile.getBytes());
+<<<<<<< HEAD
+=======
+			user.setModifiedDate(new Date());
+>>>>>>> origin/宇
 			userRepository.save(user);
 			return user;
 		}
@@ -235,6 +264,16 @@ public class UserService {
 	}
 	
 	
+<<<<<<< HEAD
 	
+=======
+	public List<User> findUsers (JSONObject obj){
+			return userRepository.find(obj);
+	}
+	
+	public long countUsers(JSONObject obj) {
+		return userRepository.count(obj);
+	}
+>>>>>>> origin/宇
 
 }

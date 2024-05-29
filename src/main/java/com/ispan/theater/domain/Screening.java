@@ -8,6 +8,8 @@ import lombok.Setter;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @NoArgsConstructor
 @Getter
 @Setter
@@ -44,6 +46,12 @@ public class Screening {
     private Date modifyDate;
 
     @OneToMany(mappedBy = "screening" , fetch = FetchType.LAZY , cascade = CascadeType.REMOVE)
+    @JsonIgnore
     private List<Ticket> tickets;
 
+	@Override
+	public String toString() {
+		return "Screening []";
+	}
+	
 }

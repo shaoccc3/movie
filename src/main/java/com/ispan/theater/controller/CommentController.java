@@ -2,6 +2,7 @@ package com.ispan.theater.controller;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+<<<<<<< HEAD
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -29,10 +30,23 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+=======
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+>>>>>>> origin/宇
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ispan.theater.domain.Comment;
+<<<<<<< HEAD
 import com.ispan.theater.domain.Movie;
 import com.ispan.theater.repository.CommentRepository;
 import com.ispan.theater.repository.MovieRepository;
@@ -40,10 +54,14 @@ import com.ispan.theater.service.CommentService;
 import com.ispan.theater.service.MovieService;
 import com.ispan.theater.service.UserService;
 import com.ispan.theater.util.JsonWebTokenUtility;
+=======
+import com.ispan.theater.repository.CommentRepository;
+>>>>>>> origin/宇
 
 
 @CrossOrigin
 @RestController
+<<<<<<< HEAD
 @RequestMapping("comment")
 public class CommentController {
 	
@@ -486,3 +504,31 @@ public class CommentController {
 	
 
 
+=======
+//@RequestMapping("/comment")
+public class CommentController {
+	@Autowired
+	CommentRepository commentRepository;
+	@PostMapping("/comment")
+	public void save(@RequestBody Comment comment) {
+		commentRepository.save(comment);
+		
+		
+	}
+	@GetMapping
+	public Map<String, Object> list(@RequestParam Integer foreignId) {
+		Map<String,Object> map = new HashMap<>();
+		List<Comment> comments= commentRepository.findAllByForeignId(foreignId);
+		
+		map.put("rate", BigDecimal.ZERO);
+		List<Comment> commentList = comments.stream().filter(comment -> comment.getRate()!=null).collect(Collectors.toList());
+		commentList.stream().map(Comment::getRate).reduce(BigDecimal::add).ifPresent(res ->{
+			map.put("rate", res.divide(BigDecimal.valueOf(commentList.size()),1,RoundingMode.HALF_UP));
+		});
+		
+		return map;
+	}
+	
+	
+}
+>>>>>>> origin/宇

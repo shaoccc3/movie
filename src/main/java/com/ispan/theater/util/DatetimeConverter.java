@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DatetimeConverter {
+	
 	public static String toString(Date datetime, String format) {
 		String result = "";
 		try {
@@ -25,5 +26,13 @@ public class DatetimeConverter {
 			e.printStackTrace();
 		}
 		return result;
+	}
+		
+	public static String createSqlDatetime(Date datetime) {
+		return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(datetime).toString();
+	}
+	
+	public static String createSqlDatetimeECPay(Date datetime) {
+		return new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(datetime).toString();
 	}
 }

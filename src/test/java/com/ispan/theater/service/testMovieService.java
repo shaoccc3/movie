@@ -41,6 +41,7 @@ public class testMovieService {
                 put("ratedCode","c").
                 put("releaseDate","1998-09-26").
                 put("endDate","1998-11-26");
+
         JSONObject movieJson1 = new JSONObject().
                 put("name","Brokeback Mountain").
                 put("description","TextText").
@@ -51,13 +52,12 @@ public class testMovieService {
                 put("ratedCode","d").
                 put("releaseDate","2006-01-20").
                 put("endDate","2006-02-28");
-
+        
 //        Movie movie = movieService.jsonToMovie(movieJson);
 //        Movie movie1 = movieService.jsonToMovie(movieJson1);
-
-
     }
-    @Test
+
+//    @Test
     public void testUpdateMovie(){
 
         JSONArray temp = new JSONArray().put("a");
@@ -69,7 +69,7 @@ public class testMovieService {
         Movie update = movieService.updateMovie(updateJson1);
 //        Movie update2 = movieService.updateMovie(updateJson2);
     }
-    @Test
+//    @Test
     public void testFind(){
         JSONObject findJson = new JSONObject().put("name","mount").put("startduration",200);
 

@@ -4,15 +4,23 @@ spring:
 #database connection
   datasource:
     url: jdbc:sqlserver://localhost:1433;database=test1;trustServerCertificate=true;encrypt=true
+<<<<<<< HEAD
     password: P@ssw0rd
+=======
+    password: sa123456
+>>>>>>> origin/宇
     username: sa
   jpa:
     properties:
       hibernate:
         jdbc:
         dialect: org.hibernate.dialect.SQLServerDialect
-        format_sql: true
+        format-sql: true
     hibernate:
+      jdbc:
+        batch_size: 500
+        batch_versioned_data: true
+      order_inserts: true
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
       ddl-auto: update
@@ -20,8 +28,10 @@ spring:
   output:
     ansi:
       enabled: always
+  profiles:
+    active: '@production@'
 server:
-  port: 8082
+  port: 8080
 logging:
   config: classpath:logback-spring.xml
   level:
@@ -29,6 +39,20 @@ logging:
 jwt:
   token:
     expire: 100
+# email SMTP 服务器配置
+
+mail:
+  smtp:
+    host: smtp.gmail.com
+    port: 587
+    username: ispanmove@gmail.com
+    password: czdn gmwi vvtn onrx
+    tls: true
+
+jwt:
+  token:
+    expire: 100
+    
 # email SMTP 服务器配置
 
 mail:
