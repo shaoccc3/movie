@@ -1,8 +1,10 @@
+
 package com.ispan.theater.aspects;
 
 import com.ispan.theater.domain.Movie;
 import com.ispan.theater.domain.Screening;
 import com.ispan.theater.service.TicketService;
+import jakarta.transaction.Transactional;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
@@ -21,13 +23,13 @@ public class ScreenTicketAspect {
     @Pointcut("execution(* com.ispan.theater.service.ScreeningService.createScreening(com.ispan.theater.domain.Movie, org.json.JSONObject)) && args(movie, jsonObject)")
     public void screeningCreation(Movie movie, JSONObject jsonObject) {}
 
-    @Async
     @AfterReturning(pointcut = "screeningCreation(movie, jsonObject)", returning = "screening")
+    @Transactional
     public void afterReturningAdvice(Movie movie, JSONObject jsonObject, Screening screening) {
         JSONObject screeningJson = new JSONObject();
         screeningJson.put("screeningId", screening.getId());
         ticketService.insertTicket2(screeningJson);
-        System.out.println("Successfully created screening for movie: " + screening.getMovie().getName());
+        System.out.println("HAHAHASuccessfully created screening for movie: " + screening.getMovie().getName());
     }
 
     @AfterThrowing(pointcut = "screeningCreation(movie, jsonObject)", throwing = "exception")

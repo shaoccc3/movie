@@ -1,6 +1,7 @@
 package com.ispan.theater.service;
 
 import java.io.IOException;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -247,6 +248,7 @@ public class UserService {
 		if (optional.isPresent()) {
 			User user = optional.get();
 			user.setUserPhoto(photoFile.getBytes());
+
 			user.setModifiedDate(new Date());
 			userRepository.save(user);
 			return user;
@@ -255,6 +257,7 @@ public class UserService {
 	}
 	
 	
+
 	public List<User> findUsers (JSONObject obj){
 			return userRepository.find(obj);
 	}

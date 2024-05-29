@@ -5,6 +5,7 @@ spring:
   datasource:
     url: jdbc:sqlserver://localhost:1433;database=test1;trustServerCertificate=true;encrypt=true
     password: sa123456
+
     username: sa
   jpa:
     properties:
@@ -36,7 +37,7 @@ logging:
 
 jwt:
   token:
-    expire: 100
+    expire: 1
     
 # email SMTP 服务器配置
 
@@ -47,4 +48,3 @@ mail:
     username: ispanmove@gmail.com
     password: czdn gmwi vvtn onrx
     tls: true
-

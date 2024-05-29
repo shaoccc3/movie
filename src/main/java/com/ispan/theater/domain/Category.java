@@ -25,7 +25,8 @@ public class Category {
     @Override
     public String toString() {
         return "Category{" +
-                "categoryContent='" + categoryContent + '\'' +
+                "code='" + code.trim() + '\'' +
+                ", categoryContent='" + categoryContent + '\'' +
                 '}';
     }
 }

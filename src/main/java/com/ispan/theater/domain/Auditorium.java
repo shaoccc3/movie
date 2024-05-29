@@ -35,9 +35,11 @@ public class Auditorium {
     @Override
     public String toString() {
         return "Auditorium{" +
-                "cinema=" + cinema +
+                "layoutId=" + layoutId +
+                ", id=" + id +
+                ", auditoriumNumber=" + auditoriumNumber +
                 ", levelId=" + levelId +
-                ", layoutId=" + layoutId +
+                ", cinema=" + cinema.getId() +
                 '}';
     }
 }

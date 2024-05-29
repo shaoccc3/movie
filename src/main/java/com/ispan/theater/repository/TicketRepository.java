@@ -1,5 +1,6 @@
 package com.ispan.theater.repository;
 
+
 import java.util.List;
 import java.util.Map;
 
@@ -7,12 +8,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ispan.theater.domain.Ticket;
 
 @Repository
 public interface TicketRepository extends JpaRepository<Ticket, Integer> {
+
 	
 //	@Query(value="select t.* from Ticket as t join Screening as s on t.Screening_id=s.Screening_id where s.Screening_id = :screeningId ",nativeQuery = true)
 //	public List<Map<String,Object>> getTickets(@Param("screeningId")Integer screeningId);

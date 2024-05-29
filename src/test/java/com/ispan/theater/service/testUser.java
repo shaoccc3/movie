@@ -25,6 +25,7 @@ public class testUser {
 	UserRepository userRepository;
 
 
+
 //	@Test
 	public void testInsertUser() {
 		JSONObject userJson = new JSONObject().put("userFirstname", "1111").put("userLastname", "小名")
@@ -61,6 +62,7 @@ public class testUser {
 		System.out.println(userService.checkLogin(userJson).getId());
 
 	}
+
 
 //	@Test
 	public void testExistByEmail() {
