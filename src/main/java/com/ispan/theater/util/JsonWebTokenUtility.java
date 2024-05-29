@@ -1,11 +1,16 @@
 package com.ispan.theater.util;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
 import javax.crypto.SecretKey;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
+import com.ispan.theater.service.SymmetricKeysService;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
@@ -19,17 +24,22 @@ import jakarta.annotation.PostConstruct;
 public class JsonWebTokenUtility {
 	@Value("${jwt.token.expire}")
 	private long expire;
-
+	
+	@Autowired
+	SymmetricKeysService symmetricKeysService;
+	
 	private byte[] base64EncodedSecret;	//用在簽章
 	private char[] charArraySecret;		//用在加密
 	@PostConstruct
-	public void init() {
-		//TODO：應該實作從資料庫抓出密鑰
-		String secret = "ABCDEFGHJKLM23456789npqrstuvwxyz";
+	@Scheduled(fixedRate  = 100003)
+	public void init()  {
+		//初始化時生成斯鑰存入資料庫
+		String secret = symmetricKeysService.getSymmetricKey().getSecretKey();
 
 		//將密鑰使用base64編碼
 		base64EncodedSecret = Base64.getEncoder().encode(secret.getBytes());
 		charArraySecret = new String(base64EncodedSecret).toCharArray();
+		System.out.println("jwtutil初始化完成 使用鑰匙:" +secret);
 	}
 
 	public String createEncryptedToken(String data, Long lifespan) {
@@ -51,6 +61,8 @@ public class JsonWebTokenUtility {
 					Jwts.ENC.A256GCM);
 
 		String token = builder.compact();
+
+		System.out.println("當前token:"+token);
 		return token;
 	}
 	public String validateEncryptedToken(String token) {
