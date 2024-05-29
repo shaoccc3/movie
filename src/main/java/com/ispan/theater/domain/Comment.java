@@ -52,11 +52,11 @@ public class Comment {
 	private LocalDateTime createtime;
 	
 	@Column(name="useful")
-	private Integer useful;
+	private Integer useful=0;
 	@Column(name="useless")
-	private Integer useless;
+	private Integer useless=0;
 	@Column(name="good")
-	private Integer good;
+	private Integer good=0;
 	
 //	在資料庫不存在而外的添加資源
 	@Transient

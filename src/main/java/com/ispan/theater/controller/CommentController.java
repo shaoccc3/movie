@@ -4,8 +4,11 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.json.JSONArray;
@@ -43,6 +46,11 @@ import com.ispan.theater.util.JsonWebTokenUtility;
 @RestController
 @RequestMapping("comment")
 public class CommentController {
+	
+    private Map<Integer, Set<Integer>> likes = new HashMap<>(); // 存儲每個評論的點讚用戶
+    private Map<Integer, Set<Integer>> less = new HashMap<>(); // 存儲每個評論的點讚用戶
+
+
 	@Autowired
 	private MovieRepository movr;
 	@Autowired
@@ -377,13 +385,100 @@ public class CommentController {
         
         return response;
     }
-	@PostMapping("/good")
-	public ResponseEntity<String>good(){
-		
-		return null;
-		
-	}
-	
+	@PutMapping("/good/{commentId}")
+    public ResponseEntity<String> good(@PathVariable Integer commentId, @RequestParam String token) {
+        if (token != null) {
+            System.out.println(token);
+            // 解碼TOKEN
+            String authToken = jwtu.validateEncryptedToken(token);
+            System.out.println(authToken);
+            if (authToken != null) {
+                // 解碼TOKEN
+                JSONObject obj = new JSONObject(authToken);
+                Integer userId = obj.getInt("userid");
+
+                System.out.println(userId);
+
+                // 確認commentId存在
+                Optional<Comment> existingCommentOpt = commentRepository.findById(commentId);
+                if (!existingCommentOpt.isPresent()) {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Comment not found");
+                }
+
+                Comment existingComment = existingCommentOpt.get();
+
+                // 根據用戶點讚狀態更新點讚數
+                Set<Integer> userLikes = likes.getOrDefault(commentId, new HashSet<>());
+                if (userLikes.contains(userId)) {
+                    existingComment.setGood(existingComment.getGood() - 1); // 取消點讚
+                    userLikes.remove(userId);
+                } else {
+                    existingComment.setGood(existingComment.getGood() + 1); // 增加點讚數
+                    userLikes.add(userId);
+                }
+
+                likes.put(commentId, userLikes);
+
+                // 保存更新後的評論
+                commentRepository.save(existingComment);
+
+                return ResponseEntity.ok("Comment updated successfully");
+            } else {
+                // 錯誤的TOKEN
+                System.out.println("Token失效");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token失效");
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Token is missing");
+        }
+    }
+	@PutMapping("/useless/{commentId}")
+    public ResponseEntity<String> useless(@PathVariable Integer commentId, @RequestParam String token) {
+        if (token != null) {
+            System.out.println(token);
+            // 解碼TOKEN
+            String authToken = jwtu.validateEncryptedToken(token);
+            System.out.println(authToken);
+            if (authToken != null) {
+                // 解碼TOKEN
+                JSONObject obj = new JSONObject(authToken);
+                Integer userId = obj.getInt("userid");
+
+                System.out.println(userId);
+
+                // 確認commentId存在
+                Optional<Comment> existingCommentOpt = commentRepository.findById(commentId);
+                if (!existingCommentOpt.isPresent()) {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Comment not found");
+                }
+
+                Comment existingComment = existingCommentOpt.get();
+
+                // 根據用戶點讚狀態更新點讚數
+                Set<Integer> userless = less.getOrDefault(commentId, new HashSet<>());
+                if (userless.contains(userId)) {
+                    existingComment.setUseless(existingComment.getUseless() - 1); // 取消點讚
+                    userless.remove(userId);
+                } else {
+                    existingComment.setUseless(existingComment.getUseless() + 1); // 增加點讚數
+                    userless.add(userId);
+                }
+
+                less.put(commentId, userless);
+
+                // 保存更新後的評論
+                commentRepository.save(existingComment);
+
+                return ResponseEntity.ok("Comment updated successfully");
+            } else {
+                // 錯誤的TOKEN
+                System.out.println("Token失效");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token失效");
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Token is missing");
+        }
+    }
 
 
 }
