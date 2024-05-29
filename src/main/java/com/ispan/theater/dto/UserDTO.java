@@ -1,5 +1,5 @@
 
-package com.ispan.theater.DTO;
+package com.ispan.theater.dto;
 
 import lombok.Getter;
 import lombok.Setter;

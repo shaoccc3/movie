@@ -34,9 +34,8 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
 
 import com.google.gson.JsonObject;
-
-import com.ispan.theater.DTO.UserDTO;
 import com.ispan.theater.domain.User;
+import com.ispan.theater.dto.UserDTO;
 import com.ispan.theater.service.UserService;
 import com.ispan.theater.util.EmailSenderComponent;
 import com.ispan.theater.util.JsonWebTokenUtility;

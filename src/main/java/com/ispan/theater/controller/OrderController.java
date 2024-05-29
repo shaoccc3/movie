@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ispan.theater.domain.Order;
-import com.ispan.theater.DTO.InsertOrderDTO;
+import com.ispan.theater.dto.InsertOrderDTO;
 import com.ispan.theater.listener.OrderConditionPublisher;
 import com.ispan.theater.repository.OrderRepository;
 import com.ispan.theater.repository.TicketRepository;
