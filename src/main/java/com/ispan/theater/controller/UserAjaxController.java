@@ -104,7 +104,7 @@ public class UserAjaxController {
 			result.put("success", true);
 			result.put("message", "登入成功");
 			JSONObject inputjson = new JSONObject().put("userid", user.getId()).put("email", user.getEmail());
-			String token = jsonWebTokenUtility.createEncryptedToken(inputjson.toString(), null);			
+			String token = jsonWebTokenUtility.createToken(inputjson.toString(), null);			
 			result.put("token", token);
 			result.put("username", user.getUserFirstname() + user.getUserLastname());
 		} else {
@@ -152,8 +152,7 @@ public class UserAjaxController {
 
 	@GetMapping("/profile")
 	public ResponseEntity<?> userProfile(@RequestParam String token) {
-
-		String data = jsonWebTokenUtility.validateEncryptedToken(token);
+		String data = jsonWebTokenUtility.validateToken(token);
 		if (data != null && data.length() != 0) {
 			JSONObject obj = new JSONObject(data);
 			Integer id = obj.getInt("userid");
@@ -197,7 +196,7 @@ public class UserAjaxController {
 				if (dbuser != null) {
 					JSONObject inputjson = new JSONObject().put("userid", dbuser.getId())
 							.put("email", dbuser.getEmail()).put("birth", dbuser.getBirth());
-					String token = jsonWebTokenUtility.createEncryptedToken(inputjson.toString(), null);
+					String token = jsonWebTokenUtility.createToken(inputjson.toString(), null);
 					result.put("token", token);
 					result.put("username", dbuser.getUserFirstname() + dbuser.getUserLastname());
 					result.put("message", "歡迎回來");
@@ -213,7 +212,7 @@ public class UserAjaxController {
 						result.put("message", "註冊成功，手機號與生日為系統預設值，請修改您的個人資料");
 						JSONObject inputjson = new JSONObject().put("userid", user.getId())
 								.put("email", user.getEmail()).put("birth", user.getBirth());
-						String token = jsonWebTokenUtility.createEncryptedToken(inputjson.toString(), null);
+						String token = jsonWebTokenUtility.createToken(inputjson.toString(), null);
 						result.put("token", token);
 						result.put("username", user.getUserFirstname() + user.getUserLastname());
 					} else {
@@ -239,7 +238,7 @@ public class UserAjaxController {
 	public ResponseEntity<?> changePaaword(@PathVariable(name = "token")
 
 	String token, @RequestBody String password) {
-		String data = jsonWebTokenUtility.validateEncryptedToken(token);
+		String data = jsonWebTokenUtility.validateToken(token);
 		if (data != null && data.length() != 0) {
 			JSONObject obj = new JSONObject(data);
 			Integer userid = obj.getInt("userid");
@@ -253,7 +252,7 @@ public class UserAjaxController {
 	// 修改個人資料 
 	@PutMapping("/check/changeUserProfile/{token}")
 	public ResponseEntity<?> changeUserProfile(@PathVariable(name = "token") String token, @RequestBody UserDTO userDTO) {
-		String data = jsonWebTokenUtility.validateEncryptedToken(token);
+		String data = jsonWebTokenUtility.validateToken(token);
 		if (data != null && data.length() != 0) {
 			Integer userid = new JSONObject(data).getInt("userid");
 			JSONObject update = new JSONObject(userDTO).put("userid", userid);
@@ -268,7 +267,7 @@ public class UserAjaxController {
 	public String userEmailVerify(@PathVariable(name = "token") String token) {
 		JSONObject result = new JSONObject();
 		// 檢查token並解析
-		String data = jsonWebTokenUtility.validateEncryptedToken(token);
+		String data = jsonWebTokenUtility.validateToken(token);
 		// tokern有效
 		if (data != null && data.length() != 0) {
 			Integer userid = new JSONObject(data).getInt("userid");
@@ -289,7 +288,7 @@ public class UserAjaxController {
 	@PostMapping("uploadUserPhoto/{token}")
 	public String uploadPohto(@PathVariable(name = "token") String token, @RequestParam MultipartFile file)
 			throws IOException {
-		String data = jsonWebTokenUtility.validateEncryptedToken(token);
+		String data = jsonWebTokenUtility.validateToken(token);
 		if (data != null && data.length() != 0) {
 			Integer userid = new JSONObject(data).getInt("userid");
 			userService.updatePhoto(userid, file);
@@ -319,7 +318,7 @@ public class UserAjaxController {
 		User user = userService.findUserByEmail(email);
 		if (user!=null) {
 			JSONObject inputjson = new JSONObject().put("userid", user.getId()).put("email", user.getEmail());
-			String token = jsonWebTokenUtility.createEncryptedToken(inputjson.toString(), null);
+			String token = jsonWebTokenUtility.createToken(inputjson.toString(), null);
 			emailSenderComponent.sendForgetPasswordEmail(user.getEmail(), token);
 			return  ResponseEntity.ok(user);
 		}
@@ -331,7 +330,7 @@ public class UserAjaxController {
 	//發送驗證信箱信
 	@GetMapping("/sendVeriftEmail/{token}")
 	public  ResponseEntity<?> sendVeriftEmail (@PathVariable(name = "token") String token){
-		String data = jsonWebTokenUtility.validateEncryptedToken(token);
+		String data = jsonWebTokenUtility.validateToken(token);
 		if(data!=null) {
 			JSONObject userinfo =new JSONObject(data);
 			emailSenderComponent.sendEmail(userinfo.getString("email"),token);

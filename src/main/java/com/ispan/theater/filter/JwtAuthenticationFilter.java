@@ -34,7 +34,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String token = getTokenFromRequest(request);
         System.out.println("filter1:"+token);
         //從token獲取username
-        String temp=jsonWebTokenUtility.validateEncryptedToken(token);
+        String temp=jsonWebTokenUtility.validateToken(token);
         //校验token
         if(StringUtils.hasText(token) && temp!=null){
             String username = temp.substring(temp.indexOf("\"email\":\"")+9,temp.indexOf("\"",temp.indexOf("\"email\":\"")+9));
@@ -52,16 +52,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private String getTokenFromRequest(HttpServletRequest request){
 
         String bearerToken = request.getHeader("Authorization");
-        System.out.println("filter3"+bearerToken);
+        System.out.println("filter3:"+bearerToken);
         if(StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")){
             return bearerToken.substring(7, bearerToken.length());
         }
         return null;
     }
-
+    
 	@Override
 	protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-		return request.getRequestURI().equals("/user/login");
+		return request.getRequestURI().equals("/user/login")||request.getRequestURI().startsWith("/movie/findMovie")
+				||request.getRequestURI().startsWith("/movie/findAllCinema")||request.getRequestURI().startsWith("/movie/dates")
+				||request.getRequestURI().startsWith("/movie/times")||request.getRequestURI().startsWith("/movie/getOrderDetail")
+				||request.getRequestURI().startsWith("/order-redirect")||request.getRequestURI().startsWith("/movie/linePayConfirm")
+				||request.getRequestURI().startsWith("/movie/ecPayConfirm")||request.getRequestURI().startsWith("/user/finduserphoto")
+				||request.getRequestURI().startsWith("/movie/tickets");
 	}
     
     

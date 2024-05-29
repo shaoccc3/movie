@@ -30,14 +30,14 @@ public class Appconfig {
     JwtAuthenticationFilter JwtAuthenticationFilter() {
         return new JwtAuthenticationFilter();
     }
-	
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf->csrf.disable()).addFilterBefore(JwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-                .authorizeHttpRequests((authorize) -> {
-//                    authorize.requestMatchers("/user/**","/order-redirect","/movie/linePayConfirm").permitAll().anyRequest().authenticated();
-                    authorize.anyRequest().permitAll();
-                });
+        http.csrf(csrf->csrf.disable())
+        .addFilterBefore(JwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+        .authorizeHttpRequests((authorize) -> {
+        	authorize.requestMatchers("/user/**","/order-redirect","/movie/linePayConfirm","/movie/findMovie","/movie/findAllCinema","/movie/dates","/movie/times","/movie/getOrderDetail","/movie/ecPayConfirm","/movie/tickets").permitAll().anyRequest().authenticated();
+//          authorize.anyRequest().permitAll();
+        });
         return http.build();
     }
 	
