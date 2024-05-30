@@ -1,5 +1,6 @@
 package com.ispan.theater.repository;
 
+import com.ispan.theater.domain.Movie;
 import com.ispan.theater.domain.MoviePicture;
 import com.ispan.theater.dto.MoviePicDto;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,6 +12,6 @@ import java.util.List;
 
 @Repository
 public interface MoviePictureRepository extends JpaRepository<MoviePicture, Integer> {
-    @Query(value = "select c.* from Movie_Picture as c where c.movie_id = :movieId",nativeQuery = true)
-    List<MoviePicDto> findByMovieId(@Param("movieId") Integer movieId);
+    @Query("select c from MoviePicture c where c.movie = :movie")
+    List<MoviePicture> findByMovieId(@Param("movie") Movie movie);
 }

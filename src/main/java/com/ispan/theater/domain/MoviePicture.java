@@ -1,9 +1,12 @@
 package com.ispan.theater.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.Arrays;
 
 @NoArgsConstructor
 @Getter
@@ -18,10 +21,11 @@ public class MoviePicture {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "movie_id", nullable = false)
+    @JsonIgnore
     private Movie movie;
     @Lob
     @Column(name = "picture", nullable = false)
-    private Byte[] picture;
+    private byte[] picture;
     @Column(name = "filename", nullable = false)
     private String filename;
 
