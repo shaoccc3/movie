@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.apache.http.HttpStatus;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import com.ispan.theater.domain.Order;
 import com.ispan.theater.domain.OrderDetail;
 import com.ispan.theater.domain.Ticket;
 import com.ispan.theater.dto.InsertOrderDTO;
+import com.ispan.theater.exception.OrderException;
 import com.ispan.theater.repository.MovieRepository;
 import com.ispan.theater.repository.OrderDetailRepository;
 import com.ispan.theater.repository.OrderRepository;
@@ -112,7 +114,7 @@ public class OrderService {
 		orderDetailRepository.saveAll(orderDetails);
 		for (int i = 0; i < tickets.size(); i++) {
 			if (!"未售出".equals(tickets.get(i).getIsAvailable())) {
-				return new JSONObject().put("success", false).toString();
+				throw new OrderException(HttpStatus.SC_BAD_REQUEST,"已有座位被售出，請重新選擇！");
 			}
 		}
 		ticketRepository.setTicketAvailable("已售出", insertOrderDto.getTicketId());

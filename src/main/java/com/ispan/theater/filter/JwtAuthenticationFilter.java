@@ -54,7 +54,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     	        }
     	        filterChain.doFilter(request, response);
     	    } catch (Exception ex) {
-    	    	resolver.resolveException(request, response, null, new ExpiredJwtException(null,null,"token過期!"));
+    	    	resolver.resolveException(request, response, null, new ExpiredJwtException(null,null,"token驗證未過！"));
     	    }
 
     }
