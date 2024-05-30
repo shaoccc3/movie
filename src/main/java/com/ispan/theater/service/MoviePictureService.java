@@ -5,9 +5,13 @@ import com.ispan.theater.domain.MoviePicture;
 import com.ispan.theater.dto.MoviePicDto;
 import com.ispan.theater.repository.MoviePictureRepository;
 import com.ispan.theater.repository.MovieRepository;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -17,17 +21,21 @@ public class MoviePictureService {
     private MoviePictureRepository moviePictureRepository;
     @Autowired
     private MovieRepository movieRepository;
-    public List<MoviePicDto> getMoviePictures(Integer movieId) {
-        return moviePictureRepository.findByMovieId(movieId);
-    }
-    public boolean insertMoviePicture(Map<String,Byte[]> pictures, Integer movieId) {
+    public List<MoviePicture>  getMoviePictures(Integer movieId) {
         Movie movie = movieRepository.findById(movieId).orElse(null);
+        return moviePictureRepository.findByMovieId(movie);
+    }
+    public boolean insertMoviePicture(List<MultipartFile> files, Integer movieId) throws IOException {
+        Movie movie = movieRepository.findById(movieId).orElse(null);
+
         if( movie !=null){
-            for(Map.Entry<String, Byte[]> entry : pictures.entrySet()){
+            for (MultipartFile file : files) {
+                String fileName = file.getOriginalFilename();
+                byte[] bytes = file.getBytes();
                 MoviePicture moviePicture = new MoviePicture();
                 moviePicture.setMovie(movie);
-                moviePicture.setPicture(entry.getValue());
-                moviePicture.setFilename(entry.getKey());
+                moviePicture.setPicture(bytes);
+                moviePicture.setFilename(fileName);
                 moviePictureRepository.save(moviePicture);
             }
             return true;
