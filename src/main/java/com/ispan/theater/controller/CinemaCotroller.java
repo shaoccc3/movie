@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class CinemaCotroller {
     @Autowired
     private CinemaService cinemaService;
-    @PostMapping("/backstage/updateCinemaAddress")
+    @PostMapping("/admin/backstage/updateCinemaAddress")
     public ResponseEntity<?> updateCinemaAddress(@RequestBody CinemaDto cinemadto) {
         Integer id = cinemadto.id;
         Cinema cinema = cinemaService.getCinemaById(id);

@@ -84,7 +84,7 @@ public class ScreeningAjaxController {
         return response.toString();
     }
 
-    @PostMapping("/backstage/screening")
+    @PostMapping("/admin/backstage/screening")
     public String insertScreening(@RequestBody String json) {
         JSONObject jsonObject = new JSONObject(json);
         JSONObject response = new JSONObject();
@@ -147,7 +147,7 @@ public class ScreeningAjaxController {
         return response.toString();
     }
     //從日曆獲得資料CRUD
-    @PostMapping("/backstage/screen/calendar")
+    @PostMapping("/admin/backstage/screen/calendar")
     public String modifyCalendar(@RequestBody String json) {
         JSONArray array = new JSONArray(json);
         for (int i = 0; i < array.length(); i++) {
@@ -158,7 +158,7 @@ public class ScreeningAjaxController {
         }
         return "OK";
     }
-    @DeleteMapping("/backstage/screen/calendar")
+    @DeleteMapping("/admin/backstage/screen/calendar")
     public void deleteScreen(@RequestParam("deletelist") List<Integer> deletelist){
         for(Integer id:deletelist){
             screeningService.deleteScreening(id);
