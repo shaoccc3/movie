@@ -11,13 +11,24 @@ import com.ispan.theater.domain.SymmetricKeys;
 import com.ispan.theater.repository.SymmetricKeysRepository;
 import com.ispan.theater.util.SymmetricKeyGeneratorUtil;
 
-@Service
+import jakarta.annotation.PostConstruct;
+
+	@Service
 public class SymmetricKeysService  {
 
 	@Autowired
 	SymmetricKeysRepository symmetricKeysRepository;
 	
-	@Scheduled(fixedRate  = 100000)	
+	
+
+	@PostConstruct
+	public void init() throws NoSuchAlgorithmException  {
+		createSymmetricKey();
+	}
+	
+	
+	//每天 10:15:00執行 產生對稱鑰存入資料庫
+	@Scheduled(cron  =" 0 15 10 * * ?")
 	public void createSymmetricKey()throws NoSuchAlgorithmException {
 		SymmetricKeys key =new SymmetricKeys();
 		

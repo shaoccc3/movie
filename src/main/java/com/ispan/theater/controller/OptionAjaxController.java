@@ -1,16 +1,17 @@
 package com.ispan.theater.controller;
 
-import com.ispan.theater.domain.Category;
-import com.ispan.theater.domain.Rated;
-import com.ispan.theater.service.CategoryService;
-import com.ispan.theater.service.RatedService;
+import java.util.List;
+
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import com.ispan.theater.domain.Category;
+import com.ispan.theater.domain.Rated;
+import com.ispan.theater.service.CategoryService;
+import com.ispan.theater.service.RatedService;
 
 @RestController
 @CrossOrigin

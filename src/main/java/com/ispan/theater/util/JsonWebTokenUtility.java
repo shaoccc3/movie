@@ -1,6 +1,5 @@
 package com.ispan.theater.util;
 
-import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
 import javax.crypto.SecretKey;
@@ -31,17 +30,27 @@ public class JsonWebTokenUtility {
 	private byte[] base64EncodedSecret;	//用在簽章
 	private char[] charArraySecret;		//用在加密
 	@PostConstruct
-	@Scheduled(fixedRate  = 100003)
 	public void init()  {
-		//初始化時生成斯鑰存入資料庫
-		String secret = symmetricKeysService.getSymmetricKey().getSecretKey();
+		updateSecretKey();
+	}
 
+	
+	//每天 10:15:05執行 更新對稱鑰
+	@Scheduled(cron  =" 5 15 10 * * ?")
+    public void updateSecretKey() {
+		//生成斯鑰存入資料庫
+		String secret = symmetricKeysService.getSymmetricKey().getSecretKey();
 		//將密鑰使用base64編碼
 		base64EncodedSecret = Base64.getEncoder().encode(secret.getBytes());
 		charArraySecret = new String(base64EncodedSecret).toCharArray();
-		System.out.println("jwtutil初始化完成 使用鑰匙:" +secret);
-	}
-
+        System.out.println("jwtutil對稱鑰更新完成 使用鑰匙:" +secret);
+    }
+	
+	
+	
+	
+	
+	
 	public String createEncryptedToken(String data, Long lifespan) {
 		java.util.Date now = new java.util.Date();
 		if(lifespan==null) {

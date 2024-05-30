@@ -3,7 +3,6 @@ package com.ispan.theater.controller;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Collections;
-
 import java.util.List;
 import java.util.Map;
 
@@ -37,14 +36,11 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
-
 import com.ispan.theater.domain.User;
 import com.ispan.theater.dto.UserDTO;
 import com.ispan.theater.service.UserService;
 import com.ispan.theater.util.EmailSenderComponent;
 import com.ispan.theater.util.JsonWebTokenUtility;
-
-import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @CrossOrigin

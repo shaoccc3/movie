@@ -11,7 +11,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableAsync
 @EnableAspectJAutoProxy
 @ServletComponentScan
-@EnableScheduling
+//@EnableScheduling
 public class TheaterApplication {
 
     public static void main(String[] args) {

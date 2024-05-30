@@ -1,15 +1,22 @@
 package com.ispan.theater.controller;
 
-import com.ispan.theater.domain.Movie;
-import com.ispan.theater.domain.Screening;
-import com.ispan.theater.service.MovieService;
-import com.ispan.theater.service.ScreeningService;
+import java.util.List;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.*;
-import java.util.List;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.ispan.theater.domain.Movie;
+import com.ispan.theater.domain.Screening;
+import com.ispan.theater.service.MovieService;
+import com.ispan.theater.service.ScreeningService;
 
 @RestController
 @CrossOrigin
