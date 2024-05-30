@@ -17,9 +17,23 @@ public class CinemaCotroller {
     private CinemaService cinemaService;
     @PostMapping("/admin/backstage/updateCinemaAddress")
     public ResponseEntity<?> updateCinemaAddress(@RequestBody CinemaDto cinemadto) {
-        Integer id = cinemadto.id;
+        Integer id = cinemadto.cinema_id;
         Cinema cinema = cinemaService.getCinemaById(id);
         if(cinema != null) {
+            cinema.setAddress(cinemadto.address);
+            cinemaService.saveCinema(cinema);
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
+    @PostMapping("/admin/backstage/update")
+    public ResponseEntity<?> updateCinema(@RequestBody CinemaDto cinemadto) {
+        Integer id = cinemadto.cinema_id;
+        Cinema cinema = cinemaService.getCinemaById(id);
+        if(cinema != null) {
+            cinema.setName(cinemadto.name);
+            cinema.setLocationCategory(cinemadto.location_category);
+            cinema.setPhone(cinemadto.phone);
             cinema.setAddress(cinemadto.address);
             cinemaService.saveCinema(cinema);
             return ResponseEntity.ok().build();
