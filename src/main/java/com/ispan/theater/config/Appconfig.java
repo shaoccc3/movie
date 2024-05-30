@@ -1,7 +1,9 @@
 package com.ispan.theater.config;
 
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -17,7 +19,7 @@ import com.ispan.theater.filter.JwtAuthenticationFilter;
 
 
 @Configuration
-@EnableCaching
+//@EnableCaching
 @EnableWebSecurity
 public class Appconfig {
 
@@ -30,6 +32,7 @@ public class Appconfig {
     JwtAuthenticationFilter JwtAuthenticationFilter() {
         return new JwtAuthenticationFilter();
     }
+     
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf->csrf.disable())
