@@ -87,7 +87,7 @@ public class MovieAjaxController {
         return response.toString();
     }
 
-    @PostMapping("/backstage/movie/uploadPhoto/{id}")
+    @PostMapping("/admin/backstage/movie/uploadPhoto/{id}")
     public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file ,@PathVariable Integer id) {//測試用
         Movie movie = movieService.getMovieById(id);
         try {
@@ -104,7 +104,7 @@ public class MovieAjaxController {
         }
     }
 
-    @PostMapping("/backstage/movie")
+    @PostMapping("/admin/backstage/movie")
     public String insertMovie(@RequestBody String moviestr) {
         JSONObject jsonObject = new JSONObject(moviestr);
         JSONObject response = new JSONObject();
@@ -121,7 +121,7 @@ public class MovieAjaxController {
 
     }
 
-    @PutMapping("/backstage/movie/{id}")
+    @PutMapping("/admin/backstage/movie/{id}")
     public String updateMovie(@RequestBody String moviestr,@PathVariable Integer id) {
         JSONObject jsonObject = new JSONObject(moviestr);
         JSONObject response = new JSONObject();
@@ -137,7 +137,7 @@ public class MovieAjaxController {
 
     }
 
-    @DeleteMapping("/backstage/movie/{id}")
+    @DeleteMapping("/admin/backstage/movie/{id}")
     public String deleteMovie(@PathVariable("id") int id) {
         Movie movie = movieService.getMovieById(id);
         JSONObject response = new JSONObject(movie);

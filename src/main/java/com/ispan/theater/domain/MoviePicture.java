@@ -19,8 +19,10 @@ public class MoviePicture {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "movie_id", nullable = false)
     private Movie movie;
-
+    @Lob
     @Column(name = "picture", nullable = false)
-    private byte[] picture;
+    private Byte[] picture;
+    @Column(name = "filename", nullable = false)
+    private String filename;
 
 }
