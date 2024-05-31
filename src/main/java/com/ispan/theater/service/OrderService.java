@@ -151,6 +151,18 @@ public class OrderService {
 				.put("pages", pages).toString();
 	}
 
+	public String getOrderBackStage(Integer page) {
+		Integer total = orderRepository.orderTotal().get("order_total");
+		Integer pages = 1;
+		if (total % 10 == 0 && total / 10 != 0) {
+			pages = total / 10;
+		} else if (total % 10 != 0 && total / 10 != 0) {
+			pages = (total / 10) + 1;
+		}
+		return new JSONObject().put("orders", orderRepository.getOrder((page - 1) * 10))
+				.put("pages", pages).toString();
+	}
+	
 	public String getOrderDetail(Integer orderId) {
 		return new JSONObject().put("details", orderRepository.orderCompleted(orderId)).toString();
 	}

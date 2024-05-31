@@ -38,10 +38,8 @@ public class Appconfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf->csrf.disable())
         .addFilterBefore(JwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-        .authorizeHttpRequests((authorize) -> {//
-        	authorize.requestMatchers("/order/movie/findAllCinema").permitAll();
-        	authorize.requestMatchers("/user/**","/order-redirect","/order/movie/linePayConfirm","/order/movie/findMovie","/order/movie/findAllCinema","/order/movie/dates","/order/movie/times","/order/movie/ecPayConfirm","/order/movie/tickets","/backstage/movie/**","/moviePicture/**","/comment/**").permitAll().anyRequest().authenticated();
-//          authorize.anyRequest().permitAll();
+        .authorizeHttpRequests((authorize) -> {//test /order/movie/getOrderDetail、/order/movie/deleteOrder暫時開權限
+        	authorize.requestMatchers("/order/movie/getOrderDetail","/order/movie/deleteOrder","/user/**","/order-redirect","/order/movie/linePayConfirm","/order/movie/findMovie","/order/movie/findAllCinema","/order/movie/dates","/order/movie/times","/order/movie/ecPayConfirm","/order/movie/tickets","/backstage/movie/**","/moviePicture/**","/comment/**","/order/movie/getOrderBackStage").permitAll().anyRequest().authenticated();
         });
         return http.build();
     }

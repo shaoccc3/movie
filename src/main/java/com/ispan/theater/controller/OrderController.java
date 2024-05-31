@@ -125,6 +125,7 @@ public class OrderController {
 		return new JSONObject().put("Order",orderRepository.orderCompletedByECPay(merchantTradeNo)).toString();
 	}
 	
+	
 	@GetMapping("/movie/getOrder")
 	public String getOrder(@RequestParam("userId")Integer userId,@RequestParam("page")Integer page) {
 		orderConditionPublisher.publishV2(userId);
@@ -136,6 +137,10 @@ public class OrderController {
 		return orderService.getOrderDetail(orderId);
 	}
 	
+	@GetMapping("/movie/getOrderBackStage")
+	public String getOrderBackStage(@RequestParam("page")Integer page) {
+		return orderService.getOrderBackStage(page);
+	}
 	
 	@GetMapping("/movie/deleteOrder")
 	public String refund(@RequestParam("orderId")Integer orderId) {
