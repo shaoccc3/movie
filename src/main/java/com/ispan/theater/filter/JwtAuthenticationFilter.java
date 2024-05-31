@@ -42,17 +42,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     	        String token = getTokenFromRequest(request);
     	        System.out.println("filter1:"+token);
     	        //從token獲取username
-    	        String temp=jsonWebTokenUtility.validateToken(token);
     	        //校验token
-    	        if(StringUtils.hasText(token) && temp!=null){
-    	            String username = temp.substring(temp.indexOf("\"email\":\"")+9,temp.indexOf("\"",temp.indexOf("\"email\":\"")+9));
-    	            System.out.println("filter2:"+username);
-    	            // 加载與　token 關聯的用户
-    	            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+    	        if(token!=null) {
+        	        String temp=jsonWebTokenUtility.validateToken(token);
+        	        if(StringUtils.hasText(token) && temp!=null){
+        	            String username = temp.substring(temp.indexOf("\"email\":\"")+9,temp.indexOf("\"",temp.indexOf("\"email\":\"")+9));
+        	            System.out.println("filter2:"+username);
+        	            // 加载與　token 關聯的用户
+        	            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-    	            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
-    	            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-    	            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        	            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
+        	            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+        	            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        	        }
     	        }
     	        filterChain.doFilter(request, response);
     	    } catch (Exception ex) {
@@ -72,9 +74,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     
 	@Override
 	protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-		return  request.getRequestURI().startsWith("/order/movie/findMovie")||request.getRequestURI().startsWith("/user")
-				||request.getRequestURI().startsWith("/order/movie/findAllCinema")||request.getRequestURI().startsWith("/order/movie/dates")
-				||request.getRequestURI().startsWith("/order/movie/times")||request.getRequestURI().startsWith("/order-redirect")
+		return 	request.getRequestURI().startsWith("/user")
+				||request.getRequestURI().startsWith("/order/movie/findMovie")
+				||request.getRequestURI().startsWith("/order/movie/findAllCinema")
+				||request.getRequestURI().startsWith("/order/movie/dates")
+				||request.getRequestURI().startsWith("/order/movie/times")
+				||request.getRequestURI().startsWith("/order-redirect")
 				||request.getRequestURI().startsWith("/order/movie/linePayConfirm")||request.getRequestURI().startsWith("/order/movie/ecPayConfirm")
 				||request.getRequestURI().startsWith("/user/finduserphoto")||request.getRequestURI().startsWith("/order/movie/tickets")
 				||request.getRequestURI().startsWith("/backstage/movie")||request.getRequestURI().startsWith("/comment")
