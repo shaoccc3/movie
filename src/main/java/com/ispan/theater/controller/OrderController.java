@@ -6,11 +6,11 @@ import org.apache.http.HttpStatus;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,6 +28,7 @@ import com.ispan.theater.service.OrderService;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
+@RequestMapping(value="/order")
 @CrossOrigin
 public class OrderController {
 	@Autowired
@@ -124,6 +125,7 @@ public class OrderController {
 		return new JSONObject().put("Order",orderRepository.orderCompletedByECPay(merchantTradeNo)).toString();
 	}
 	
+	
 	@GetMapping("/movie/getOrder")
 	public String getOrder(@RequestParam("userId")Integer userId,@RequestParam("page")Integer page) {
 		orderConditionPublisher.publishV2(userId);
@@ -135,6 +137,10 @@ public class OrderController {
 		return orderService.getOrderDetail(orderId);
 	}
 	
+	@GetMapping("/movie/getOrderBackStage")
+	public String getOrderBackStage(@RequestParam("page")Integer page) {
+		return orderService.getOrderBackStage(page);
+	}
 	
 	@GetMapping("/movie/deleteOrder")
 	public String refund(@RequestParam("orderId")Integer orderId) {	return orderService.refund(orderId);	}

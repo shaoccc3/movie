@@ -1,9 +1,9 @@
 package com.ispan.theater.dto;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 public class ErrorDto {
-    private LocalDateTime timestamp;
+    private String timestamp;
     private int status;
     private String error;
     private String message;
@@ -12,7 +12,7 @@ public class ErrorDto {
 		super();
 	}
 
-	public ErrorDto(LocalDateTime timestamp, int status, String error, String message) {
+	public ErrorDto(String timestamp, int status, String error, String message) {
 		super();
 		this.timestamp = timestamp;
 		this.status = status;
@@ -20,11 +20,11 @@ public class ErrorDto {
 		this.message = message;
 	}
 
-	public LocalDateTime getTimestamp() {
+	public String getTimestamp() {
 		return timestamp;
 	}
 
-	public void setTimestamp(LocalDateTime timestamp) {
+	public void setTimestamp(String timestamp) {
 		this.timestamp = timestamp;
 	}
 
