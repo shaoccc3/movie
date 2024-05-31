@@ -1,6 +1,6 @@
 package com.ispan.theater.exception;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 import org.apache.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.ispan.theater.dto.ErrorDto;
+import com.ispan.theater.util.DatetimeConverter;
 
 import io.jsonwebtoken.ExpiredJwtException;
 
@@ -16,11 +17,11 @@ public class GlobalExceptionHandler {
 	
 	@ExceptionHandler(ExpiredJwtException.class)
 	public ResponseEntity<ErrorDto> handleJwtException(Exception e){
-		return ResponseEntity.status(HttpStatus.SC_FORBIDDEN).body(new ErrorDto(LocalDateTime.now(),HttpStatus.SC_FORBIDDEN,"forbidden",e.getMessage()));
+		return ResponseEntity.status(HttpStatus.SC_FORBIDDEN).body(new ErrorDto(DatetimeConverter.createSqlDatetime(new Date()),HttpStatus.SC_FORBIDDEN,"forbidden",e.getMessage()));
 	}
 	
 	@ExceptionHandler(OrderException.class)
-	public ResponseEntity<String> handleOrderException(OrderException e){
-		return ResponseEntity.status(e.getErrorCode()).body(e.getErrorMessage());
+	public ResponseEntity<ErrorDto> handleOrderException(OrderException e){
+		return ResponseEntity.status(e.getErrorCode()).body(new ErrorDto(DatetimeConverter.createSqlDatetime(new Date()),e.getErrorCode(),"order_ticket_error",e.getErrorMessage()));
 	}
 }

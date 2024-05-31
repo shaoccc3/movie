@@ -2,6 +2,7 @@ package com.ispan.theater.filter;
 
 import java.io.IOException;
 
+import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,6 +14,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
+import com.ispan.theater.exception.OrderException;
 import com.ispan.theater.util.JsonWebTokenUtility;
 
 import io.jsonwebtoken.ExpiredJwtException;
@@ -70,12 +72,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     
 	@Override
 	protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-		return request.getRequestURI().equals("/user/login")||request.getRequestURI().startsWith("/movie/findMovie")
-				||request.getRequestURI().startsWith("/movie/findAllCinema")||request.getRequestURI().startsWith("/movie/dates")
-				||request.getRequestURI().startsWith("/movie/times")||request.getRequestURI().startsWith("/order-redirect")
-				||request.getRequestURI().startsWith("/movie/linePayConfirm")||request.getRequestURI().startsWith("/movie/ecPayConfirm")
-				||request.getRequestURI().startsWith("/user/finduserphoto")||request.getRequestURI().startsWith("/movie/tickets");
+		return  request.getRequestURI().startsWith("/order/movie/findMovie")||request.getRequestURI().startsWith("/user")
+				||request.getRequestURI().startsWith("/order/movie/findAllCinema")||request.getRequestURI().startsWith("/order/movie/dates")
+				||request.getRequestURI().startsWith("/order/movie/times")||request.getRequestURI().startsWith("/order-redirect")
+				||request.getRequestURI().startsWith("/order/movie/linePayConfirm")||request.getRequestURI().startsWith("/order/movie/ecPayConfirm")
+				||request.getRequestURI().startsWith("/user/finduserphoto")||request.getRequestURI().startsWith("/order/movie/tickets")
+				||request.getRequestURI().startsWith("/backstage/movie")||request.getRequestURI().startsWith("/comment")
+				||request.getRequestURI().startsWith("/moviePicture");
 	}
+
     
     
 }
