@@ -3,7 +3,6 @@ package com.ispan.theater.controller;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Collections;
-
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +14,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,6 +38,7 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
 
 import com.google.gson.JsonObject;
+
 import com.ispan.theater.domain.User;
 import com.ispan.theater.dto.UserDTO;
 import com.ispan.theater.service.UserService;
@@ -54,6 +59,11 @@ public class UserAjaxController {
 	@Autowired
 	JsonWebTokenUtility jsonWebTokenUtility;
 
+	@Autowired
+    private AuthenticationManager authenticationManager;
+	@Autowired
+    private PasswordEncoder passwordEncoder;
+	
 	@PostMapping("/register") // testpage
 	public String userRegister(@RequestBody String json) {
 		JSONObject repJson = new JSONObject();
@@ -89,13 +99,16 @@ public class UserAjaxController {
 		JSONObject result = new JSONObject();
 		User user = userService.checkLogin(jsonobj);
 		if (user != null) {
+			//----security----
+	        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(),jsonobj.getString("password")));
+	        SecurityContextHolder.getContext().setAuthentication(authentication);
+	        //----security----
 			result.put("success", true);
 			result.put("message", "登入成功");
 			JSONObject inputjson = new JSONObject().put("userid", user.getId()).put("email", user.getEmail());
-			String token = jsonWebTokenUtility.createEncryptedToken(inputjson.toString(), null);
+			String token = jsonWebTokenUtility.createToken(inputjson.toString(), null);			
 			result.put("token", token);
 			result.put("username", user.getUserFirstname() + user.getUserLastname());
-
 		} else {
 			result.put("success", false);
 			result.put("message", "登入失敗");
@@ -141,8 +154,7 @@ public class UserAjaxController {
 
 	@GetMapping("/profile")
 	public ResponseEntity<?> userProfile(@RequestParam String token) {
-
-		String data = jsonWebTokenUtility.validateEncryptedToken(token);
+		String data = jsonWebTokenUtility.validateToken(token);
 		if (data != null && data.length() != 0) {
 			JSONObject obj = new JSONObject(data);
 			Integer id = obj.getInt("userid");
@@ -188,7 +200,7 @@ public class UserAjaxController {
 				if (dbuser != null) {
 					JSONObject inputjson = new JSONObject().put("userid", dbuser.getId())
 							.put("email", dbuser.getEmail()).put("birth", dbuser.getBirth());
-					String token = jsonWebTokenUtility.createEncryptedToken(inputjson.toString(), null);
+					String token = jsonWebTokenUtility.createToken(inputjson.toString(), null);
 					result.put("token", token);
 					result.put("username", dbuser.getUserFirstname() + dbuser.getUserLastname());
 					result.put("message", "歡迎回來");
@@ -206,7 +218,7 @@ public class UserAjaxController {
 						result.put("message", "註冊成功，手機號與生日為系統預設值，請修改您的個人資料");
 						JSONObject inputjson = new JSONObject().put("userid", user.getId())
 								.put("email", user.getEmail()).put("birth", user.getBirth());
-						String token = jsonWebTokenUtility.createEncryptedToken(inputjson.toString(), null);
+						String token = jsonWebTokenUtility.createToken(inputjson.toString(), null);
 						result.put("token", token);
 						result.put("username", user.getUserFirstname() + user.getUserLastname());
 					} else {
@@ -232,7 +244,7 @@ public class UserAjaxController {
 	public ResponseEntity<?> changePaaword(@PathVariable(name = "token")
 
 	String token, @RequestBody String password) {
-		String data = jsonWebTokenUtility.validateEncryptedToken(token);
+		String data = jsonWebTokenUtility.validateToken(token);
 		if (data != null && data.length() != 0) {
 			JSONObject obj = new JSONObject(data);
 			Integer userid = obj.getInt("userid");
@@ -247,7 +259,7 @@ public class UserAjaxController {
 	// 修改個人資料 
 	@PutMapping("/check/changeUserProfile/{token}")
 	public ResponseEntity<?> changeUserProfile(@PathVariable(name = "token") String token, @RequestBody UserDTO userDTO) {
-		String data = jsonWebTokenUtility.validateEncryptedToken(token);
+		String data = jsonWebTokenUtility.validateToken(token);
 		if (data != null && data.length() != 0) {
 			Integer userid = new JSONObject(data).getInt("userid");
 			JSONObject update = new JSONObject(userDTO).put("userid", userid);
@@ -262,7 +274,7 @@ public class UserAjaxController {
 	public String userEmailVerify(@PathVariable(name = "token") String token) {
 		JSONObject result = new JSONObject();
 		// 檢查token並解析
-		String data = jsonWebTokenUtility.validateEncryptedToken(token);
+		String data = jsonWebTokenUtility.validateToken(token);
 		// tokern有效
 		if (data != null && data.length() != 0) {
 			Integer userid = new JSONObject(data).getInt("userid");
@@ -284,7 +296,7 @@ public class UserAjaxController {
 
 	public String uploadPohto(@PathVariable(name = "token") String token, @RequestParam MultipartFile file)
 			throws IOException {
-		String data = jsonWebTokenUtility.validateEncryptedToken(token);
+		String data = jsonWebTokenUtility.validateToken(token);
 		if (data != null && data.length() != 0) {
 			Integer userid = new JSONObject(data).getInt("userid");
 			userService.updatePhoto(userid, file);
@@ -296,7 +308,6 @@ public class UserAjaxController {
 	@GetMapping("finduserphoto/{email}")
 
 	public ResponseEntity<?> downloadPhoto(@PathVariable(name = "email") String email) {
-
 		User user = userService.findUserByEmail(email);
 		if (user!=null) {
 			byte[] photoFile = user.getUserPhoto();
@@ -316,7 +327,7 @@ public class UserAjaxController {
 		User user = userService.findUserByEmail(email);
 		if (user!=null) {
 			JSONObject inputjson = new JSONObject().put("userid", user.getId()).put("email", user.getEmail());
-			String token = jsonWebTokenUtility.createEncryptedToken(inputjson.toString(), null);
+			String token = jsonWebTokenUtility.createToken(inputjson.toString(), null);
 			emailSenderComponent.sendForgetPasswordEmail(user.getEmail(), token);
 			return  ResponseEntity.ok(user);
 		}
@@ -328,7 +339,7 @@ public class UserAjaxController {
 	//發送驗證信箱信
 	@GetMapping("/sendVeriftEmail/{token}")
 	public  ResponseEntity<?> sendVeriftEmail (@PathVariable(name = "token") String token){
-		String data = jsonWebTokenUtility.validateEncryptedToken(token);
+		String data = jsonWebTokenUtility.validateToken(token);
 		if(data!=null) {
 			JSONObject userinfo =new JSONObject(data);
 			emailSenderComponent.sendEmail(userinfo.getString("email"),token);

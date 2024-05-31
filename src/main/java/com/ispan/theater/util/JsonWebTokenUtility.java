@@ -4,11 +4,16 @@ import java.util.Base64;
 
 import javax.crypto.SecretKey;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
+import com.ispan.theater.service.SymmetricKeysService;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -19,19 +24,34 @@ import jakarta.annotation.PostConstruct;
 public class JsonWebTokenUtility {
 	@Value("${jwt.token.expire}")
 	private long expire;
-
+	
+	@Autowired
+	SymmetricKeysService symmetricKeysService;
+	
 	private byte[] base64EncodedSecret;	//用在簽章
 	private char[] charArraySecret;		//用在加密
 	@PostConstruct
-	public void init() {
-		//TODO：應該實作從資料庫抓出密鑰
-		String secret = "ABCDEFGHJKLM23456789npqrstuvwxyz";
+	public void init()  {
+		updateSecretKey();
+	}
 
+	
+	//每天 10:15:05執行 更新對稱鑰
+	@Scheduled(cron  =" 5 15 10 * * ?")
+    public void updateSecretKey() {
+		//生成斯鑰存入資料庫
+		String secret = symmetricKeysService.getSymmetricKey().getSecretKey();
 		//將密鑰使用base64編碼
 		base64EncodedSecret = Base64.getEncoder().encode(secret.getBytes());
 		charArraySecret = new String(base64EncodedSecret).toCharArray();
-	}
-
+        System.out.println("jwtutil對稱鑰更新完成 使用鑰匙:" +secret);
+    }
+	
+	
+	
+	
+	
+	
 	public String createEncryptedToken(String data, Long lifespan) {
 		java.util.Date now = new java.util.Date();
 		if(lifespan==null) {
@@ -51,6 +71,8 @@ public class JsonWebTokenUtility {
 					Jwts.ENC.A256GCM);
 
 		String token = builder.compact();
+
+		System.out.println("當前token:"+token);
 		return token;
 	}
 	public String validateEncryptedToken(String token) {
@@ -74,7 +96,7 @@ public class JsonWebTokenUtility {
 	public String createToken(String data, Long lifespan) {
 		java.util.Date now = new java.util.Date();
 		if(lifespan==null) {
-			lifespan = expire * 60 * 1000;
+			lifespan = expire * 5 * 1000;
 		}
 		long end = System.currentTimeMillis() + lifespan;
 		java.util.Date expiredate = new java.util.Date(end);
@@ -89,22 +111,18 @@ public class JsonWebTokenUtility {
 		String token = builder.compact();
 		return token;
 	}
-
-	public String validateToken(String token) {
+	
+	public String validateToken(String token) throws JwtException, IllegalArgumentException{
 		//使用HMACS-SHA演算法建立簽章密鑰
 		SecretKey secretKey = Keys.hmacShaKeyFor(base64EncodedSecret);
 		JwtParser parser = Jwts.parser()
 				.verifyWith(secretKey)		//使用密鑰驗證簽章：避免內容被竄改
 				.build();
-		try {
+	
 			Claims claims = parser.parseSignedClaims(token).getPayload();
 
 			//取出JWT主體內容
 			String subject = claims.getSubject();
 			return subject;
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-		return null;
 	}
 }

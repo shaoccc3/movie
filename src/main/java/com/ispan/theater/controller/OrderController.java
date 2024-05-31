@@ -2,6 +2,7 @@ package com.ispan.theater.controller;
 
 import java.util.List;
 
+import org.apache.http.HttpStatus;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,11 +10,14 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ispan.theater.domain.Order;
 import com.ispan.theater.dto.InsertOrderDTO;
+
+import com.ispan.theater.exception.OrderException;
 import com.ispan.theater.listener.OrderConditionPublisher;
 import com.ispan.theater.repository.OrderRepository;
 import com.ispan.theater.repository.TicketRepository;
@@ -22,7 +26,10 @@ import com.ispan.theater.service.ECPayService;
 import com.ispan.theater.service.LinePayService;
 import com.ispan.theater.service.OrderService;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @RestController
+@RequestMapping(value="/order")
 @CrossOrigin
 public class OrderController {
 	@Autowired
@@ -72,7 +79,8 @@ public class OrderController {
 	}
 	
 	@GetMapping("/movie/findAllCinema")
-	public String findAllCinema() {
+	public String findAllCinema(HttpServletRequest request) {
+		System.out.println("Authorization="+request.getHeader("Authorization"));
 		return new JSONObject().put("allCinemaName", cinemaService.findAllCinemaName()).toString(); 
 	}
 	
@@ -107,7 +115,7 @@ public class OrderController {
 		return json;
 	}
 
-	@GetMapping("/movie/linePayConfirm")
+	@GetMapping("/movie/confirm/linePayConfirm")
 	public String LinePayConfirm(@RequestParam("transactionId")String transactionId,@RequestParam("orderId")Integer orderId) {
 		System.out.println(transactionId+","+orderId);
 		return orderService.orderCompleted(transactionId,orderId);
@@ -136,13 +144,17 @@ public class OrderController {
 	}
 	
 	
-//	@PostMapping("/movie/test")
-//	public String test(@RequestBody InsertOrderDTO insertOrderDto) {
-//		System.out.println(insertOrderDto);
-//		System.out.println("linePay".equals(insertOrderDto.getPaymentOptions()));
-//		System.out.println("ecPay".equals(insertOrderDto.getPaymentOptions()));
-//		return ecPayService.ecpayCheckout();
+//	@GetMapping("/movie/test")
+//	@Transactional
+//	public String test(@RequestParam("orderId")String orderId) {
+//		orderRepository.setUserConsumptionECPay(orderId);
+//		return "Success";
 //	}
+	
+	@GetMapping("/movie/test")
+	public String test() {
+		throw new OrderException(HttpStatus.SC_BAD_REQUEST,"已有座位被售出，請重新選擇！");
+	}
 	
 }
 

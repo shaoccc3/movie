@@ -97,6 +97,16 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 	@Modifying
 	@Query(value="update \"Order\" set order_status=0 where order_id=:orderId",nativeQuery=true)
 	void orderRefundStep2(@Param("orderId")Integer orderId);
+	
+	@Modifying
+	@Query(value="update \"user\" set consumption=consumption+(select o.order_amount from \"Order\" as o where o.order_id=:orderId) where user_id=(select user_id from \"Order\" as o where o.order_id=:orderId)",nativeQuery=true)
+	void setUserConsumption(@Param("orderId")Integer orderId);
+	
+	//update "user" set consumption=+(select o.order_amount from "Order" as o where o.payment_no='aaa4ff026f254301a5c6') where user_id=(select user_id from "Order" as o where o.payment_no='aaa4ff026f254301a5c6') 
+	@Modifying
+	@Query(value="update \"user\" set consumption=consumption+(select o.order_amount from \"Order\" as o where o.payment_no=:paymentNo) where user_id=(select user_id from \"Order\" as o where o.payment_no=:paymentNo)",nativeQuery=true)
+	void setUserConsumptionECPay(@Param("paymentNo")String paymentNo);
+	
 //	@Modifying
 //	@Query(value="delete from OrderDetail where order_id =:orderId",nativeQuery=true)
 //	void orderRefundStep2(@Param("orderId")Integer orderId);

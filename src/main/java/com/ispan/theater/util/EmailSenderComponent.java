@@ -27,6 +27,9 @@ public class EmailSenderComponent {
     @Value("${mail.smtp.tls}")
     private boolean smtpTLS;
     
+    @Value("${front.url}")
+    private String frontUrl;
+    
     public void sendEmail(String useremail,String token) {
 
         // 連接郵件服務器
@@ -40,8 +43,11 @@ public class EmailSenderComponent {
         Email email = EmailBuilder.startingBlank()
                 .from(smtpUsername)
                 .to(useremail)
-                .withSubject("ispanmove認證信")
-                .withPlainText("請點擊以下連接進行驗證：http://localhost:5173/verify-email/" + token)
+                .withSubject("星爆影城認證信")
+                .withHTMLText("<html><body>" +
+                        "<p>敬愛的客戶您好，歡迎註冊星爆影城會員:</p>" +
+                        "<a href=\"" + frontUrl+"/verify-email/" + token + "\">點擊進行email認證</a>" +
+                        "</body></html>")
                 .buildEmail();
 
         // 發送郵件
@@ -62,7 +68,11 @@ public class EmailSenderComponent {
                 .from(smtpUsername)
                 .to(useremail)
                 .withSubject("星爆影城:忘記密碼重製信")
-                .withPlainText("請點擊以下連接進行忘記密碼重製：http://localhost:5173/reset-password/" + token)
+                .withHTMLText("<html><body>" +
+                        "<p>敬愛的客戶您好:</p>" +
+                        "<a href=\"" + frontUrl+"/reset-password/" + token + "\">點擊進行密碼重置</a>" +
+                        "</body></html>")
+//                .withPlainText("請點擊以下連接進行忘記密碼重製：http://localhost:5173/reset-password/" + token)
                 .buildEmail();
 
         // 發送郵件

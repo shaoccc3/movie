@@ -29,7 +29,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -72,7 +71,7 @@ public class CommentController {
 		if (token != null) {
 	    	System.out.println(token);
 	        // 解碼TOKEN
-	        String authToken = jwtu.validateEncryptedToken(token);
+	        String authToken = jwtu.validateToken(token);
 	        System.out.println(authToken);
 	        if (authToken != null) {
 	        	// 解碼TOKEN
@@ -238,7 +237,7 @@ public class CommentController {
 	    System.out.println(token);
 
 	    // Decode TOKEN
-	    String authToken = jwtu.validateEncryptedToken(token);
+	    String authToken = jwtu.validateToken(token);
 	    if (authToken == null) {
 	        System.out.println("Token遺失");
 	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("沒有token");
@@ -275,7 +274,7 @@ public class CommentController {
 	    if (token != null) {
 	        System.out.println(token);
 	        // 解碼TOKEN
-	        String authToken = jwtu.validateEncryptedToken(token);
+	        String authToken = jwtu.validateToken(token);
 	        System.out.println(authToken);
 	        if (authToken != null) {
 	            // 解碼TOKEN
@@ -393,7 +392,7 @@ public class CommentController {
         if (token != null) {
             System.out.println(token);
             // 解碼TOKEN
-            String authToken = jwtu.validateEncryptedToken(token);
+            String authToken = jwtu.validateToken(token);
             System.out.println(authToken);
             if (authToken != null) {
                 // 解碼TOKEN
@@ -440,7 +439,7 @@ public class CommentController {
         if (token != null) {
             System.out.println(token);
             // 解碼TOKEN
-            String authToken = jwtu.validateEncryptedToken(token);
+            String authToken = jwtu.validateToken(token);
             System.out.println(authToken);
             if (authToken != null) {
                 // 解碼TOKEN
