@@ -96,7 +96,7 @@ public class JsonWebTokenUtility {
 	public String createToken(String data, Long lifespan) {
 		java.util.Date now = new java.util.Date();
 		if(lifespan==null) {
-			lifespan = expire * 5 * 1000;
+			lifespan = expire * 60 * 1000;
 		}
 		long end = System.currentTimeMillis() + lifespan;
 		java.util.Date expiredate = new java.util.Date(end);
