@@ -19,6 +19,9 @@ import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.Password;
 import jakarta.annotation.PostConstruct;
 
+import static javax.crypto.Cipher.SECRET_KEY;
+import static net.sf.jsqlparser.util.validation.metadata.NamedObject.role;
+
 @Component
 public class JsonWebTokenUtility {
     private static final Logger log = LoggerFactory.getLogger(JsonWebTokenUtility.class);
@@ -143,6 +146,20 @@ public class JsonWebTokenUtility {
             return true;
         }
     }
+    public String adminToken(String data,Long lifespan){
+        java.util.Date now = new java.util.Date();
+        if (lifespan == null) {
+            lifespan = expire * 60 * 1000;
+        }
+        java.util.Date expiredate = new java.util.Date(System.currentTimeMillis() + lifespan);
+        JwtBuilder builder = Jwts.builder()
+                .subject(data)                    //JWT主體內容
+                .claim("role", "admin")
+                .issuedAt(now)                    //建立時間
+                .expiration(expiredate)            //過期時限
+                .signWith(secretKey);            //使用密鑰簽章：避免內容被竄改
+        return builder.compact();
+    }
     public String longToken(String data){
         java.util.Date now = new java.util.Date();
         java.util.Date expiredate = new java.util.Date(System.currentTimeMillis() + 315569520000L);
@@ -156,8 +173,6 @@ public class JsonWebTokenUtility {
     public String longEncryptToken(String data) {
         java.util.Date now = new java.util.Date();
         java.util.Date expiredate = new java.util.Date(System.currentTimeMillis() + 315569520000L);
-
-
         //建立密碼
         JwtBuilder builder = Jwts.builder()
                 .subject(data)                    //JWT主體內容
@@ -168,5 +183,18 @@ public class JsonWebTokenUtility {
                         Jwts.ENC.A256GCM);
 
         return builder.compact();
+    }
+    public Claims extractClaims(String token) {
+        JwtParser parser = Jwts.parser()
+                .verifyWith(secretKey)        //使用密鑰驗證簽章：避免內容被竄改
+                .build();
+        try {
+            return parser.parseSignedClaims(token).getPayload();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    public String extractRole(String token) {
+        return extractClaims(token).get("role", String.class);
     }
 }

@@ -31,7 +31,7 @@ public class UserService {
 			String phone = obj.isNull("phone") ? null : obj.getString("phone");
 			String birth = obj.isNull("birth") ? null : obj.getString("birth");
 			String gender = obj.isNull("gender") ? null : obj.getString("gender");
-			String photo =obj.isNull("image") ? null:obj.getString("image");
+			//String photo =obj.isNull("image") ? null:obj.getString("image");
 			
 			
 			// 必填項目
@@ -58,7 +58,7 @@ public class UserService {
 				user.setConsumption(0.0);
 				user.setUserlevel(0);
 				user.setIsverified(false);
-				user.setUserPhoto(photo);
+				//.setUserPhoto(photo);
 				return userRepository.save(user);
 			}
 		} catch (Exception e) {
@@ -134,9 +134,9 @@ public class UserService {
 			update.setIsverified(isverified);
 		}
 		// 照片
-		if (userPhoto != null) {
-			update.setUserPhoto(userPhoto);
-		}
+//		if (userPhoto != null) {
+//			update.setUserPhoto(userPhoto);
+//		}
 
 		update.setModifiedDate(new Date());
 		User user = userRepository.save(update);

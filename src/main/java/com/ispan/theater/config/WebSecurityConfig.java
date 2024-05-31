@@ -1,7 +1,7 @@
 package com.ispan.theater.config;
 
 
-import com.ispan.theater.Filter.JWTAuthorizationFilter;
+import com.ispan.theater.Filter.JwtAuthenticationFilter;
 import com.ispan.theater.service.AdminService;
 import com.ispan.theater.util.JsonWebTokenUtility;
 import jakarta.servlet.http.HttpServletResponse;
@@ -52,7 +52,7 @@ public class WebSecurityConfig {
                             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
                         }))
                 .securityContext(httpSecuritySecurityContextConfigurer -> httpSecuritySecurityContextConfigurer.requireExplicitSave(false))
-                .addFilterBefore(new JWTAuthorizationFilter(jwtUtility), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new JwtAuthenticationFilter(jwtUtility,userDetailsService), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 

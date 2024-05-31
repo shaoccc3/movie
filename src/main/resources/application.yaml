@@ -4,7 +4,7 @@ spring:
 #database connection
 #
 #  datasource:
-#    url: jdbc:sqlserver://34.81.76.178:1433;database=test1;trustServerCertificate=true;encrypt=true;
+#    url: jdbc:sqlserver://35.201.209.200:1433;databaseName=test1;trustServerCertificate=true;encrypt=true;
 #    password: p@ssw0rd
 #    username: sqlserver
   datasource:
@@ -25,7 +25,7 @@ spring:
       order_inserts: true
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-      ddl-auto: update
+      ddl-auto: validate
     show-sql: false
   output:
     ansi:

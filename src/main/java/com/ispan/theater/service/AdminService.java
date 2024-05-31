@@ -4,6 +4,7 @@ import com.ispan.theater.domain.Admin;
 import com.ispan.theater.dto.UserCredentials;
 import com.ispan.theater.repository.AdminRepository;
 import com.ispan.theater.util.JsonWebTokenUtility;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -33,17 +34,19 @@ public class AdminService implements UserDetailsService {
     }
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Admin admin = adminRepository.findByAdminname(username);
+        Admin admin = adminRepository.findByAdminname(username.trim());
         if (admin == null) {
+            System.out.println("Admin not found");
             throw new UsernameNotFoundException("User not found with username: " + username);
         }
-        System.out.println(admin.getPassword());
         return admin;
     }
     public String login(UserCredentials userCredentials) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 userCredentials.username, userCredentials.password));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return jsonWebTokenUtility.createToken(authentication.getName(),null);
+        Admin admin = adminRepository.findByAdminname(authentication.getName());
+        JSONObject inputjson = new JSONObject().put("userid", admin.getId()).put("email", admin.getUsername());
+        return jsonWebTokenUtility.adminToken(inputjson.toString(),null);
     }
 }

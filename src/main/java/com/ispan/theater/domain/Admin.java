@@ -8,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @NoArgsConstructor
@@ -32,7 +33,7 @@ public class Admin implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         // Return the authorities granted to the user
-        return List.of(() -> "ROLE_USER");
+        return List.of(() -> "admin");
     }
 
     @Override
