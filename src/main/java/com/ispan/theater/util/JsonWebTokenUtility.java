@@ -13,6 +13,7 @@ import com.ispan.theater.service.SymmetricKeysService;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -110,22 +111,18 @@ public class JsonWebTokenUtility {
 		String token = builder.compact();
 		return token;
 	}
-
-	public String validateToken(String token) {
+	
+	public String validateToken(String token) throws JwtException, IllegalArgumentException{
 		//使用HMACS-SHA演算法建立簽章密鑰
 		SecretKey secretKey = Keys.hmacShaKeyFor(base64EncodedSecret);
 		JwtParser parser = Jwts.parser()
 				.verifyWith(secretKey)		//使用密鑰驗證簽章：避免內容被竄改
 				.build();
-		try {
+	
 			Claims claims = parser.parseSignedClaims(token).getPayload();
 
 			//取出JWT主體內容
 			String subject = claims.getSubject();
 			return subject;
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-		return null;
 	}
 }

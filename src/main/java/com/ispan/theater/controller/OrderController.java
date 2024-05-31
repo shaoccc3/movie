@@ -2,6 +2,7 @@ package com.ispan.theater.controller;
 
 import java.util.List;
 
+import org.apache.http.HttpStatus;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,11 +10,13 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ispan.theater.domain.Order;
 import com.ispan.theater.dto.InsertOrderDTO;
+import com.ispan.theater.exception.OrderException;
 import com.ispan.theater.listener.OrderConditionPublisher;
 import com.ispan.theater.repository.OrderRepository;
 import com.ispan.theater.repository.TicketRepository;
@@ -25,6 +28,7 @@ import com.ispan.theater.service.OrderService;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
+@RequestMapping(value="/order")
 @CrossOrigin
 public class OrderController {
 	@Autowired
@@ -145,6 +149,11 @@ public class OrderController {
 //		orderRepository.setUserConsumptionECPay(orderId);
 //		return "Success";
 //	}
+	
+	@GetMapping("/movie/test")
+	public String test() {
+		throw new OrderException(HttpStatus.SC_BAD_REQUEST,"已有座位被售出，請重新選擇！");
+	}
 	
 }
 

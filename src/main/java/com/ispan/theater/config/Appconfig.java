@@ -1,7 +1,9 @@
 	package com.ispan.theater.config;
 
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -32,12 +34,13 @@ public class Appconfig {
     JwtAuthenticationFilter JwtAuthenticationFilter() {
         return new JwtAuthenticationFilter();
     }
+     
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf->csrf.disable())
         .addFilterBefore(JwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
         .authorizeHttpRequests((authorize) -> {
-        	authorize.requestMatchers("/user/**","/order-redirect","/movie/linePayConfirm","/movie/findMovie","/movie/findAllCinema","/movie/dates","/movie/times","/movie/ecPayConfirm","/movie/tickets").permitAll().anyRequest().authenticated();
+        	authorize.requestMatchers("/user/**","/order-redirect","/order/movie/linePayConfirm","/order/movie/findMovie","/order/movie/findAllCinema","/order/movie/dates","/order/movie/times","/order/movie/ecPayConfirm","/order/movie/tickets","/backstage/movie/**","/moviePicture/**","/comment/**").permitAll().anyRequest().authenticated();
 //          authorize.anyRequest().permitAll();
         });
         return http.build();

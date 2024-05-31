@@ -71,7 +71,7 @@ public class CommentController {
 		if (token != null) {
 	    	System.out.println(token);
 	        // 解碼TOKEN
-	        String authToken = jwtu.validateEncryptedToken(token);
+	        String authToken = jwtu.validateToken(token);
 	        System.out.println(authToken);
 	        if (authToken != null) {
 	        	// 解碼TOKEN
@@ -237,7 +237,7 @@ public class CommentController {
 	    System.out.println(token);
 
 	    // Decode TOKEN
-	    String authToken = jwtu.validateEncryptedToken(token);
+	    String authToken = jwtu.validateToken(token);
 	    if (authToken == null) {
 	        System.out.println("Invalid TOKEN");
 	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token.");
@@ -274,7 +274,7 @@ public class CommentController {
 	    if (token != null) {
 	        System.out.println(token);
 	        // 解碼TOKEN
-	        String authToken = jwtu.validateEncryptedToken(token);
+	        String authToken = jwtu.validateToken(token);
 	        System.out.println(authToken);
 	        if (authToken != null) {
 	            // 解碼TOKEN
@@ -392,7 +392,7 @@ public class CommentController {
         if (token != null) {
             System.out.println(token);
             // 解碼TOKEN
-            String authToken = jwtu.validateEncryptedToken(token);
+            String authToken = jwtu.validateToken(token);
             System.out.println(authToken);
             if (authToken != null) {
                 // 解碼TOKEN
@@ -439,7 +439,7 @@ public class CommentController {
         if (token != null) {
             System.out.println(token);
             // 解碼TOKEN
-            String authToken = jwtu.validateEncryptedToken(token);
+            String authToken = jwtu.validateToken(token);
             System.out.println(authToken);
             if (authToken != null) {
                 // 解碼TOKEN

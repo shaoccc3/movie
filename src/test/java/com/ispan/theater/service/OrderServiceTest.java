@@ -4,13 +4,14 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.apache.http.HttpStatus;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.ispan.theater.domain.Order;
+import com.ispan.theater.exception.OrderException;
 import com.ispan.theater.repository.OrderRepository;
 
 @SpringBootTest
@@ -69,12 +70,19 @@ public class OrderServiceTest {
 		public void test4() {
 		  os.refund(1061);
 		}
-		@Test
-		@Transactional
-		public void test5() {
-			or.setUserConsumptionECPay("aaa4ff026f254301a5c6");
-		}
-	
+		
+//	   @Test
+//	   @Transactional
+	   public void test5() {
+		or.setUserConsumptionECPay("aaa4ff026f254301a5c6");
+	   }
+	   
+	   @Test
+	   public void test6() {
+		   throw new OrderException(HttpStatus.SC_BAD_REQUEST,"已有座位被售出，請重新選擇！");
+	   }
+		
+		
 }
 
 
