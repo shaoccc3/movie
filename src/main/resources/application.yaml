@@ -5,7 +5,7 @@ spring:
   datasource:
     url: jdbc:sqlserver://localhost:1433;database=test1;trustServerCertificate=true;encrypt=true
 
-    password: P@ssw0rd
+    password: p@ssw0rd
 
     username: sa
   jpa:
@@ -29,7 +29,7 @@ spring:
   profiles:
     active: '@production@'
 server:
-  port: 8082
+  port: 8080
 logging:
   config: classpath:logback-spring.xml
   level:

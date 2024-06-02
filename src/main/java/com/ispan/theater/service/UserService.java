@@ -215,8 +215,8 @@ public class UserService {
 
 	public boolean existByPhone(String phone) {
 		if (phone != null && phone.length() > 0) {
-			User result = userRepository.findByPhone(phone);
-			if (result != null) {
+			List<User> result = userRepository.findByPhone(phone);
+			if (!result.isEmpty()) {
 				return true;
 			}
 		}
@@ -226,8 +226,8 @@ public class UserService {
 
 	public Boolean existByPhoneOrEmail(String email, String phone) {
 		if (email != null && email.length() != 0 || phone != null && phone.length() != 0) {
-			User result = userRepository.findByEmailOrPhone(email, phone);
-			if (result != null) {
+			List<User> result = userRepository.findByEmailOrPhone(email, phone);
+			if (!result.isEmpty()) {
 				return true;
 			}
 		}
