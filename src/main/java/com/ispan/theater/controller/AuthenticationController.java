@@ -23,6 +23,9 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@RequestBody UserCredentials credentials) {
+        if(!adminService.checkPassword(credentials)){
+            return ResponseEntity.status(403).build();
+        }
         String token = adminService.login(credentials);
         System.out.println(token);
         JWTAuthResponse jwtAuthResponse = new JWTAuthResponse(token);

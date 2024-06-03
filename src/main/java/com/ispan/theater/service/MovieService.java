@@ -235,7 +235,6 @@ public class MovieService {
         movie.setModifyDate(new Date());
         System.out.println(movie.toString());
         return movieRepository.save(movie);
-//        return movie;
     }
 
     @CacheEvict(value = "movieFindList", allEntries = true)

@@ -27,11 +27,13 @@ public class AdminService implements UserDetailsService {
     private AdminRepository adminRepository;
 
     private final AuthenticationManager authenticationManager;
+    private final PasswordEncoder passwordEncoder;
     @Autowired
     private JsonWebTokenUtility jsonWebTokenUtility;
     @Autowired
-    public AdminService(@Lazy AuthenticationManager authenticationManager) {
+    public AdminService(@Lazy AuthenticationManager authenticationManager,@Lazy PasswordEncoder passwordEncoder) {
         this.authenticationManager = authenticationManager;
+        this.passwordEncoder = passwordEncoder;
     }
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -54,5 +56,14 @@ public class AdminService implements UserDetailsService {
         Admin admin = adminRepository.findByAdminname(authentication.getName());
         JSONObject inputjson = new JSONObject().put("userid", admin.getId()).put("email", admin.getUsername());
         return jsonWebTokenUtility.adminToken(inputjson.toString(),null);
+    }
+    public boolean checkPassword(UserCredentials userCredentials) {
+        Admin admin = adminRepository.findByAdminname(userCredentials.username);
+        if (admin != null) {
+            if(passwordEncoder.matches(userCredentials.password, admin.getPassword())) {
+                return true;
+            }
+        }
+        return false;
     }
 }
