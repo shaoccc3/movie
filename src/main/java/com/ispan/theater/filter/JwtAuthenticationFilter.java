@@ -83,7 +83,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 				||request.getRequestURI().startsWith("/order/movie/linePayConfirm")||request.getRequestURI().startsWith("/order/movie/ecPayConfirm")
 				||request.getRequestURI().startsWith("/user/finduserphoto")||request.getRequestURI().startsWith("/order/movie/tickets")
 				||request.getRequestURI().startsWith("/backstage/movie")||request.getRequestURI().startsWith("/comment")
-				||request.getRequestURI().startsWith("/moviePicture");
+				||request.getRequestURI().startsWith("/moviePicture")
+				||request.getRequestURI().startsWith("/movie/test");
 	}
 
     

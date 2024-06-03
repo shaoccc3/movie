@@ -69,7 +69,7 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 	@Query(value="select ROW_NUMBER() over(order by o.create_date desc) as 'no',o.order_id,m.name,SUBSTRING(convert(varchar(19),o.create_date),1,19) as create_date,o.order_amount,o.supplier,o.order_status FROM \"Order\" as o join movie as m on o.movie_id=m.movie_id where o.user_id=:userId order by o.create_date desc offset :page rows fetch next 10 rows only ",nativeQuery=true)
 	List<Map<String,String>> getOrderByUser(@Param("userId")Integer userId,@Param("page")Integer page);
 	
-	@Query(value="select ROW_NUMBER() over(order by o.create_date desc) as 'no',o.order_id,m.name,SUBSTRING(convert(varchar(19),o.create_date),1,19) as create_date,o.order_amount,o.supplier,o.order_status FROM \"Order\" as o join movie as m on o.movie_id=m.movie_id order by o.create_date desc offset :page rows fetch next 10 rows only ",nativeQuery=true)
+	@Query(value="select ROW_NUMBER() over(order by o.create_date desc) as 'no',o.order_id,u.email,m.name,SUBSTRING(convert(varchar(19),o.create_date),1,19) as create_date,o.order_amount,o.supplier,o.order_status FROM \"Order\" as o join movie as m on o.movie_id=m.movie_id join \"user\" as u on u.user_id=o.user_id order by o.create_date desc offset :page rows fetch next 10 rows only ",nativeQuery=true)
 	List<Map<String,String>> getOrder(@Param("page")Integer page);
 	
 	@Query(value="select count(order_id) as order_total from \"Order\" where user_id=:userId",nativeQuery=true)
