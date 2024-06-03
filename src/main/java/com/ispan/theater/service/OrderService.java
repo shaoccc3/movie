@@ -134,8 +134,8 @@ public class OrderService {
 			result = ecPayService.ecpayCheckout(order, insertOrderDto.getTicketId().size());
 		}
 		if("paypal".equals(insertOrderDto.getPaymentOptions())){
-			String paypalsuccessUrl =  "/order/paymentsuccess?orderId=" + order.getId();
-			String paypalcancelUrl = "/order/findOrder";
+			String paypalsuccessUrl =  "http://localhost:5173/order/paymentsuccess?orderId=" + order.getId();
+			String paypalcancelUrl = "http://localhost:5173/order/findOrder";
 			try {
 				order.setSupplier("paypal");
 				Payment payment = paypalService.createPayment(order.getOrderAmount(),"TWD","paypal", "sale", "Payment Description", paypalcancelUrl,
