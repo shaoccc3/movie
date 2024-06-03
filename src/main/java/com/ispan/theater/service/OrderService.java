@@ -134,14 +134,15 @@ public class OrderService {
 			result = ecPayService.ecpayCheckout(order, insertOrderDto.getTicketId().size());
 		}
 		if("paypal".equals(insertOrderDto.getPaymentOptions())){
-			String paypalsuccessUrl =  "http://localhost:5173/order/paymentsuccess?orderId=" + order.getId();
-			String paypalcancelUrl = "https://httpbin.org/get?paymentStatus=cancelled";
+			String paypalsuccessUrl =  "/order/paymentsuccess?orderId=" + order.getId();
+			String paypalcancelUrl = "/order/findOrder";
 			try {
 				order.setSupplier("paypal");
 				Payment payment = paypalService.createPayment(order.getOrderAmount(),"TWD","paypal", "sale", "Payment Description", paypalcancelUrl,
 						paypalsuccessUrl);
 				for (Links link : payment.getLinks()) {
 					if (link.getRel().equals("approval_url")) {
+						System.out.println(link.getHref());
 						return link.getHref();
 					}
 				}

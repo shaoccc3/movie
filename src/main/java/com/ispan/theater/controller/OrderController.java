@@ -82,6 +82,10 @@ public class OrderController {
 		System.out.println("Authorization="+request.getHeader("Authorization"));
 		return new JSONObject().put("allCinemaName", cinemaService.findAllCinemaName()).toString(); 
 	}
+	@GetMapping("/movie/findCinemaData")
+	public String findCinemaData() {
+		return new JSONObject().put("allCinemaName", cinemaService.findAllCinema()).toString();
+	}
 	
 	@GetMapping("/movie/findMovie")
 	public String findMovie(@RequestParam("cinemaId")Integer cinemaId) {
@@ -111,6 +115,7 @@ public class OrderController {
 		synchronized (this) {
 			json = orderService.createOrder(insertOrderDto);
 		}
+		System.out.println(json);
 		return json;
 	}
 

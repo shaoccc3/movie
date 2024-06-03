@@ -1,14 +1,20 @@
 package com.ispan.theater.config;
 
+import com.ispan.theater.domain.CustomerService;
+import com.ispan.theater.service.AdminService;
+import com.ispan.theater.service.CustomUserDetailsService;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,33 +30,49 @@ import com.ispan.theater.filter.JwtAuthenticationFilter;
 @EnableWebSecurity
 public class Appconfig {
 
-	@Bean
-	PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
-	
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+    private final AdminService adminService;
+    private final CustomUserDetailsService customUserDetailsService;
+    public Appconfig(@Lazy AdminService adminService,@Lazy CustomUserDetailsService customUserDetailsService,@Lazy PasswordEncoder passwordEncoder) {
+        this.adminService = adminService;
+        this.customUserDetailsService = customUserDetailsService;
+        this.passwordEncoder = passwordEncoder;
+    }
+    private final PasswordEncoder passwordEncoder;
     @Bean
     JwtAuthenticationFilter JwtAuthenticationFilter() {
         return new JwtAuthenticationFilter();
     }
-     
+
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf->csrf.disable())
-        .addFilterBefore(JwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-        .authorizeHttpRequests((authorize) -> {//test /order/movie/getOrderDetail、/order/movie/deleteOrder暫時開權限
-        	authorize.requestMatchers("/order/movie/getOrderDetail","/order/movie/deleteOrder","/user/**","/order-redirect","/order/movie/linePayConfirm","/order/movie/findMovie","/order/movie/findAllCinema","/order/movie/dates","/order/movie/times","/order/movie/ecPayConfirm","/order/movie/tickets","/backstage/movie/**","/moviePicture/**","/comment/**","/order/movie/getOrderBackStage").permitAll().anyRequest().authenticated();
-        });
+        http.csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(JwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .authorizeHttpRequests((authorize) -> {//test /order/movie/getOrderDetail、/order/movie/deleteOrder暫時開權限
+                    authorize.requestMatchers("/order/movie/getOrderDetail", "/order/movie/deleteOrder", "/user/**", "/order-redirect", "/order/movie/linePayConfirm", "/order/movie/findMovie", "/order/movie/findAllCinema", "/order/movie/dates", "/order/movie/times", "/order/movie/ecPayConfirm"
+                                    , "/order/movie/tickets", "/backstage/movie/**", "/moviePicture/**", "/comment/**"
+                                    , "/order/movie/getOrderBackStage", "/login", "/api/login").permitAll()
+                            .requestMatchers("/admin/**").hasRole("ADMIN")
+                            .anyRequest().authenticated();
+                });
         return http.build();
     }
-	
-	@Bean
-	RestTemplate restTemplate() {
-		return new RestTemplate();
-	}
-	
+
     @Bean
-    AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
-        return configuration.getAuthenticationManager();
+    RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
+
+    @Bean
+    AuthenticationManager authenticationManager(AuthenticationConfiguration configuration,HttpSecurity http) throws Exception {
+        AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
+        authenticationManagerBuilder.userDetailsService(adminService).passwordEncoder(passwordEncoder);
+        authenticationManagerBuilder.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder);
+        return authenticationManagerBuilder.build();
     }
 }

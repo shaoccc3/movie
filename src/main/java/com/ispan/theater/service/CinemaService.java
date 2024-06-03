@@ -59,6 +59,16 @@ public class CinemaService {
     	}
     	return cinemaRepository.findAllCinemaName();
     }
+    public List<Map<String, Object>> findAllCinema() {
+//        List<Map<String, Object>> list = cinemaRepository.findAllCinema();
+//        for (Map<String, Object> map : list) {
+//            System.out.println(map.entrySet());
+//        }
+        return cinemaRepository.findAllCinema();
+    }
+    public void saveCinema(Cinema cinema){
+        cinemaRepository.save(cinema);
+    }
     
     
 }

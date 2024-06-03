@@ -30,7 +30,7 @@ public class PaypalController {
     @Autowired
     private JsonWebTokenUtility jsonWebTokenUtility;
     String cancelUrl = "https://httpbin.org/get?paymentStatus=cancelled";
-    String successUrl =  "http://localhost:5173/order/paymentsuccess";
+    String successUrl =  "/order/paymentsuccess";
     @Autowired
     private OrderService orderService;
     @Autowired
@@ -73,7 +73,7 @@ public class PaypalController {
                 orderRepository.save(order);
                 return ResponseEntity.ok(new HashMap<String, String>() {{
                     put("status", "success");
-                    put("url", "http://localhost:5173/order/findOrder");
+                    put("url", "/order/findOrder");
                 }});
             } else {
                 order.setPaymentNo(saleid);
@@ -82,13 +82,13 @@ public class PaypalController {
                 //paypalService.insertPaypalOrder(paymentId,PayerID,1,"付款失敗",saleid);
                 return ResponseEntity.ok(new HashMap<String, String>() {{
                     put("status", "failure");
-                    put("url", "http://localhost:5173/order/findOrder");
+                    put("url", "/order/findOrder");
                 }});
             }
         } catch (Exception e) {
             return ResponseEntity.ok(new HashMap<String, String>() {{
                 put("status", "error");
-                put("url", "http://localhost:5173/order/findOrder");
+                put("url", "/order/findOrder");
             }});
         }
     }
