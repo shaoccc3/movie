@@ -21,8 +21,8 @@ public class FoodPictureService {
 //	public FoodPicture saveFoodPicture(MuiltipartFile file,) {
 //		
 //	}
-	public FoodPicture saveFoodPicture(FoodPicture gp) {
-		return foodPictureRepository.save(gp);
+	public FoodPicture saveFoodPicture(FoodPicture fp) {
+		return foodPictureRepository.save(fp);
 	}
 	
 	public FoodPicture findByFoodId(Integer id) {

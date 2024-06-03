@@ -31,26 +31,11 @@ public class Food {
 	@Column(name="food_name", nullable = false)
 	private String name;
 	
-	@Column(name = "food_ename", length = 50, nullable = false)
-    private String name_eng;
-	
 	@Column(name="food_price", nullable = false)
 	private Double price;
 	
 	@Column(name="food_count", nullable = false)
 	private Integer count;
-	
-	@Column(name = "food_description", nullable = false, length = 500)
-    private String description;
-	
-	@Column(name="foodCategory_code", nullable = false)
-	private String foodCategory_code;
-	
-	@Column(name="make", nullable = false)
-	private Date make;
-	
-	@Column(name="expired", nullable = false)
-	private Date expired;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="create_date", nullable = false)
@@ -59,25 +44,16 @@ public class Food {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="modify_date", nullable = false)
 	private Date modifyDate;
-	
-	@Lob
-	@JsonIgnore
-	private byte[] image;
-	
-	@Override
-    public String toString() {
-        return "Food{" +
-                "food_name='" + name + '\'' +
-                ", food_ename='" + name_eng + '\'' +
-                ", food_price='" + price + '\'' +
-                ", food_count='" + count + '\'' +
-                ", food_description='" + description + '\'' +
-                ", foodCategory_code='" + foodCategory_code + '\'' +
-                ", make=" + make +
-                ", expired=" + expired +
-                ", create_date=" + createDate +
-                ", modify_date=" + modifyDate +
-                '}';
-    }
 
+	@Override
+	public String toString() {
+		return "Food [id=" + id + ", name=" + name + ", price=" + price + ", count=" + count + ", createDate="
+				+ createDate + ", modifyDate=" + modifyDate + "]";
+	}
+	
+
+
+	
+	
+	
 }

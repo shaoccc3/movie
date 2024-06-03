@@ -7,6 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -29,13 +30,11 @@ public class FoodPicture {
 	@JoinColumn(name="food_id", nullable = false)
 	private Food food;
 	
-	@Column(name="food_picture", nullable = false)
+	@Lob
+	@Column(name="food_picture", nullable = false, columnDefinition = "VARBINARY(MAX)")
 	private byte[] picture;
 
-	@Override
-	public String toString() {
-		return "FoodPicture [id=" + id + "]";
-	}
 	
+
 	
 }

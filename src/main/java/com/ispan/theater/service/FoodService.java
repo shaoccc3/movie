@@ -47,6 +47,7 @@ public class FoodService {
 		}
 		return false;
 	}
+	
 	//controller createFood
 	public boolean existsFoodByName(String name) {
 		Food food = foodRepository.findByName(name);
@@ -59,13 +60,8 @@ public class FoodService {
 			JSONObject obj = new JSONObject(json);
 			Integer id = obj.isNull("id") ? null : obj.getInt("id");
 			String name = obj.isNull("name") ? null : obj.getString("name");
-			String e_name = obj.isNull("name_eng") ? null : obj.getString("name_eng");
 			Double price = obj.isNull("price") ? null : obj.getDouble("price");
 			Integer count = obj.isNull("count") ? null : obj.getInt("count");
-			String description = obj.isNull("description") ? null : obj.getString("description");
-			String foodCategory_code = obj.isNull("foodCategory_code") ? null : obj.getString("foodCategory_code");
-			String make = obj.isNull("make") ? null : obj.getString("make");
-			String expire = obj.isNull("expired") ? null : obj.getString("expired");
 			String c_date = obj.isNull("createDate") ? null : obj.getString("createDate");
 			String m_date = obj.isNull("modifyDate") ? null : obj.getString("modifyDate");
 
@@ -75,24 +71,8 @@ public class FoodService {
 					Food insert = new Food();
 					insert.setId(id);
 					insert.setName(name);
-					insert.setName_eng(e_name);
 					insert.setPrice(price);
-					insert.setCount(count);
-					insert.setDescription(description);
-					insert.setFoodCategory_code(foodCategory_code);
-					if(make!=null && make.length()!=0) {
-						java.util.Date temp = DatetimeConverter.parse(make, "yyyy-MM-dd");
-						insert.setMake(temp);
-					} else {
-						insert.setMake(null);
-					}
-					if (expire!=null && expire.length()!=0 ) {
-						java.util.Date temp = DatetimeConverter.parse(expire, "yyyy-MM-dd");
-						insert.setExpired(temp);
-					} else {
-						insert.setExpired(null);
-					}
-					
+					insert.setCount(count);					
 					if(c_date!=null && c_date.length()!=0) {
 						java.util.Date temp = DatetimeConverter.parse(c_date, "yyyy-MM-dd");
 						insert.setCreateDate(temp);
@@ -115,6 +95,7 @@ public class FoodService {
 		}
 		return null;
 	}
+	
 	// controller modifyFood
 	public Food modifyFood(String json) {
 		
@@ -122,13 +103,8 @@ public class FoodService {
 			JSONObject obj = new JSONObject(json);
 			Integer id = obj.isNull("id") ? null : obj.getInt("id");
 			String name = obj.isNull("name") ? null : obj.getString("name");
-			String e_name = obj.isNull("name_eng") ? null : obj.getString("name_eng");
 			Double price = obj.isNull("price") ? null : obj.getDouble("price") ;
 			Integer count = obj.isNull("count")? null : obj.getInt("count");
-			String description = obj.isNull("description") ? null : obj.getString("description") ;
-			String foodCategory_code = obj.isNull("foodCategory_code") ? null : obj.getString("foodCategory_code");
-			String make = obj.isNull("make") ? null : obj.getString("make");
-			String expire = obj.isNull("expired") ? null : obj.getString("expired");
 			String c_date = obj.isNull("createDate") ? null : obj.getString("createDate");
 			String m_date = obj.isNull("modifyDate") ? null : obj.getString("modifyDate");
 			
@@ -139,23 +115,7 @@ public class FoodService {
 					update.setId(id);
 					update.setName(name);
 					update.setPrice(price);
-					update.setName_eng(e_name);
-					update.setCount(count);
-					update.setDescription(description);
-					update.setFoodCategory_code(foodCategory_code);
-					if(make!=null && make.length()!=0) {
-						java.util.Date temp = DatetimeConverter.parse(make, "yyyy-MM-dd");
-						update.setMake(temp);
-					} else {
-						update.setMake(null);
-					}
-					if (expire!=null && expire.length()!=0 ) {
-						java.util.Date temp = DatetimeConverter.parse(expire, "yyyy-MM-dd");
-						update.setExpired(temp);
-					} else {
-						update.setExpired(null);
-					}
-					
+					update.setCount(count);			
 					if(c_date!=null && c_date.length()!=0) {
 						java.util.Date temp = DatetimeConverter.parse(c_date, "yyyy-MM-dd");
 						update.setCreateDate(temp);
@@ -190,6 +150,7 @@ public class FoodService {
 		}
 		return null;
 	}
+	
 	//controller find
 	public List<Food> find(String json){
 		try {
@@ -200,9 +161,10 @@ public class FoodService {
 		}
 		return null;
 	}
+	
 	// controller deleteFood
 	public boolean deleteByFoodId(Integer id) {
-		if(id!=null && id!=null) {
+		if(id!=null) {
 			Optional<Food> optional = foodRepository.findById(id);
 			if(optional.isPresent()) {
 				foodRepository.deleteById(id);
@@ -211,10 +173,7 @@ public class FoodService {
 		}
 		return false;
 	}
-	
-	
-	
-	
+
 	
 	public Food insertFood(Food food) {
 		if (food != null && food.getId() != null ) {
@@ -231,13 +190,8 @@ public class FoodService {
 		if (foodRepository.findByName(jsonObject.getString("name")) == null) {
 			food = new Food();
 			food.setName(jsonObject.getString("name"));
-			food.setName_eng(jsonObject.getString("name_eng"));
 			food.setPrice(jsonObject.getDouble("price"));
 			food.setCount(jsonObject.getInt("count"));
-			food.setDescription(jsonObject.getString("description"));
-			food.setFoodCategory_code(jsonObject.getString("foodCategory_code"));
-			food.setMake(DatetimeConverter.parse(jsonObject.getString("make"), "yyyy-MM-dd"));
-			food.setExpired(DatetimeConverter.parse(jsonObject.getString("expired"), "yyyy-MM-dd"));
 			food.setCreateDate(new Date());
 			food.setModifyDate(new Date());
 			
@@ -249,6 +203,7 @@ public class FoodService {
 		}
 		
 	}
-		
+	
+	
 
 }

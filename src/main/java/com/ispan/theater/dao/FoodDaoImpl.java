@@ -67,7 +67,7 @@ public class FoodDaoImpl implements FoodDao {
 		if (name!=null && name.length() != 0) {
 			predicates.add(criteriaBuilder.like(table.get("name"), "%"+name+"%"));
 		}
-		if (name!=null && name.length() != 0) {
+		if (ename!=null && ename.length() != 0) {
 			predicates.add(criteriaBuilder.like(table.get("name_eng"), "%"+ename+"%"));
 		}
 		if (startPrice!=null) {
@@ -219,14 +219,14 @@ public class FoodDaoImpl implements FoodDao {
 		
 		TypedQuery<Long> typedQuery = entityManager.createQuery(criteriaQuery);
 		Long result = typedQuery.getSingleResult();
-//		if(result!=null) {
-//			
-//			return result.longValue();
-//			
-//		} else {
-//			return 0;
-//		}
-		return result != null ? result : 0;
+		if(result!=null) {
+			
+			return result.longValue();
+			
+		} else {
+			return 0;
+		}
+//		return result != null ? result : 0;
 	}
 
 }

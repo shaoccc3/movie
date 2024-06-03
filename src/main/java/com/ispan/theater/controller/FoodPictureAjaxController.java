@@ -25,8 +25,8 @@ public class FoodPictureAjaxController {
 	@Autowired
 	private FoodPictureService foodPictureService;
 	
-	@PostMapping("/food/photos/upload")
-	public String uploadPost(@RequestParam Integer id,
+	@PostMapping("/backstage/food/uploadPhoto")
+	public FoodPicture uploadPost(@RequestParam Integer id,
 			@RequestParam MultipartFile picture,
 			Model model)throws Exception {
 		
@@ -36,24 +36,33 @@ public class FoodPictureAjaxController {
 		
 		foodPictureService.saveFoodPicture(newFp);
 		
-		model.addAttribute("okMsg","上傳成功!");
+//		model.addAttribute("okMsg","上傳成功!");
 		
 		
-		return "photos/uploadPage";
+		return newFp;
 	}
 	
-	@GetMapping(
-			path = "/food/photo/{food_pictureid}",
-			produces = {MediaType.IMAGE_JPEG_VALUE}
-			)
-	public @ResponseBody byte[] findPhotoByPhotoId(@PathVariable(name="food_pictureid") Integer food_pictureid) {
-		FoodPicture foodPicture = foodPictureService.findByFoodId(food_pictureid);
-		byte[] result = this.picture;
-		if(foodPicture!=null) {
-			result = foodPicture.getPicture();
-        }
-        return result;
-	}
+//	@PostMapping("/backstage/food/uploadPhoto/{id}")
+//	public ResponseEntity<String> uploadFoodImage(@RequestParam("picture") MultipartFile picture, @PathVariable(name="id") Integer id
+//			) {
+//		FoodPicture newFp = foodPictureService.findByFoodId(id);
+//		try {
+//			
+//			if (picture.isEmpty()) {
+//				return ResponseEntity.badRequest().body("空檔案");
+//			}
+//			byte[] image = picture.getBytes();
+//			newFp.setPicture(image);
+//			foodPictureService.saveFoodPicture(newFp);
+//			
+//			return ResponseEntity.ok("上傳成功");
+//		} catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("上傳失敗: " + e.getMessage());
+//
+//		}
+//		
+//	}
+	
 	private byte[] picture = null;	
 	@PostConstruct
 	public void initialize() throws IOException {
@@ -71,5 +80,17 @@ public class FoodPictureAjaxController {
 		is.close();
 		this.picture = os.toByteArray();
     }
+	
+	@GetMapping(
+			path = "/backstage/food/photo/{food_pictureid}",
+			produces = {MediaType.IMAGE_JPEG_VALUE})
+	public @ResponseBody byte[] findPhotoByPhotoId(@PathVariable(name="food_pictureid") Integer id) {
+		FoodPicture foodPicture = foodPictureService.findByFoodId(id);
+		byte[] result = this.picture;
+		if(foodPicture!=null) {
+			result =  foodPicture.getPicture();
+        }
+        return result;
+	}
 	
 }
