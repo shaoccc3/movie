@@ -1,0 +1,28 @@
+package com.ispan.theater.controller;
+
+import com.ispan.theater.DTO.SchduleDto;
+import com.ispan.theater.service.BatchScreenService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@CrossOrigin
+public class BatchScreenController {
+    @Autowired
+    private BatchScreenService batchScreenService;
+    @PostMapping("/admin/backstage/screening-batch")
+    public ResponseEntity<?> createBatchSchedule(@RequestBody SchduleDto request) {
+        try {
+            batchScreenService.batchScreenInsert(request);
+            return ResponseEntity.ok("Batch schedule created successfully.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error creating batch schedule: " + e.getMessage());
+        }
+    }
+}
