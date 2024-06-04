@@ -298,7 +298,7 @@ public class UserAjaxController {
 
 	
 	//圖片上傳
-	@PostMapping("uploadUserPhoto/{token}")
+	@PostMapping("/pass/uploadUserPhoto/{token}")
 
 	public String uploadPohto(@PathVariable(name = "token") String token, @RequestParam MultipartFile file)
 			throws IOException {
