@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 import org.apache.commons.lang3.RandomStringUtils;
@@ -37,7 +38,7 @@ public class testUser {
 
 //	@Test
 	public void testFindByEmailOrPhone() {
-		User user = userRepository.findByEmailOrPhone("email", "phone");
+		List<User> user = userRepository.findByEmailOrPhone("email", "phone");
 		System.out.println(user);
 	}
 

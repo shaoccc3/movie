@@ -72,7 +72,7 @@ public class UserAjaxController {
 		Boolean check = userService.existByPhoneOrEmail(userJson.getString("email"), userJson.getString("phone"));
 		if (check) {
 			repJson.put("success", false);
-			repJson.put("message", "新增失敗，資料重複");
+			repJson.put("message", "註冊失敗，資料重複");
 			return repJson.toString();
 		}
 		User user = userService.InsertUser(userJson);

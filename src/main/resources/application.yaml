@@ -3,11 +3,14 @@ spring:
     name: movie
 #database connection
   datasource:
-    url: jdbc:sqlserver://localhost:1433;database=test1;trustServerCertificate=true;encrypt=true
-
+#    url: jdbc:sqlserver://localhost:1433;database=test1;trustServerCertificate=true;encrypt=true
+#    password: p@ssw0rd
+#    username: sa
+    url: jdbc:sqlserver://35.201.209.200:1433;database=test1;trustServerCertificate=true;encrypt=true
     password: p@ssw0rd
+    username: sqlserver
 
-    username: sa
+  
   jpa:
     properties:
       hibernate:
