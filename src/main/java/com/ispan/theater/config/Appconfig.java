@@ -39,7 +39,7 @@ public class Appconfig {
         http.csrf(csrf->csrf.disable())
         .addFilterBefore(JwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
         .authorizeHttpRequests((authorize) -> {//test /order/movie/getOrderDetail、/order/movie/deleteOrder、/order/movie/getOrderBackStage暫時開權限
-        	authorize.requestMatchers("/order/movie/test","/order/movie/getOrderDetail","/order/movie/deleteOrder","/user/**","/order-redirect","/order/movie/linePayConfirm","/order/movie/findMovie","/order/movie/findAllCinema","/order/movie/dates","/order/movie/times","/order/movie/ecPayConfirm","/order/movie/tickets","/backstage/movie/**","/moviePicture/**","/comment/**","/order/movie/getOrderBackStage").permitAll().anyRequest().authenticated();
+        	authorize.requestMatchers("/order/movie/getOrderCondition","/order/movie/getOrderDetail","/order/movie/deleteOrder","/user/**","/order-redirect","/order/movie/linePayConfirm","/order/movie/findMovie","/order/movie/findAllCinema","/order/movie/dates","/order/movie/times","/order/movie/ecPayConfirm","/order/movie/tickets","/backstage/movie/**","/moviePicture/**","/comment/**","/order/movie/getOrderBackStage").permitAll().anyRequest().authenticated();
         });
         return http.build();
     }

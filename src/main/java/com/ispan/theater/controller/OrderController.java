@@ -157,10 +157,9 @@ public class OrderController {
 //		return "Success";
 //	}
 	
-	@PostMapping("/movie/test")
+	@PostMapping("/movie/getOrderCondition")
 	public String test(@RequestBody Map<String,String> requestParameters) {
-		orderDaoImpl.multiConditionFindMovie(requestParameters);
-		return "success" ;
+		return orderDaoImpl.multiConditionFindMovie(requestParameters);
 	}
 	
 }

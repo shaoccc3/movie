@@ -15,6 +15,11 @@ import io.jsonwebtoken.ExpiredJwtException;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 	
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<ErrorDto> handleException(Exception e){
+		return ResponseEntity.status(HttpStatus.SC_INTERNAL_SERVER_ERROR).body(new ErrorDto(DatetimeConverter.createSqlDatetime(new Date()),HttpStatus.SC_INTERNAL_SERVER_ERROR,"INTERNAL",e.getMessage()));
+	}
+	
 	@ExceptionHandler(ExpiredJwtException.class)
 	public ResponseEntity<ErrorDto> handleJwtException(Exception e){
 		return ResponseEntity.status(HttpStatus.SC_FORBIDDEN).body(new ErrorDto(DatetimeConverter.createSqlDatetime(new Date()),HttpStatus.SC_FORBIDDEN,"forbidden",e.getMessage()));
