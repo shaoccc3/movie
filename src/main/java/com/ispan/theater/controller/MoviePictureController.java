@@ -1,11 +1,6 @@
 package com.ispan.theater.controller;
 
-import com.google.api.client.json.Json;
-import com.ispan.theater.domain.Movie;
-import com.ispan.theater.domain.MoviePicture;
-import com.ispan.theater.dto.MoviePicDto;
 import com.ispan.theater.service.MoviePictureService;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +8,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @CrossOrigin
@@ -22,7 +16,7 @@ public class MoviePictureController {
     private MoviePictureService moviePictureService;
 
     @GetMapping("/moviePicture/{id}")
-    public ResponseEntity getMoviePicture(@PathVariable Integer id) {
+    public ResponseEntity<?> getMoviePicture(@PathVariable Integer id) {
         return ResponseEntity.ok(moviePictureService.getMoviePictures(id));
     }
 

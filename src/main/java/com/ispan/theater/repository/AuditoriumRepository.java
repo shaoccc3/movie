@@ -8,8 +8,11 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
+
 @Repository
 public interface AuditoriumRepository extends JpaRepository<Auditorium, Integer> {
-    @Query("select c from Auditorium c where c.cinema = :cinema")
-    public List<Auditorium> findByCinema(@Param("cinema") Cinema cinema);
+    @Query(value="select a.auditorium_id, a.auditorium_number from auditorium as a where a.cinema_id = :cinemaId ",nativeQuery=true)
+    List<Map<String,Object>> findByCinema(@Param(value="cinemaId")Integer cinemaId);
+
 }

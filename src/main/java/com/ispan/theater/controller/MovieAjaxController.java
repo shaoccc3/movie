@@ -120,6 +120,7 @@ public class MovieAjaxController {
             Movie movie = movieService.insertMovie(jsonObject);
             response.put("message", "新增成功");
             response.put("success", "success");
+            response.put("id",movie.getId());
         } else {
             response.put("message", "新增失敗");
             response.put("fail", "fail");

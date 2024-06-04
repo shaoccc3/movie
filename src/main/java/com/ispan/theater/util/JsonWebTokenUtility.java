@@ -1,6 +1,7 @@
 package com.ispan.theater.util;
 
 import java.util.Base64;
+import java.util.Date;
 
 import javax.crypto.SecretKey;
 
@@ -124,5 +125,86 @@ public class JsonWebTokenUtility {
 			//取出JWT主體內容
 			String subject = claims.getSubject();
 			return subject;
+	}
+	public boolean validateEncryptedTime(String token) {
+		//建立密碼
+		Password password = Keys.password(charArraySecret);
+		JwtParser parser = Jwts.parser()
+				.decryptWith(password)            //解密：以便讀取內容
+				.build();
+		try {
+			Claims claims = parser.parseEncryptedClaims(token).getPayload();
+			return claims.getExpiration().before(new Date());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return true;
+	}
+	public boolean validateTime(String token) {
+		//使用HMACS-SHA演算法建立簽章密鑰
+		SecretKey secretKey = Keys.hmacShaKeyFor(base64EncodedSecret);
+		JwtParser parser = Jwts.parser()
+				.verifyWith(secretKey)        //使用密鑰驗證簽章：避免內容被竄改
+				.build();
+		try {
+			Claims claims = parser.parseSignedClaims(token).getPayload();
+			return claims.getExpiration().before(new Date());
+		} catch (Exception e) {
+			return true;
+		}
+	}
+	public String adminToken(String data,Long lifespan){
+		SecretKey secretKey = Keys.hmacShaKeyFor(base64EncodedSecret);
+		java.util.Date now = new java.util.Date();
+		if (lifespan == null) {
+			lifespan = expire * 60 * 1000;
+		}
+		java.util.Date expiredate = new java.util.Date(System.currentTimeMillis() + lifespan);
+		JwtBuilder builder = Jwts.builder()
+				.subject(data)                    //JWT主體內容
+				.claim("role", "ROLE_ADMIN")
+				.issuedAt(now)                    //建立時間
+				.expiration(expiredate)            //過期時限
+				.signWith(secretKey);            //使用密鑰簽章：避免內容被竄改
+		return builder.compact();
+	}
+	public String longToken(String data){
+		SecretKey secretKey = Keys.hmacShaKeyFor(base64EncodedSecret);
+		java.util.Date now = new java.util.Date();
+		java.util.Date expiredate = new java.util.Date(System.currentTimeMillis() + 315569520000L);
+		JwtBuilder builder = Jwts.builder()
+				.subject(data)                    //JWT主體內容
+				.issuedAt(now)                    //建立時間
+				.expiration(expiredate)            //過期時限
+				.signWith(secretKey);            //使用密鑰簽章：避免內容被竄改
+		return builder.compact();
+	}
+	public String longEncryptToken(String data) {
+		java.util.Date now = new java.util.Date();
+		java.util.Date expiredate = new java.util.Date(System.currentTimeMillis() + 315569520000L);
+		//建立密碼
+		JwtBuilder builder = Jwts.builder()
+				.subject(data)                    //JWT主體內容
+				.issuedAt(now)                    //建立時間
+				.expiration(expiredate)            //過期時限
+				.encryptWith(Keys.password(charArraySecret),            //加密：避免內容被讀取
+						Jwts.KEY.PBES2_HS512_A256KW,
+						Jwts.ENC.A256GCM);
+
+		return builder.compact();
+	}
+	public Claims extractClaims(String token) {
+		SecretKey secretKey = Keys.hmacShaKeyFor(base64EncodedSecret);
+		JwtParser parser = Jwts.parser()
+				.verifyWith(secretKey)        //使用密鑰驗證簽章：避免內容被竄改
+				.build();
+		try {
+			return parser.parseSignedClaims(token).getPayload();
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	public String extractRole(String token) {
+		return extractClaims(token).get("role", String.class);
 	}
 }

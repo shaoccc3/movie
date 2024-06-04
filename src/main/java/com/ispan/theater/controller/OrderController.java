@@ -83,6 +83,10 @@ public class OrderController {
 		System.out.println("Authorization="+request.getHeader("Authorization"));
 		return new JSONObject().put("allCinemaName", cinemaService.findAllCinemaName()).toString(); 
 	}
+	@GetMapping("/movie/findCinemaData")
+	public String findCinemaData() {
+		return new JSONObject().put("allCinemaName", cinemaService.findAllCinema()).toString();
+	}
 	
 	@GetMapping("/movie/findMovie")
 	public String findMovie(@RequestParam("cinemaId")Integer cinemaId) {
@@ -112,6 +116,7 @@ public class OrderController {
 		synchronized (this) {
 			json = orderService.createOrder(insertOrderDto);
 		}
+		System.out.println(json);
 		return json;
 	}
 
@@ -126,6 +131,7 @@ public class OrderController {
 		return new JSONObject().put("Order",orderRepository.orderCompletedByECPay(merchantTradeNo)).toString();
 	}
 	
+	
 	@GetMapping("/movie/getOrder")
 	public String getOrder(@RequestParam("userId")Integer userId,@RequestParam("page")Integer page) {
 		orderConditionPublisher.publishV2(userId);
@@ -137,11 +143,13 @@ public class OrderController {
 		return orderService.getOrderDetail(orderId);
 	}
 	
+	@GetMapping("/movie/getOrderBackStage")
+	public String getOrderBackStage(@RequestParam("page")Integer page) {
+		return orderService.getOrderBackStage(page);
+	}
 	
 	@GetMapping("/movie/deleteOrder")
-	public String refund(@RequestParam("orderId")Integer orderId) {
-	     return orderService.refund(orderId);
-	}
+	public String refund(@RequestParam("orderId")Integer orderId) {	return orderService.refund(orderId);	}
 	
 	
 //	@GetMapping("/movie/test")

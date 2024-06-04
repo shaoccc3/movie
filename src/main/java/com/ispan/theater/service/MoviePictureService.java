@@ -2,18 +2,19 @@ package com.ispan.theater.service;
 
 import com.ispan.theater.domain.Movie;
 import com.ispan.theater.domain.MoviePicture;
-import com.ispan.theater.dto.MoviePicDto;
+
 import com.ispan.theater.repository.MoviePictureRepository;
 import com.ispan.theater.repository.MovieRepository;
-import org.json.JSONArray;
-import org.json.JSONObject;
+
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
+
 
 @Service
 public class MoviePictureService {
