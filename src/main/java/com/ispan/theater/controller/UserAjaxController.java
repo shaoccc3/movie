@@ -67,7 +67,7 @@ public class UserAjaxController {
 	@Autowired
     private PasswordEncoder passwordEncoder;
 	
-	@PostMapping("/register") // testpage
+	@PostMapping("/pass/register") // testpage
 	public String userRegister(@RequestBody String json) {
 		JSONObject repJson = new JSONObject();
 		JSONObject userJson = new JSONObject(json);
@@ -96,7 +96,7 @@ public class UserAjaxController {
 		return repJson.toString();
 	}
 
-	@PostMapping("/login")
+	@PostMapping("/pass/login")
 	public String userLogin(@RequestBody String json) {
 		JSONObject jsonobj = new JSONObject(json);
 		JSONObject result = new JSONObject();
@@ -121,7 +121,7 @@ public class UserAjaxController {
 		return result.toString();
 	}
 
-	@GetMapping("/check/phone")
+	@GetMapping("/pass/check/phone")
 	public String checkPhone(@RequestParam String phone) {
 		JSONObject result = new JSONObject();
 		if (phone == null || phone.length() != 10) {
@@ -139,7 +139,7 @@ public class UserAjaxController {
 		return result.toString();
 	}
 
-	@GetMapping("/check/email")
+	@GetMapping("/pass/check/email")
 	public String checkEmail(@RequestParam String email) {
 		JSONObject result = new JSONObject();
 		if (email == null || email.length() == 0) {
@@ -157,6 +157,7 @@ public class UserAjaxController {
 		return result.toString();
 	}
 
+//	要檔
 	@GetMapping("/profile")
 	public ResponseEntity<?> userProfile(@RequestParam String token) {
 		String data = jsonWebTokenUtility.validateToken(token);
@@ -173,8 +174,7 @@ public class UserAjaxController {
 		return notFound;
 	}
 
-	@PostMapping("/login/google")
-
+	@PostMapping("/pass/login/google")
 	public String GoolgleLogin(@RequestBody String credentialJSON) {
 		String credential = new JSONObject(credentialJSON).getString("credential");
 		GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new GsonFactory())
@@ -244,6 +244,7 @@ public class UserAjaxController {
 
 	}
 
+
 	// 修改密碼 
 	@PutMapping("/check/changePaaword/{token}")
 	public ResponseEntity<?> changePaaword(@PathVariable(name = "token")
@@ -261,7 +262,7 @@ public class UserAjaxController {
 	}
 
 
-	// 修改個人資料 
+	// 修改個人資料 要檔
 	@PutMapping("/check/changeUserProfile/{token}")
 	public ResponseEntity<?> changeUserProfile(@PathVariable(name = "token") String token, @RequestBody UserDTO userDTO) {
 		String data = jsonWebTokenUtility.validateToken(token);
@@ -275,7 +276,7 @@ public class UserAjaxController {
 	}
 
 	//Link to Email驗證
-	@PutMapping("/verify-email/{token}")
+	@PutMapping("/pass/verify-email/{token}")
 	public String userEmailVerify(@PathVariable(name = "token") String token) {
 		JSONObject result = new JSONObject();
 		// 檢查token並解析
@@ -297,7 +298,7 @@ public class UserAjaxController {
 
 	
 	//圖片上傳
-	@PostMapping("uploadUserPhoto/{token}")
+	@PostMapping("/pass/uploadUserPhoto/{token}")
 
 	public String uploadPohto(@PathVariable(name = "token") String token, @RequestParam MultipartFile file)
 			throws IOException {
@@ -310,7 +311,7 @@ public class UserAjaxController {
 	}
 
 	//圖片讀取
-	@GetMapping("finduserphoto/{email}")
+	@GetMapping("/pass/finduserphoto/{email}")
 
 	public ResponseEntity<?> downloadPhoto(@PathVariable(name = "email") String email) {
 		User user = userService.findUserByEmail(email);
@@ -327,7 +328,7 @@ public class UserAjaxController {
 	
 	
 	//發送忘記密碼信
-	@GetMapping("/sendForgetPasswordEmail/{email}")
+	@GetMapping("/pass/sendForgetPasswordEmail/{email}")
 	public ResponseEntity<?> sendForgetPasswordEmail  (@PathVariable(name = "email") String email){
 		User user = userService.findUserByEmail(email);
 		if (user!=null) {
@@ -342,7 +343,7 @@ public class UserAjaxController {
 	
 	
 	//發送驗證信箱信
-	@GetMapping("/sendVeriftEmail/{token}")
+	@GetMapping("/pass/sendVeriftEmail/{token}")
 	public  ResponseEntity<?> sendVeriftEmail (@PathVariable(name = "token") String token){
 		String data = jsonWebTokenUtility.validateToken(token);
 		if(data!=null) {
