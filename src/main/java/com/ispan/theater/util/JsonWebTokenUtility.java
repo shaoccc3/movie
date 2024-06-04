@@ -40,7 +40,7 @@ public class JsonWebTokenUtility {
 	//每天 10:15:05執行 更新對稱鑰
 	@Scheduled(cron  =" 5 15 10 * * ?")
     public void updateSecretKey() {
-		//生成斯鑰存入資料庫
+		//從資料庫找到對稱鑰
 		String secret = symmetricKeysService.getSymmetricKey().getSecretKey();
 		//將密鑰使用base64編碼
 		base64EncodedSecret = Base64.getEncoder().encode(secret.getBytes());

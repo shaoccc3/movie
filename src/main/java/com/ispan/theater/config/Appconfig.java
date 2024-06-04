@@ -59,10 +59,10 @@ public class Appconfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(JwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests((authorize) -> {//test /order/movie/getOrderDetail、/order/movie/deleteOrder暫時開權限
-                    authorize.requestMatchers("/order/movie/getOrderDetail", "/order/movie/deleteOrder", "/user/**", "/order-redirect", "/order/movie/linePayConfirm", "/order/movie/findMovie", "/order/movie/findAllCinema", "/order/movie/dates", "/order/movie/times", "/order/movie/ecPayConfirm"
+                    authorize.requestMatchers("/order/movie/getOrderDetail", "/order/movie/deleteOrder", "/user/pass/**", "/order-redirect", "/order/movie/linePayConfirm", "/order/movie/findMovie", "/order/movie/findAllCinema", "/order/movie/dates", "/order/movie/times", "/order/movie/ecPayConfirm"
                                     , "/order/movie/tickets", "/backstage/movie/**", "/moviePicture/**", "/comment/**"
                                     , "/order/movie/getOrderBackStage", "/login", "/api/login").permitAll()
-                            .requestMatchers("/admin/**").hasRole("ADMIN")
+                            .requestMatchers("/admin/**","/user/backside/**").hasRole("ADMIN")
                             .anyRequest().authenticated();
                 });
         return http.build();

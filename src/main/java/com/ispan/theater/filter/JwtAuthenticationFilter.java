@@ -80,7 +80,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        return request.getRequestURI().startsWith("/user")
+        return request.getRequestURI().startsWith("/user/pass")
                 || request.getRequestURI().startsWith("/order/movie/findMovie")
                 || request.getRequestURI().startsWith("/order/movie/findAllCinema")
                 || request.getRequestURI().startsWith("/order/movie/dates")
