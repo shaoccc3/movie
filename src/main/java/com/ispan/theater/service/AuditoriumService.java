@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -27,16 +28,13 @@ public class AuditoriumService {
     @Autowired
     private AuditoriumLevelRepository auditoriumLevelRepository;
 
-    public List<Auditorium> getCinemaAuditoriums(Integer cinemaId) {
-        List<Auditorium> result = new ArrayList<>();
-        Optional<Cinema> cinemaOptional = cinemaRepository.findById(cinemaId);
-        if (cinemaOptional.isPresent()) {
-            Cinema cinema = cinemaOptional.get();
-            result = auditoriumRepository.findByCinema(cinema);
-            return result;
-        } else {
-            return null;
-        }
+    public List<Map<String, Object>> getCinemaAuditoriums(Integer cinemaId) {
+        List<Map<String, Object>> result = new ArrayList<>();
+
+
+        result = auditoriumRepository.findByCinema(cinemaId);
+        return result;
+
     }
 
     public Auditorium getAuditorium(Integer auditoriumId) {

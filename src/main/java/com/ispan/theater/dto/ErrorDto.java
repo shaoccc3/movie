@@ -1,6 +1,6 @@
 package com.ispan.theater.dto;
 
-import java.util.Date;
+
 
 public class ErrorDto {
     private String timestamp;

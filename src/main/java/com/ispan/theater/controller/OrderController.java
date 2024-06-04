@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ispan.theater.dao.OrderDaoImpl;
 import com.ispan.theater.domain.Order;
 import com.ispan.theater.dto.InsertOrderDTO;
+
 import com.ispan.theater.listener.OrderConditionPublisher;
 import com.ispan.theater.repository.OrderRepository;
 import com.ispan.theater.repository.TicketRepository;
@@ -84,6 +85,10 @@ public class OrderController {
 		System.out.println("Authorization="+request.getHeader("Authorization"));
 		return new JSONObject().put("allCinemaName", cinemaService.findAllCinemaName()).toString(); 
 	}
+	@GetMapping("/movie/findCinemaData")
+	public String findCinemaData() {
+		return new JSONObject().put("allCinemaName", cinemaService.findAllCinema()).toString();
+	}
 	
 	@GetMapping("/movie/findMovie")
 	public String findMovie(@RequestParam("cinemaId")Integer cinemaId) {
@@ -113,6 +118,7 @@ public class OrderController {
 		synchronized (this) {
 			json = orderService.createOrder(insertOrderDto);
 		}
+		System.out.println(json);
 		return json;
 	}
 
@@ -145,9 +151,7 @@ public class OrderController {
 	}
 	
 	@GetMapping("/movie/deleteOrder")
-	public String refund(@RequestParam("orderId")Integer orderId) {
-	     return orderService.refund(orderId);
-	}
+	public String refund(@RequestParam("orderId")Integer orderId) {	return orderService.refund(orderId);	}
 	
 	
 //	@GetMapping("/movie/test")

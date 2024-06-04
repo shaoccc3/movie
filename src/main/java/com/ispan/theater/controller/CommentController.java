@@ -29,7 +29,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -51,7 +50,7 @@ import com.ispan.theater.util.JsonWebTokenUtility;
 public class CommentController {
 	
     private Map<Integer, Set<Integer>> likes = new HashMap<>(); // 存儲每個評論的點讚用戶
-    private Map<Integer, Set<Integer>> less = new HashMap<>(); // 存儲每個評論的點讚用戶
+    private Map<Integer, Set<Integer>> less = new HashMap<>(); // 存儲每個評論噓用戶
 
 
 	@Autowired
@@ -90,12 +89,12 @@ public class CommentController {
 
 	        } else {
 	            // 錯誤的TOKEN
-	            System.out.println("Ttoken遺失");
-			        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Ttoken遺失");
+	            System.out.println("Ttoken錯誤");
+			        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("token錯誤");
 
 	        }
 	    } 
-	    return ResponseEntity.ok("Comment de successfully");
+	    return ResponseEntity.ok("發布成功");
 
 	    }
 
@@ -169,7 +168,7 @@ public class CommentController {
 	        map.put("rate", BigDecimal.ZERO);
 	    }
 
-	    // 這裡按評分排序的評論已經來自於查詢，所以我們只需要處理樹狀結構
+	    // 按評分排序的評論已經來自於查詢，處理樹狀結構
 	    List<Comment> rootComments = comments.stream()
 	            .filter(comment -> comment.getPid() == null)
 	            .collect(Collectors.toList());
@@ -231,8 +230,8 @@ public class CommentController {
 	@DeleteMapping("/{commentId}")
 	public ResponseEntity<String> delete(@PathVariable Integer commentId, @RequestParam String token) {
 	    if (token == null) {
-	        System.out.println("Token is missing.");
-	        return ResponseEntity.badRequest().body("Token is missing.");
+	        System.out.println("Token遺失");
+	        return ResponseEntity.badRequest().body("Token遺失");
 	    }
 
 	    System.out.println(token);
@@ -240,8 +239,8 @@ public class CommentController {
 	    // Decode TOKEN
 	    String authToken = jwtu.validateToken(token);
 	    if (authToken == null) {
-	        System.out.println("Invalid TOKEN");
-	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token.");
+	        System.out.println("Token遺失");
+	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("沒有token");
 	    }
 
 	    System.out.println(authToken);
@@ -255,19 +254,19 @@ public class CommentController {
 	    // Check if the comment exists and belongs to the user
 	    Comment existingComment = commentService.findCommentById(commentId);
 	    if (existingComment == null) {
-	        System.out.println("Comment not found");
-	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Comment not found.");
+	        System.out.println("沒有評論");
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("沒有評論");
 	    }
 
 	    if (existingComment.getUserId() == null || !existingComment.getUserId().getId().equals(userId)) {
-	        System.out.println("User does not own the comment");
-	        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You are not allowed to delete this comment.");
+	        System.out.println("該評論不屬於該用戶");
+	        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("該評論不屬於該用戶");
 	    }
 
 	    // Delete the comment
 	    commentRepository.deleteById(commentId);
-	    System.out.println("Comment deleted successfully");
-	    return ResponseEntity.ok("Comment deleted successfully");
+	    System.out.println("刪除成功");
+	    return ResponseEntity.ok("珊除成功");
 	}
 
 	@PutMapping("/{commentId}")
@@ -293,7 +292,7 @@ public class CommentController {
 	                commentRepository.save(existingComment);
 	                return ResponseEntity.ok("Comment deleted successfully");
 	            } else {
-	            	return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token.");
+	            	return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid token.");
 	            }
 	        } else {
 	            // 錯誤的TOKEN
@@ -303,7 +302,7 @@ public class CommentController {
 	        // 遺失
 	        System.out.println("Token is missing.");
 	    }
-    	return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token.");
+    	return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid token.");
 	}
 	
 //	找全部評論
@@ -363,8 +362,8 @@ public class CommentController {
 	public ResponseEntity<String>delete(@PathVariable Integer commentId){
 		if(commentId!=null&&commentId!=0) {	    
 			commentRepository.deleteById(commentId);
-		    System.out.println("Comment deleted successfully");
-		    return ResponseEntity.ok("Comment deleted successfully");
+		    System.out.println("珊除成功");
+		    return ResponseEntity.ok("刪除成功");
 			
 		}
 		return ResponseEntity.notFound().build();
@@ -429,10 +428,10 @@ public class CommentController {
             } else {
                 // 錯誤的TOKEN
                 System.out.println("Token失效");
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token失效");
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Token失效");
             }
         } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Token is missing");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Token is missing");
         }
     }
 	@PutMapping("/useless/{commentId}")

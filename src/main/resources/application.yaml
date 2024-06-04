@@ -3,10 +3,14 @@ spring:
     name: movie
 #database connection
   datasource:
-    url: jdbc:sqlserver://localhost:1433;database=test1;trustServerCertificate=true;encrypt=true
-    password: sa123456
 
-    username: sa
+#    url: jdbc:sqlserver://localhost:1433;database=test1;trustServerCertificate=true;encrypt=true
+#    password: p@ssw0rd
+#    username: sa
+    url: jdbc:sqlserver://35.201.209.200:1433;database=test1;trustServerCertificate=true;encrypt=true
+    password: p@ssw0rd
+    username: sqlserver
+
   jpa:
     properties:
       hibernate:
@@ -33,14 +37,10 @@ logging:
   config: classpath:logback-spring.xml
   level:
     root: INFO
-
-
 jwt:
   token:
-    expire: 100
-    
+    expire: 10000
 # email SMTP 服务器配置
-
 mail:
   smtp:
     host: smtp.gmail.com
@@ -48,3 +48,12 @@ mail:
     username: ispanmove@gmail.com
     password: czdn gmwi vvtn onrx
     tls: true
+front:
+  url: http://localhost:5173
+
+paypal:
+  client:
+    id: AUZKqkSWZy4k4EvNxqrDsRnXcxYEY58BJVewwckiRd7ESLGh6b9OHlTK1izn_y3oka_Ey3Ic3p1ygPoU
+    secret: ECcSI5sbHlTM2V6b_K83_EU0Sn5P2qy5EpVbzDzIhVCeasY7GppEhQ_zBqttuzSSsBtbU_bG2a0TT73E
+  mode: sandbox
+

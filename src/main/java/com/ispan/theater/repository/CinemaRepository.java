@@ -18,4 +18,6 @@ public interface CinemaRepository extends JpaRepository<Cinema, Integer> {
 	
 	@Query(value="select c.cinema_id,c.name from cinema as c",nativeQuery=true)
 	List<Map<String,Object>> findAllCinemaName();
+	@Query(value="select c.* from cinema as c",nativeQuery=true)
+	List<Map<String,Object>> findAllCinema();
 }

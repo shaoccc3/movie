@@ -1,22 +1,30 @@
 package com.ispan.theater.controller;
 
-import com.ispan.theater.domain.Movie;
-import com.ispan.theater.repository.AuditoriumLevelRepository;
-import com.ispan.theater.service.MovieService;
-import org.apache.commons.codec.binary.Base64;
+import java.util.List;
+import java.util.Map;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-import java.util.Map;
+import com.ispan.theater.domain.Movie;
+import com.ispan.theater.repository.AuditoriumLevelRepository;
+import com.ispan.theater.service.MovieService;
 
 
 @RestController
@@ -87,7 +95,7 @@ public class MovieAjaxController {
         return response.toString();
     }
 
-    @PostMapping("/backstage/movie/uploadPhoto/{id}")
+    @PostMapping("/admin/backstage/movie/uploadPhoto/{id}")
     public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file ,@PathVariable Integer id) {//測試用
         Movie movie = movieService.getMovieById(id);
         try {
@@ -104,7 +112,7 @@ public class MovieAjaxController {
         }
     }
 
-    @PostMapping("/backstage/movie")
+    @PostMapping("/admin/backstage/movie")
     public String insertMovie(@RequestBody String moviestr) {
         JSONObject jsonObject = new JSONObject(moviestr);
         JSONObject response = new JSONObject();
@@ -112,6 +120,7 @@ public class MovieAjaxController {
             Movie movie = movieService.insertMovie(jsonObject);
             response.put("message", "新增成功");
             response.put("success", "success");
+            response.put("id",movie.getId());
         } else {
             response.put("message", "新增失敗");
             response.put("fail", "fail");
@@ -121,7 +130,7 @@ public class MovieAjaxController {
 
     }
 
-    @PutMapping("/backstage/movie/{id}")
+    @PutMapping("/admin/backstage/movie/{id}")
     public String updateMovie(@RequestBody String moviestr,@PathVariable Integer id) {
         JSONObject jsonObject = new JSONObject(moviestr);
         JSONObject response = new JSONObject();
@@ -137,7 +146,7 @@ public class MovieAjaxController {
 
     }
 
-    @DeleteMapping("/backstage/movie/{id}")
+    @DeleteMapping("/admin/backstage/movie/{id}")
     public String deleteMovie(@PathVariable("id") int id) {
         Movie movie = movieService.getMovieById(id);
         JSONObject response = new JSONObject(movie);

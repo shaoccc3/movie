@@ -30,7 +30,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 //                .collect(Collectors.toSet());
         
         Set<GrantedAuthority> authorities = new HashSet<>();
-        authorities.add(new SimpleGrantedAuthority("admin"));
+        authorities.add(new SimpleGrantedAuthority("ROLE_CUSTOMER"));
         
         return new org.springframework.security.core.userdetails.User(usernameOrEmail,user.getPassword(), authorities);
     }

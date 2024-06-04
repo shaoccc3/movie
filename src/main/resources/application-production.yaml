@@ -4,3 +4,6 @@ spring:
     password: u7u4vrhur12fmjujfubctji8eflv4usn
     username: sqlserver
     
+front:
+  url: https://starburst-cinema.xyz
+    
