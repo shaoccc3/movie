@@ -32,3 +32,4 @@ build/
 ### VS Code ###
 .vscode/
 .$會員資料.drawio.bkp
+bin/
