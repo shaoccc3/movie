@@ -28,7 +28,7 @@ public class SymmetricKeysService  {
 	
 	
 	//每天 10:15:00執行 產生對稱鑰存入資料庫
-	@Scheduled(cron  =" 0 15 10 * * ?")
+	@Scheduled(cron  =" 0 15 04 * * ?")
 	public void createSymmetricKey()throws NoSuchAlgorithmException {
 		SymmetricKeys key =new SymmetricKeys();
 		
