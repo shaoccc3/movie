@@ -3,10 +3,14 @@ package com.ispan.theater.controller;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.List;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.ui.Model;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,47 +25,53 @@ import com.ispan.theater.service.FoodPictureService;
 import jakarta.annotation.PostConstruct;
 
 @RestController
+@CrossOrigin
 public class FoodPictureAjaxController {
 	@Autowired
 	private FoodPictureService foodPictureService;
 	
-	@PostMapping("/backstage/food/uploadPhoto")
-	public FoodPicture uploadPost(@RequestParam Integer id,
-			@RequestParam MultipartFile picture,
-			Model model)throws Exception {
-		
-		FoodPicture newFp = new FoodPicture();
-		newFp.setId(id);
-		newFp.setPicture(picture.getBytes());
-		
-		foodPictureService.saveFoodPicture(newFp);
-		
-//		model.addAttribute("okMsg","上傳成功!");
-		
-		
-		return newFp;
-	}
 	
-//	@PostMapping("/backstage/food/uploadPhoto/{id}")
-//	public ResponseEntity<String> uploadFoodImage(@RequestParam("picture") MultipartFile picture, @PathVariable(name="id") Integer id
-//			) {
-//		FoodPicture newFp = foodPictureService.findByFoodId(id);
-//		try {
-//			
-//			if (picture.isEmpty()) {
-//				return ResponseEntity.badRequest().body("空檔案");
-//			}
-//			byte[] image = picture.getBytes();
-//			newFp.setPicture(image);
-//			foodPictureService.saveFoodPicture(newFp);
-//			
-//			return ResponseEntity.ok("上傳成功");
-//		} catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("上傳失敗: " + e.getMessage());
-//
-//		}
-//		
-//	}
+	@GetMapping("/backstage/food/photo/{id}")
+    public ResponseEntity<?> getFoodPicture(@PathVariable Integer id) {
+        return ResponseEntity.ok(foodPictureService.getFoodPicture(id));
+    }
+
+    @PostMapping("/backstage/food/uploadPhoto/{id}")
+    public ResponseEntity<?> addFoodPicture(@PathVariable Integer id, @RequestParam("files") List<MultipartFile> files) throws IOException {
+        boolean insert = foodPictureService.insertFoodPicture(files, id);
+        System.out.println("insert:"+ insert);
+        System.out.println("id:"+ id);
+        System.out.println("files:"+files);
+        if (insert) {
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
+    
+    @DeleteMapping("/backstage/foodpicture/{pk}")
+    public String remove(@PathVariable(name = "pk") Integer id) {
+        JSONObject responseJson = new JSONObject();
+        if(id==null) {
+            responseJson.put("success", false);
+            responseJson.put("message", "id是必要欄位");
+        } else if(!foodPictureService.existById(id)) {
+            responseJson.put("success", false);
+            responseJson.put("message", "id不存在");
+        } else {
+            if(foodPictureService.delete(id)) {
+                responseJson.put("success", true);
+                responseJson.put("message", "刪除成功");
+            } else {                
+                responseJson.put("success", false);
+                responseJson.put("message", "刪除失敗");
+            }
+        }
+        return responseJson.toString();
+    }
+
+	
+	
 	
 	private byte[] picture = null;	
 	@PostConstruct
@@ -85,7 +95,7 @@ public class FoodPictureAjaxController {
 			path = "/backstage/food/photo/{food_pictureid}",
 			produces = {MediaType.IMAGE_JPEG_VALUE})
 	public @ResponseBody byte[] findPhotoByPhotoId(@PathVariable(name="food_pictureid") Integer id) {
-		FoodPicture foodPicture = foodPictureService.findByFoodId(id);
+		FoodPicture foodPicture = foodPictureService.findFoodPictureById(id);
 		byte[] result = this.picture;
 		if(foodPicture!=null) {
 			result =  foodPicture.getPicture();

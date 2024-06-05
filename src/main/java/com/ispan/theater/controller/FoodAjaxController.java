@@ -75,21 +75,15 @@ public class FoodAjaxController {
 		List<Food> products = foodService.find(json);
 		if (products!=null && !products.isEmpty()) {
 			for(Food product : products) {
-//				String make = DatetimeConverter.toString(product.getMake(), "yyyy-MM-dd");
-//				String expire = DatetimeConverter.toString(product.getExpired(), "yyyy-MM-dd");
+
 				String createDate = DatetimeConverter.toString(product.getCreateDate(), "yyyy-MM-dd");
 				String modifyDate = DatetimeConverter.toString(product.getModifyDate(), "yyyy-MM-dd");
 
 				JSONObject item = new JSONObject()
 							.put("id", product.getId())
 							.put("name", product.getName())
-//							.put("name_eng", product.getName_eng())
 							.put("price", product.getPrice())
 							.put("count", product.getCount())
-//							.put("description", product.getDescription())
-//							.put("foodCategory_code", product.getFoodCategory_code())
-//							.put("make", make)
-//							.put("expired", expire)
 							.put("createDate", createDate)
 							.put("modifyDate", modifyDate);
 				array.put(item);
@@ -116,13 +110,8 @@ public class FoodAjaxController {
 			JSONObject item = new JSONObject();
 			item.put("id", food.getId());
 			item.put("name", food.getName());
-//			item.put("name_eng", food.getName_eng());
 			item.put("price", food.getPrice());
 			item.put("count", food.getCount());
-//			item.put("description", food.getDescription());
-//			item.put("foodCategory_code", food.getFoodCategory_code());
-//			item.put("make", food.getMake());
-//			item.put("expired", food.getExpired());
 			item.put("createDate", createDate);
 			item.put("modifyDate", modifyDate);
 			jsonArray.put(item);
@@ -177,35 +166,5 @@ public class FoodAjaxController {
         return responseJson.toString();
 	}
 	
-//	//picture
-//	private byte[] picture = null;	
-//	@PostConstruct
-//	public void initialize() throws IOException {
-//		byte[] buffer = new byte[8192];
-//
-//		ClassLoader classLoader = getClass().getClassLoader();
-//		ByteArrayOutputStream os = new ByteArrayOutputStream();
-//		BufferedInputStream is = new BufferedInputStream(
-//				classLoader.getResourceAsStream("static/no-image.jpg"));
-//		int len = is.read(buffer);
-//		while(len!=-1) {
-//			os.write(buffer, 0, len);
-//			len = is.read(buffer);
-//		}
-//		is.close();
-//		this.picture = os.toByteArray();
-//    }
-//	
-//	@GetMapping(
-//			path = "/backstage/food/photo/{food_id}",
-//			produces = {MediaType.IMAGE_JPEG_VALUE})
-//	public @ResponseBody byte[] findPhotoById(@PathVariable(name="food_id") Integer id) {
-//		Food foodPicture = foodService.findByFoodId(id);
-//		byte[] result = this.picture;
-//		if(foodPicture!=null) {
-//			result =  foodPicture.getPicture();
-//        }
-//        return result;
-//	}
 	
 }

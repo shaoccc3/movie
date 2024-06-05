@@ -1,5 +1,9 @@
 package com.ispan.theater.domain;
 
+import java.util.Arrays;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -30,10 +34,22 @@ public class FoodPicture {
 	@JoinColumn(name="food_id", nullable = false)
 	private Food food;
 	
+	@JsonIgnore
 	@Lob
 	@Column(name="food_picture", nullable = false, columnDefinition = "VARBINARY(MAX)")
 	private byte[] picture;
+	
+	@Column(name = "filename", nullable = false)
+    private String filename;
 
+	@Override
+	public String toString() {
+		return "FoodPicture [id=" + id + ", food=" + food + ", picture=" + Arrays.toString(picture) + ", filename="
+				+ filename + "]";
+	}
+
+	
+	
 	
 
 	
