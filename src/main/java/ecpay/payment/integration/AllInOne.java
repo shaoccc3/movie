@@ -65,12 +65,12 @@ public class AllInOne extends AllInOneBase{
 		super();
 		if(log4jPropertiesPath != "" && log4jPropertiesPath != null){
 			String propertiesFile = log4jPropertiesPath + "/log4j.xml";
-			
-			if(log4jPropertiesPath.substring(log4jPropertiesPath.length()-1) == "/")
+			if(log4jPropertiesPath.substring(log4jPropertiesPath.length()-1) == "/") {
 				propertiesFile = propertiesFile + "log4j.properties";
-			else
+			}
+			else{
 				propertiesFile = propertiesFile + "/log4j.properties";
-			
+			}
 			try {
 				LoggerContext logContext = (LoggerContext) LogManager.getContext(false);
 				File conFile = new File(propertiesFile);

@@ -140,6 +140,7 @@ public class OrderService {
 			order.setPaymentNo(uuId);
 			order.setSupplier("ecpay");
 			result = ecPayService.ecpayCheckout(order, insertOrderDto.getTicketId().size());
+
 		}
 		if("paypal".equals(insertOrderDto.getPaymentOptions())){
 //			String paypalsuccessUrl =  "http://localhost:5173/order/paymentsuccess?orderId=" + order.getId();

@@ -24,18 +24,15 @@ public class ECPayService {
 		obj.setMerchantTradeDate(DatetimeConverter.createSqlDatetimeECPay(order.getCreateDate()));
 		obj.setTradeDesc("此次共買了"+quantity+"張電影票");
 		obj.setItemName("電影票");
-		obj.setReturnURL("http://losthost:8080/ecpayResult");
-		obj.setOrderResultURL("http://localhost:8080/order-redirect");
+		obj.setReturnURL("https://backendapp-l6hua254tq-de.a.run.app/ecpayResult");
+		obj.setOrderResultURL("https://backendapp-l6hua254tq-de.a.run.app/order-redirect");
 //		obj.setOrderResultURL("http://httpbin.org/post");
 
 		obj.setNeedExtraPaidInfo("Y");
-		System.out.println("-----test1-----");
 		String form = all.aioCheckOut(obj, null);
 		System.out.println(form);
-		System.out.println("-----test2-----");
 		String temp =form.substring(0, form.indexOf("<script"))+"</form>";
 		System.out.println(temp);
-		System.out.println("-----test3-----");
 		return temp;
 	}
 
