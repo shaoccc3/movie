@@ -29,8 +29,13 @@ public class ECPayService {
 //		obj.setOrderResultURL("http://httpbin.org/post");
 
 		obj.setNeedExtraPaidInfo("Y");
+		System.out.println("-----test1-----");
 		String form = all.aioCheckOut(obj, null);
+		System.out.println(form);
+		System.out.println("-----test2-----");
 		String temp =form.substring(0, form.indexOf("<script"))+"</form>";
+		System.out.println(temp);
+		System.out.println("-----test3-----");
 		return temp;
 	}
 

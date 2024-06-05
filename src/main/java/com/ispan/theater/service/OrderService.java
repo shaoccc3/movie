@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.ispan.theater.domain.Movie;
 import com.paypal.api.payments.Links;
 import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalRESTException;
@@ -107,10 +108,16 @@ public class OrderService {
 		String Date = DatetimeConverter.createSqlDatetime(new Date());
 		Order order = null;
 		String result = "";
-		Integer count = orderRepository.createOrder(Date, Date, (300.0 * (insertOrderDto.getTicketId().size())),
+		Double price = 0.0;
+		Movie movie = movieRepository.findById(insertOrderDto.getMovieId()).orElse(null);
+		if (movie != null) {
+			price = movie.getPrice();
+		}
+		Integer count = orderRepository.createOrder(Date, Date, (price* (insertOrderDto.getTicketId().size())),
 				insertOrderDto.getMovieId(), insertOrderDto.getUserId(), 0 ,0);
 		if (count > 0) {
 			order = orderRepository.findOrderByUserIdAndCreateDate(Date, insertOrderDto.getUserId()).get();
+
 		}
 		List<Ticket> tickets = ticketRepository.findTicketsById(insertOrderDto.getTicketId());
 		List<OrderDetail> orderDetails = new ArrayList<OrderDetail>();
@@ -137,8 +144,8 @@ public class OrderService {
 		if("paypal".equals(insertOrderDto.getPaymentOptions())){
 //			String paypalsuccessUrl =  "http://localhost:5173/order/paymentsuccess?orderId=" + order.getId();
 //			String paypalcancelUrl = "http://localhost:5173/order/findOrder";
-			String paypalsuccessUrl =  "https://vue-6kn3sj32ha-de.a.run.app/order/paymentsuccess?orderId=" + order.getId();
-			String paypalcancelUrl = "https://vue-6kn3sj32ha-de.a.run.app/order/findOrder";
+			String paypalsuccessUrl =  "https://starburst-cinema.xyz/order/paymentsuccess?orderId=" + order.getId();
+			String paypalcancelUrl = "https://starburst-cinema.xyz/order/findOrder";
 			https://vue-6kn3sj32ha-de.a.run.app/
 			try {
 				order.setSupplier("paypal");

@@ -59,12 +59,12 @@ public class LinePayService {
 		productForm.setName("電影票"+quantity+"張");
 		productForm.setImageUrl("");
 		productForm.setQuantity(new BigDecimal(quantity));
-		productForm.setPrice(new BigDecimal("300"));
+		productForm.setPrice(new BigDecimal(order.getMovie().getPrice()));
 		productPackageForm.setProducts(Arrays.asList(productForm));
 
 		form.setPackages(Arrays.asList(productPackageForm));
 		RedirectUrls redirectUrls = new RedirectUrls();
-		redirectUrls.setConfirmUrl("http://localhost:5173/order/complete");
+		redirectUrls.setConfirmUrl("https://starburst-cinema.xyz/order/complete");
 		redirectUrls.setCancelUrl("");
 		form.setRedirectUrls(redirectUrls);
 	
@@ -83,7 +83,7 @@ public class LinePayService {
 			httpHeaders.add("Content-Type", "application/json");
 			HttpEntity<String> httpEntity=new HttpEntity<>(mapper.writeValueAsString(form),httpHeaders);
 			reponse=restTemplate.postForObject("https://sandbox-api-pay.line.me/v3/payments/request", httpEntity, Map.class);
-//			System.out.println(reponse);
+			System.out.println(reponse);
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
