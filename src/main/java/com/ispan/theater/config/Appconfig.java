@@ -62,7 +62,7 @@ public class Appconfig {
                     authorize.requestMatchers("/order/movie/getOrderCondition","/order/movie/getOrderDetail", "/order/movie/deleteOrder", "/order/movie/getOrderBackStage", "/user/pass/**", "/order-redirect", "/order/movie/linePayConfirm", "/order/movie/findMovie"
                     				, "/order/movie/findAllCinema", "/order/movie/dates", "/order/movie/times", "/order/movie/ecPayConfirm"
                                     , "/order/movie/tickets", "/backstage/movie/**", "/moviePicture/**", "/comment/**"
-                                    , "/login", "/api/login").permitAll()
+                                    , "/login", "/api/login","/order/movie/findCinemaData").permitAll()
                             .requestMatchers("/admin/**","/user/backside/**").hasRole("ADMIN")
                             .anyRequest().authenticated();
                 });

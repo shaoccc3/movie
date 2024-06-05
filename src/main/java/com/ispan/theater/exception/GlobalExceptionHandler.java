@@ -30,12 +30,5 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<ErrorDto> handleOrderException(OrderException e){
 		return ResponseEntity.status(e.getErrorCode()).body(new ErrorDto(DatetimeConverter.createSqlDatetime(new Date()),e.getErrorCode(),"order_ticket_error",e.getErrorMessage()));
 	}
-	@ExceptionHandler(Exception.class)
-	public ResponseEntity<ErrorDto> handleGenericException(Exception e) {
-		return ResponseEntity.status(HttpStatus.SC_INTERNAL_SERVER_ERROR)
-				.body(new ErrorDto(DatetimeConverter.createSqlDatetime(new Date()),
-						HttpStatus.SC_INTERNAL_SERVER_ERROR,
-						"internal_error",
-						e.getMessage()));
-	}
+
 }
