@@ -69,16 +69,13 @@ public class CommentController {
 	public ResponseEntity<String> save(@RequestBody Comment comment ,@RequestParam String token,@RequestParam Integer movieid) {
 		
 		if (token != null) {
-	    	System.out.println(token);
 	        // 解碼TOKEN
 	        String authToken = jwtu.validateToken(token);
-	        System.out.println(authToken);
 	        if (authToken != null) {
 	        	// 解碼TOKEN
 	            JSONObject obj = new JSONObject(authToken);
 	            Integer userId = obj.getInt("userid");
 
-		        System.out.println(userId);
 
 	            	//輸入USERID
 					comment.getUserId().setId(userId);
@@ -89,7 +86,6 @@ public class CommentController {
 
 	        } else {
 	            // 錯誤的TOKEN
-	            System.out.println("Ttoken錯誤");
 			        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("token錯誤");
 
 	        }
@@ -105,7 +101,6 @@ public class CommentController {
 	        @RequestParam(defaultValue = "0") int page,
 	        @RequestParam(defaultValue = "10") int size) {
 	    
-	    System.out.println(movieId);
 	    Map<String, Object> map = new HashMap<>();
 	    
 	    // Create a Pageable object
@@ -230,58 +225,46 @@ public class CommentController {
 	@DeleteMapping("/{commentId}")
 	public ResponseEntity<String> delete(@PathVariable Integer commentId, @RequestParam String token) {
 	    if (token == null) {
-	        System.out.println("Token遺失");
 	        return ResponseEntity.badRequest().body("Token遺失");
 	    }
 
-	    System.out.println(token);
 
-	    // Decode TOKEN
 	    String authToken = jwtu.validateToken(token);
 	    if (authToken == null) {
-	        System.out.println("Token遺失");
 	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("沒有token");
 	    }
 
-	    System.out.println(authToken);
 
 	    // Decode TOKEN to get user ID
 	    JSONObject obj = new JSONObject(authToken);
 	    Integer userId = obj.getInt("userid");
 
-	    System.out.println(userId);
 
 	    // Check if the comment exists and belongs to the user
 	    Comment existingComment = commentService.findCommentById(commentId);
 	    if (existingComment == null) {
-	        System.out.println("沒有評論");
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("沒有評論");
 	    }
 
 	    if (existingComment.getUserId() == null || !existingComment.getUserId().getId().equals(userId)) {
-	        System.out.println("該評論不屬於該用戶");
 	        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("該評論不屬於該用戶");
 	    }
 
 	    // Delete the comment
 	    commentRepository.deleteById(commentId);
-	    System.out.println("刪除成功");
 	    return ResponseEntity.ok("珊除成功");
 	}
 
 	@PutMapping("/{commentId}")
 	public ResponseEntity<String> update(@PathVariable Integer commentId, @RequestBody Comment updatedComment, @RequestParam String token) {
 	    if (token != null) {
-	        System.out.println(token);
 	        // 解碼TOKEN
 	        String authToken = jwtu.validateToken(token);
-	        System.out.println(authToken);
 	        if (authToken != null) {
 	            // 解碼TOKEN
 	            JSONObject obj = new JSONObject(authToken);
 	            Integer userId = obj.getInt("userid");
 
-	            System.out.println(userId);
 
 	            // 檢查該評論是否存在並且屬於該使用者
 	            Comment existingComment = commentService.findCommentById(commentId);
@@ -296,11 +279,9 @@ public class CommentController {
 	            }
 	        } else {
 	            // 錯誤的TOKEN
-	            System.out.println("錯誤TOKEN");
 	        }
 	    } else {
 	        // 遺失
-	        System.out.println("Token is missing.");
 	    }
     	return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid token.");
 	}
@@ -312,10 +293,9 @@ public class CommentController {
 	        @RequestParam(defaultValue = "0") int page,
 	        @RequestParam(defaultValue = "20") int size) {
 	    
-	    System.out.println(commentId);
 	    Map<String, Object> map = new HashMap<>();
 	    
-	    // Create a Pageable object
+	    //建立page物件
 	    Pageable pageable = PageRequest.of(page, size, Sort.by("movieId").ascending());
 	    
 	    // Assuming your repository has a method that accepts a Comment object and a Pageable object
@@ -352,7 +332,6 @@ public class CommentController {
 	        }
 	        response.put("movies", array);
 	        response.put("count", count);
-	        System.out.println(array);
 	        return ResponseEntity.ok().body(response);
 	    } else {
 	        return ResponseEntity.notFound().build();
@@ -362,12 +341,13 @@ public class CommentController {
 	public ResponseEntity<String>delete(@PathVariable Integer commentId){
 		if(commentId!=null&&commentId!=0) {	    
 			commentRepository.deleteById(commentId);
-		    System.out.println("珊除成功");
 		    return ResponseEntity.ok("刪除成功");
 			
 		}
 		return ResponseEntity.notFound().build();
 	}
+	
+
 
 	@GetMapping("/search")
 	public Map<String, Object> searchComments(
@@ -387,19 +367,52 @@ public class CommentController {
         
         return response;
     }
+	@GetMapping("/search/email")
+	public Map<String, Object> searchEmail(
+            @RequestParam String keyword,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size) {
+        
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Comment> commentPage = commentService.searchByName(keyword, pageable);
+        List<Comment> comments = commentPage.getContent();
+        
+        Map<String, Object> response = new HashMap<>();
+        response.put("comments", comments);
+        response.put("currentPage", commentPage.getNumber());
+        response.put("totalItems", commentPage.getTotalElements());
+        response.put("totalPages", commentPage.getTotalPages());
+        
+        return response;
+    }
+	@GetMapping("/search/movie")
+	public Map<String, Object> searchByMovie(
+            @RequestParam String keyword,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size) {
+        
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Comment> commentPage = commentService.searchByMovie(keyword, pageable);
+        List<Comment> comments = commentPage.getContent();
+        
+        Map<String, Object> response = new HashMap<>();
+        response.put("comments", comments);
+        response.put("currentPage", commentPage.getNumber());
+        response.put("totalItems", commentPage.getTotalElements());
+        response.put("totalPages", commentPage.getTotalPages());
+        
+        return response;
+    }
 	@PutMapping("/good/{commentId}")
     public ResponseEntity<String> good(@PathVariable Integer commentId, @RequestParam String token) {
         if (token != null) {
-            System.out.println(token);
             // 解碼TOKEN
             String authToken = jwtu.validateToken(token);
-            System.out.println(authToken);
             if (authToken != null) {
                 // 解碼TOKEN
                 JSONObject obj = new JSONObject(authToken);
                 Integer userId = obj.getInt("userid");
 
-                System.out.println(userId);
 
                 // 確認commentId存在
                 Optional<Comment> existingCommentOpt = commentRepository.findById(commentId);
@@ -427,7 +440,6 @@ public class CommentController {
                 return ResponseEntity.ok("Comment updated successfully");
             } else {
                 // 錯誤的TOKEN
-                System.out.println("Token失效");
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Token失效");
             }
         } else {
@@ -437,16 +449,13 @@ public class CommentController {
 	@PutMapping("/useless/{commentId}")
     public ResponseEntity<String> useless(@PathVariable Integer commentId, @RequestParam String token) {
         if (token != null) {
-            System.out.println(token);
             // 解碼TOKEN
             String authToken = jwtu.validateToken(token);
-            System.out.println(authToken);
             if (authToken != null) {
                 // 解碼TOKEN
                 JSONObject obj = new JSONObject(authToken);
                 Integer userId = obj.getInt("userid");
 
-                System.out.println(userId);
 
                 // 確認commentId存在
                 Optional<Comment> existingCommentOpt = commentRepository.findById(commentId);
@@ -474,14 +483,24 @@ public class CommentController {
                 return ResponseEntity.ok("Comment updated successfully");
             } else {
                 // 錯誤的TOKEN
-                System.out.println("Token失效");
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token失效");
             }
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Token is missing");
         }
     }
-
+	@PutMapping("/update/{commentId}")
+	public ResponseEntity<String> updateback(@PathVariable Integer commentId, @RequestBody Comment updatedComment) {
+	   if(updatedComment!=null) { 
+		updatedComment.setContent(updatedComment.getContent());
+		updatedComment.setRate(updatedComment.getRate());
+	                commentRepository.save(updatedComment);
+	                return ResponseEntity.ok("Comment deleted successfully");
+	   }else {
+		   return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body("修改失敗");
+	   }
+	            	
+	}
 
 }
 	

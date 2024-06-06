@@ -4,6 +4,7 @@ spring:
 #database connection
   datasource:
 
+
 #    url: jdbc:sqlserver://localhost:1433;database=test1;trustServerCertificate=true;encrypt=true
 #    password: p@ssw0rd
 #    username: sa
