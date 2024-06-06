@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class BatchScreenController {
     @Autowired
     private BatchScreenService batchScreenService;
-    @PostMapping("/backstage/screening-batch")
+    @PostMapping("/admin/backstage/screening-batch")
     public ResponseEntity<?> createBatchSchedule(@RequestBody SchduleDto request) {
         try {
             batchScreenService.batchScreenInsert(request);

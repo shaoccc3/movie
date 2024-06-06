@@ -246,7 +246,7 @@ public class UserAjaxController {
 
 
 	// 修改密碼 
-	@PutMapping("/check/changePaaword/{token}")
+	@PutMapping("/pass/check/changePaaword/{token}")
 	public ResponseEntity<?> changePaaword(@PathVariable(name = "token")
 
 	String token, @RequestBody String password) {
