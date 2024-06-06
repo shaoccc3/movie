@@ -1,5 +1,7 @@
 package com.ispan.theater.service;
 
+import com.ispan.theater.domain.AuditoriumLevel;
+import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,19 +25,18 @@ public class testAuditoriumService {
 //        AuditoriumLevel auditoriumLevel = new AuditoriumLevel();
 //        auditoriumLevel.setContext("數位");
 //        audoriumLevelService.insertLevel(auditoriumLevel);
-//        JSONObject jsonObject = new JSONObject();
-//        jsonObject.put("layoutId", 1);
-//        jsonObject.put("levelid",1);
-//        jsonObject.put("auditoriumNumber",1);
-//        jsonObject.put("cinemaid",1);
-//
-//
-//        Auditorium auditorium =  auditoriumService.saveAuditorium(jsonObject);
+//        for(int i=1;i<=3;i++){
+//            JSONObject jsonObject = new JSONObject();
+//            jsonObject.put("layoutId", 1);
+//            jsonObject.put("levelid",1);
+//            jsonObject.put("auditoriumNumber",i);
+//            jsonObject.put("cinemaid",3);
+//            Auditorium auditorium =  auditoriumService.saveAuditorium(jsonObject);
+//        }
 //    }
-    @Transactional
     @Test
     public void testLayout() {
-        Auditorium auditorium = auditoriumService.getAuditorium(1);
+        Auditorium auditorium = auditoriumService.getAuditorium(9);
         layoutService.insertLayout(auditorium);
     }
 }

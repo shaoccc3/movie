@@ -3,14 +3,16 @@ spring:
     name: movie
 #database connection
   datasource:
-
+    url: jdbc:sqlserver://35.229.243.78:1433;database=test1;trustServerCertificate=true;encrypt=true
+    password: p@ssw0rd
+    username: sqlserver
 
 #    url: jdbc:sqlserver://localhost:1433;database=test1;trustServerCertificate=true;encrypt=true
 #    password: p@ssw0rd
 #    username: sa
-    url: jdbc:sqlserver://35.201.209.200:1433;database=test1;trustServerCertificate=true;encrypt=true
-    password: p@ssw0rd
-    username: sqlserver
+#    url: jdbc:sqlserver://35.201.209.200:1433;database=test1;trustServerCertificate=true;encrypt=true
+#    password: p@ssw0rd
+#    username: sqlserver
 
   jpa:
     properties:
@@ -26,7 +28,7 @@ spring:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
       ddl-auto: update
-    show-sql: true
+    show-sql: false
   output:
     ansi:
       enabled: always
