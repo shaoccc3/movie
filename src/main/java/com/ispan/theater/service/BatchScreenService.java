@@ -31,7 +31,7 @@ public class BatchScreenService {
 
 
     @Transactional
-    public List<Screening> batchScreenInsert(SchduleDto request) {
+    public List<Screening> batchScreenInsert(SchduleDto request) throws Exception {
         Movie movie = movieRepository.findById(request.getMovieId()).orElseThrow(() -> new RuntimeException("Movie not found"));
         Auditorium auditorium = auditoriumRepository.findById(request.getAudotoriumId()).orElseThrow(() -> new RuntimeException("Auditorium not found"));
 
@@ -39,15 +39,19 @@ public class BatchScreenService {
         calendar.setTime(DatetimeConverter.parse(request.getStartDate(), "yyyy-MM-dd"));
         Date endDate = DatetimeConverter.parse(request.getEndDate(), "yyyy-MM-dd");
         List<Screening> allScreenings = new ArrayList<>();
+        Calendar movieEndCalendar = Calendar.getInstance();
+        movieEndCalendar.setTime(movie.getEndDate());
+        movieEndCalendar.add(Calendar.DATE, 1);
+        Date movieEndDatePlusOne = movieEndCalendar.getTime();
         while (!calendar.getTime().after(endDate)) {
-            List<Screening> dailyScreenings = setupDailyScreenings(calendar, movie, auditorium, request.getFrequency(), request.getDailySessions());
+            List<Screening> dailyScreenings = setupDailyScreenings(calendar, movie, auditorium, request.getFrequency(), request.getDailySessions(), movieEndDatePlusOne);
             allScreenings.addAll(dailyScreenings);
             calendar.add(Calendar.DATE, 1);
         }
         return allScreenings;
     }
 
-    private List<Screening> setupDailyScreenings(Calendar date, Movie movie, Auditorium auditorium, String frequency, int sessionsPerDay) {
+    private List<Screening> setupDailyScreenings(Calendar date, Movie movie, Auditorium auditorium, String frequency, int sessionsPerDay, Date movieEndDatePlusOne) throws Exception {
         Calendar sessionTime = (Calendar) date.clone();
         List<Screening> screenings = new ArrayList<>();
         sessionTime.set(Calendar.HOUR_OF_DAY, 9);
@@ -89,6 +93,15 @@ public class BatchScreenService {
             screening.setAuditorium(auditorium);
             screening.setCreateDate(new Date());
             screening.setModifyDate(new Date());
+
+            if (sessionTime.getTime().after(movieEndDatePlusOne)||(sessionTime.getTime().before(movie.getReleaseDate()))) {
+                throw new Exception("場次日期超出上映範圍");
+            }
+            List<Integer> overlappingScreenings = screeningRepository.findOverlapScreenings(auditorium.getId(), screening.getStartTime(), screening.getEndTime());
+            if (!overlappingScreenings.isEmpty()) {
+                throw new Exception("場次時間地點發生重疊");
+            }
+
 
             screeningRepository.save(screening);
             screenings.add(screening);

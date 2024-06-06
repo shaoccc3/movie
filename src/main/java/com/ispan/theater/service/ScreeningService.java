@@ -45,7 +45,7 @@ public class ScreeningService {
         return obj;
     }
 
-    public Screening createScreening(Movie movie, JSONObject jsonObject) {
+    public Screening createScreening(Movie movie, JSONObject jsonObject) throws Exception {
         String startTime = jsonObject.getString("startTime");
         String endTime = jsonObject.getString("endTime");
         Integer auditoriumId = jsonObject.getInt("auditoriumId");
@@ -57,6 +57,17 @@ public class ScreeningService {
         screening.setStartTime(DatetimeConverter.parse(startTime, "yyyy-MM-dd HH:mm"));
         screening.setEndTime(DatetimeConverter.parse(endTime, "yyyy-MM-dd HH:mm"));
         screening.setAuditorium(auditorium);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(movie.getEndDate());
+        calendar.add(Calendar.DATE, 1);
+        Date movieEndDatePlusOne = calendar.getTime();
+        if (screening.getStartTime().before(movie.getReleaseDate()) || screening.getEndTime().after(movieEndDatePlusOne)) {
+            throw new Exception("場次時間不在上映範圍內");
+        }
+
+        if(!screeningRepository.findOverlapScreenings(auditoriumId, screening.getStartTime(), screening.getEndTime()).isEmpty()) {
+            throw new Exception("該時段此影廳已有場次存在");
+        }
         return screeningRepository.save(screening);
     }
 
@@ -160,7 +171,7 @@ public class ScreeningService {
         return screeningRepository.findScreeningsByMovieAuditoium(movieId, auditoriumId);
     }
 
-    public Integer jsonToScreen(JSONObject jsonScreen) {
+    public Integer jsonToScreen(JSONObject jsonScreen) throws Exception {
         Integer screeningId = jsonScreen.isNull("screeningId") ? 0 : jsonScreen.getInt("screeningId");
         Integer movieId = jsonScreen.isNull("movieid") ? null : jsonScreen.getInt("movieid");
         Integer auditoriumId = jsonScreen.isNull("auditoriumId") ? null : jsonScreen.getInt("auditoriumId");
@@ -180,12 +191,24 @@ public class ScreeningService {
             return insert.getId();
         } else {
             Screening screening = new Screening();
+            Movie movie = movieRepository.findById(movieId).orElse(null);
             screening.setStartTime(DatetimeConverter.parse(startTime, "yyyy-MM-dd HH:mm"));
             screening.setEndTime(DatetimeConverter.parse(endTime, "yyyy-MM-dd HH:mm"));
-            screening.setMovie(movieRepository.findById(movieId).orElse(null));
+            screening.setMovie(movie);
             screening.setAuditorium(auditoriumRepository.findById(auditoriumId).orElse(null));
             screening.setCreateDate(new Date());
             screening.setModifyDate(new Date());
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(movie.getEndDate());
+            calendar.add(Calendar.DATE, 1);
+            Date movieEndDatePlusOne = calendar.getTime();
+            if (screening.getStartTime().before(movie.getReleaseDate()) || screening.getEndTime().after(movieEndDatePlusOne)) {
+                throw new Exception("場次時間不在上映範圍內");
+            }
+
+            if(!screeningRepository.findOverlapScreenings(auditoriumId, screening.getStartTime(), screening.getEndTime()).isEmpty()) {
+                throw new Exception("該時段此影廳已有場次存在");
+            }
             Screening insert = screeningRepository.save(screening);
             return insert.getId();
         }

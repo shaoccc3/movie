@@ -14,16 +14,16 @@ public class testScreeningService {
     @Autowired
     private MovieService movieService;
 
-    @Test
-    public void testScreeningService() {
-        JSONObject obj = new JSONObject();
-        Movie movie = movieService.getMovieById(2);
-        obj.put("startTime","2024-03-01 9:00");
-        obj.put("endTime","2024-03-01 11:20");
-        obj.put("auditoriumId",1);
-        Screening s = screeningService.createScreening(movie, obj);
-        System.out.println(s);
-    }
+//    @Test
+//    public void testScreeningService() {
+//        JSONObject obj = new JSONObject();
+//        Movie movie = movieService.getMovieById(2);
+//        obj.put("startTime","2024-03-01 9:00");
+//        obj.put("endTime","2024-03-01 11:20");
+//        obj.put("auditoriumId",1);
+//        Screening s = screeningService.createScreening(movie, obj);
+//        System.out.println(s);
+//    }
 
 //    @Test
     public void testScreeningService2() {

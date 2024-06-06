@@ -1,5 +1,6 @@
 package com.ispan.theater.repository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -35,5 +36,11 @@ public interface ScreeningRepository extends JpaRepository<Screening, Integer>, 
     @Query(value="select s.Screening_id,s.Start_time ,s.End_time, m.name from Screening as s join movie as m on s.movie_id = m.movie_id where s.auditorium_id = :aid",nativeQuery=true)
     List<Map<String,Object>> findScreeningsByAuditorium(@Param("aid") Integer aid);
 
+    @Query("SELECT s.id FROM Screening s WHERE s.auditorium.id = :auditoriumId AND " +
+            "((:startTime BETWEEN s.startTime AND s.endTime) OR " +
+            "(:endTime BETWEEN s.startTime AND s.endTime) OR " +
+            "(s.startTime BETWEEN :startTime AND :endTime) OR " +
+            "(s.endTime BETWEEN :startTime AND :endTime))")
+    List<Integer> findOverlapScreenings(@Param("auditoriumId") Integer auditoriumId,@Param("startTime") Date startTime,@Param("endTime") Date endTime);
 }
  

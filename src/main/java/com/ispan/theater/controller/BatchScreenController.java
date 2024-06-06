@@ -19,10 +19,10 @@ public class BatchScreenController {
     public ResponseEntity<?> createBatchSchedule(@RequestBody SchduleDto request) {
         try {
             batchScreenService.batchScreenInsert(request);
-            return ResponseEntity.ok("Batch schedule created successfully.");
+            return ResponseEntity.ok("批量場次新增完成.");
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error creating batch schedule: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("批量新增失敗: " + e.getMessage());
         }
     }
 }
