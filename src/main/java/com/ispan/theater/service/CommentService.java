@@ -38,4 +38,10 @@ public class CommentService {
 	 public Page<Comment> searchComments(String keyword, Pageable pageable) {
 	        return commentRepository.searchByKeyword(keyword, pageable);
 	    }
+	 public Page<Comment> searchByName(String keyword, Pageable pageable) {
+	        return commentRepository.searchByName(keyword, pageable);
+	    }
+	 public Page<Comment> searchByMovie(String keyword, Pageable pageable) {
+	        return commentRepository.searchByMovie(keyword, pageable);
+	    }
 }
