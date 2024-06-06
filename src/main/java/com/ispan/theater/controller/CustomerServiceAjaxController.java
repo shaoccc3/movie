@@ -1,25 +1,28 @@
 package com.ispan.theater.controller;
 
 import java.net.URI;
+import java.util.List;
+import java.util.Map;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.ispan.theater.domain.CustomerService;
 import com.ispan.theater.service.CustomerServiceService;
+import com.ispan.theater.util.DatetimeConverter;
 import com.ispan.theater.util.JsonWebTokenUtility;
-@Controller
+@RestController
 @CrossOrigin
 public class CustomerServiceAjaxController {
     @Autowired
@@ -89,38 +92,65 @@ public class CustomerServiceAjaxController {
 
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateCustomerService(@PathVariable Integer csId,
-            @RequestBody JSONObject jsonObject) {
-        // id錯誤
-        if (csId == null || !customerServiceService.existById(csId)) {
-            return ResponseEntity.notFound().build();
-        } else {
-            // id正確
-            CustomerService updatedCustomerService = customerServiceService.updateCustomerService(jsonObject);
-            if (updatedCustomerService == null) {
-                return ResponseEntity.notFound().build();
-            } else {
-                return ResponseEntity.ok().body(updatedCustomerService);
-            }
-        }
-    }
-
-//    @GetMapping("/{id}")
-//    public ResponseEntity<?> getCustomerServiceById(@PathVariable Integer id) {
+//    @PutMapping("/customerServices/back/{id}")
+//    public ResponseEntity<?> updateCustomerService(@PathVariable Integer csId,
+//            @RequestBody JSONObject jsonObject) {
 //        // id錯誤
-//        if (id == null || !customerServiceService.existById(id)) {
+//        if (csId == null || !customerServiceService.existById(csId)) {
 //            return ResponseEntity.notFound().build();
 //        } else {
 //            // id正確
-//            CustomerService customerService = customerServiceService.findById(id);
-//            if (customerService == null) {
+//            CustomerService updatedCustomerService = customerServiceService.updateCustomerServiceByEmp(jsonObject);
+//            if (updatedCustomerService == null) {
 //                return ResponseEntity.notFound().build();
 //            } else {
-//                return ResponseEntity.ok().body(customerService);
+//                return ResponseEntity.ok().body(updatedCustomerService);
 //            }
-//
 //        }
 //    }
+
+    @GetMapping("/back/custService")
+    public String findCustomerService(@RequestParam Map<String ,String> param) {
+		JSONObject obj=null;
+		try {
+			obj = new JSONObject(param);
+		} catch (Exception e) {
+			System.out.println("param json化錯誤");
+			e.printStackTrace();
+		}
+		System.out.println("Received JSON: " + obj.toString());
+		List<CustomerService> custServices = customerServiceService.find(obj);
+		long total =customerServiceService.countCustService(obj);
+		JSONArray array =new JSONArray();
+
+		 JSONObject result = new JSONObject();
+
+		if(custServices!=null && !custServices.isEmpty()) {
+			for(CustomerService custService :custServices) {
+				
+				String createDate=DatetimeConverter.toString(custService.getHandleDate(), "yyyy/MM/dd");
+				
+				String userFirstname = custService.getUser().getUserFirstname();
+				String userLastname = custService.getUser().getUserLastname();
+				String username=userFirstname+userLastname;
+						
+				JSONObject item=new JSONObject()
+					.put("id", custService.getId())
+					.put("user",username)
+					.put("text", custService.getText())
+					.put("category",custService.getCategory())
+					.put("userEmail",custService.getUserEmail())
+					.put("status",custService.getStatus())
+					.put("createDate", createDate);
+				array.put(item);
+			}
+			result.put("list", array);
+		}
+		result.put("count",total );
+		
+		return result.toString();
+
+		
+    }
 
 }

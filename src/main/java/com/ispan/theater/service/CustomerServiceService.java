@@ -29,6 +29,14 @@ public class CustomerServiceService {
 
 	// 新增
 	// 從token取得使用者id
+	
+	public List<CustomerService> find(JSONObject obj) {
+		return customerServiceRepository.find(obj);
+	}
+	public long countCustService(JSONObject obj) {
+		return customerServiceRepository.count(obj);
+	}
+	
 //	有登入
 	public CustomerService insertCustomerService(JSONObject json) {
 		Integer userId = json.isNull("userid") ? null : json.getInt("userid");
@@ -126,7 +134,7 @@ public class CustomerServiceService {
 					CustomerService customerService = optional.get();
 					customerService.setHandleDate(new Date());
 					customerService.setStatus(status);
-					// customerService.setAgentEmp(emp);
+//					 customerService.setAgentEmp(emp);
 
 					return customerServiceRepository.save(customerService);
 				}
