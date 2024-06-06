@@ -48,25 +48,39 @@ public class FoodAjaxController {
 	}
 	
 	@PostMapping("/backstage/food")//postman test
-	public String createFood (@RequestBody String foodjson) {
-		JSONObject response = new JSONObject();
+	public String createFood(@RequestBody String foodjson) {
 		JSONObject jsonObject = new JSONObject(foodjson);
-		String name = jsonObject.isNull("name")? null : jsonObject.getString("name");
-		if(foodService.existsFoodByName(name)) {
-			response.put("success", false);
-			response.put("message", "name已存在");
+		JSONObject response = new JSONObject();
+		if (!foodService.existsFoodByName(jsonObject.getString("name"))) {
+			Food food = foodService.createFood(jsonObject);
+			response.put("message", "新增成功");
+            response.put("success", "success");
+            response.put("id",food.getId());
 		}else {
-			Food food = foodService.createFood(foodjson);
-			if (food==null) {
-				response.put("success", false);
-				response.put("message", "新增失敗");
-			}else {
-				response.put("succcess", true);
-				response.put("message", "新增成功");
-			}
+			response.put("message", "新增失敗");
+            response.put("fail", "fail");
 		}
 		return response.toString();
 	}
+//	public String createFood (@RequestBody String foodjson) {
+//		JSONObject response = new JSONObject();
+//		JSONObject jsonObject = new JSONObject(foodjson);
+//		String name = jsonObject.isNull("name")? null : jsonObject.getString("name");
+//		if(foodService.existsFoodByName(name)) {
+//			response.put("success", false);
+//			response.put("message", "name已存在");
+//		}else {
+//			Food food = foodService.createFood(foodjson);
+//			if (food==null) {
+//				response.put("success", false);
+//				response.put("message", "新增失敗");
+//			}else {
+//				response.put("succcess", true);
+//				response.put("message", "新增成功");
+//			}
+//		}
+//		return response.toString();
+//	}
 	
 	@PostMapping("/backstage/food/find")//postman test
 	public String find(@RequestBody String json) {
