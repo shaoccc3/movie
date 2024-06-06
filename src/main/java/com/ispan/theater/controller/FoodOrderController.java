@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ispan.theater.domain.FoodOrder;
@@ -87,6 +88,14 @@ public class FoodOrderController {
         response.put("succeed", "succeed");
         return response.toString();
     }
+    
+    
+//    @GetMapping("foodorder/food/getOrder")
+//	public String getOrder(@RequestParam("userId")Integer userId,@RequestParam("page")Integer page) {
+////		orderConditionPublisher.publishV2(userId);
+//    	System.out.println("getOrder start");
+//		return foodOrderService.getOrder(userId, page);
+//	}
 //	
 //    @PostMapping("/backstage/movie/find")//test passed
 //    public String findMovie(@RequestBody String json) {

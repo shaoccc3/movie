@@ -55,46 +55,70 @@ public class FoodService {
 	}
 	
 	// controller createFood
-	public Food createFood(String json) {
-		try {
-			JSONObject obj = new JSONObject(json);
-			Integer id = obj.isNull("id") ? null : obj.getInt("id");
-			String name = obj.isNull("name") ? null : obj.getString("name");
-			Double price = obj.isNull("price") ? null : obj.getDouble("price");
-			Integer count = obj.isNull("count") ? null : obj.getInt("count");
-			String c_date = obj.isNull("createDate") ? null : obj.getString("createDate");
-			String m_date = obj.isNull("modifyDate") ? null : obj.getString("modifyDate");
+	public Food createFood(JSONObject obj) {
+		String name = obj.isNull("name") ? null : obj.getString("name");
+		Double price = obj.isNull("price") ? null : obj.getDouble("price");
+		Integer count = obj.isNull("count") ? null : obj.getInt("count");
+		String c_date = obj.isNull("createDate") ? null : obj.getString("createDate");
+		String m_date = obj.isNull("modifyDate") ? null : obj.getString("modifyDate");
+		Food food = new Food();
+		if (name != null && !name.isEmpty()) {
+			food.setName(name);
 
-			if(id!=null) {
-				Optional<Food> optional = foodRepository.findById(id);
-				if(optional.isEmpty()) {
-					Food insert = new Food();
-					insert.setId(id);
-					insert.setName(name);
-					insert.setPrice(price);
-					insert.setCount(count);					
-					if(c_date!=null && c_date.length()!=0) {
-						java.util.Date temp = DatetimeConverter.parse(c_date, "yyyy-MM-dd");
-						insert.setCreateDate(temp);
-					} else {
-						insert.setCreateDate(null);
-					}
-					
-					if(m_date!=null && m_date.length()!=0) {
-						java.util.Date temp = DatetimeConverter.parse(m_date, "yyyy-MM-dd");
-						insert.setModifyDate(temp);
-					} else {
-						insert.setModifyDate(null);
-					}
+        }
+		if (price != null && price.doubleValue() > 0) {
+			food.setPrice(price);
 
-					return foodRepository.save(insert);
-				}
-			}
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		return null;
+        }
+		if (count != null && count > 0) {
+			food.setCount(count);
+
+        }
+		food.setCreateDate(new Date());
+		food.setModifyDate(new Date());
+		System.out.println("food:" + food.toString());
+		return foodRepository.save(food);
 	}
+//	public Food createFood(String json) {
+//		try {
+//			JSONObject obj = new JSONObject(json);
+//			Integer id = obj.isNull("id") ? null : obj.getInt("id");
+//			String name = obj.isNull("name") ? null : obj.getString("name");
+//			Double price = obj.isNull("price") ? null : obj.getDouble("price");
+//			Integer count = obj.isNull("count") ? null : obj.getInt("count");
+//			String c_date = obj.isNull("createDate") ? null : obj.getString("createDate");
+//			String m_date = obj.isNull("modifyDate") ? null : obj.getString("modifyDate");
+//
+//			if(id!=null) {
+//				Optional<Food> optional = foodRepository.findById(id);
+//				if(optional.isEmpty()) {
+//					Food insert = new Food();
+//					insert.setId(id);
+//					insert.setName(name);
+//					insert.setPrice(price);
+//					insert.setCount(count);					
+//					if(c_date!=null && c_date.length()!=0) {
+//						java.util.Date temp = DatetimeConverter.parse(c_date, "yyyy-MM-dd");
+//						insert.setCreateDate(temp);
+//					} else {
+//						insert.setCreateDate(null);
+//					}
+//					
+//					if(m_date!=null && m_date.length()!=0) {
+//						java.util.Date temp = DatetimeConverter.parse(m_date, "yyyy-MM-dd");
+//						insert.setModifyDate(temp);
+//					} else {
+//						insert.setModifyDate(null);
+//					}
+//
+//					return foodRepository.save(insert);
+//				}
+//			}
+//		} catch (JSONException e) {
+//			e.printStackTrace();
+//		}
+//		return null;
+//	}
 	
 	// controller modifyFood
 	public Food modifyFood(String json) {
