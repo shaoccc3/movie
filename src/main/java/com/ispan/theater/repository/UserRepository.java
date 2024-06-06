@@ -1,5 +1,6 @@
 package com.ispan.theater.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,9 +19,9 @@ public interface UserRepository extends UserDao, JpaRepository<User, Integer>{
 	public Optional<User> findByEmailV2(@Param("email") String email);
 	
 	@Query("from User where phone = :phone")
-	public User findByPhone(@Param("phone")String phone);
+	public List<User>  findByPhone(@Param("phone")String phone);
 	
 	@Query("from User where phone = :phone or email = :email")
-	public User findByEmailOrPhone(@Param("email") String email,@Param("phone")String phone);
+	public List<User> findByEmailOrPhone(@Param("email") String email,@Param("phone")String phone);
 
 }

@@ -77,11 +77,15 @@ public class OrderServiceTest {
 		or.setUserConsumptionECPay("aaa4ff026f254301a5c6");
 	   }
 	   
-	   @Test
+//	   @Test
 	   public void test6() {
 		   throw new OrderException(HttpStatus.SC_BAD_REQUEST,"已有座位被售出，請重新選擇！");
 	   }
-		
+	   
+	   @Test
+	   public void test7() {
+		   System.out.println(os.getOrderBackStage(1));
+	   }			
 		
 }
 

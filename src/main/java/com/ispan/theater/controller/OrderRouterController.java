@@ -21,7 +21,7 @@ public class OrderRouterController {
 			orderRepository.setOrderConditionByPaymentNo(request.getParameter("MerchantTradeNo"));
 			orderRepository.setUserConsumptionECPay(request.getParameter("MerchantTradeNo"));
 		}
-		return "redirect:"+"http://localhost:5173/order/ecpay-complete?MerchantTradeNo="+request.getParameter("MerchantTradeNo");
+		return "redirect:"+"https://starburst-cinema.xyz/order/ecpay-complete?MerchantTradeNo="+request.getParameter("MerchantTradeNo");
 	}
 
 //	@PostMapping("/ecpayResult")

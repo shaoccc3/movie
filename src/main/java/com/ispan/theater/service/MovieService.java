@@ -167,7 +167,7 @@ public class MovieService {
         return movieRepository.save(movie);
     }
 
-    @CacheEvict(value = "movieFindList", allEntries = true)
+    //@CacheEvict(value = "movieFindList", allEntries = true)
     public Movie insertMovie(JSONObject jsonObject) {//test pass
         String name = jsonObject.isNull("name") ? null : jsonObject.getString("name");
         String name_eng = jsonObject.isNull("name_eng") ? null : jsonObject.getString("name_eng");
@@ -186,9 +186,9 @@ public class MovieService {
         if (name == null || releaseDate == null || endDate == null || price == null || categories == null || rated == null || duration == null) {
             return null;
         }
-        if (movieRepository.findByName(name) != null) {
-            return null;
-        }
+//        if (movieRepository.findByName(name) != null) {
+//            return null;
+//        }
         Movie movie = new Movie();
         if (name != null && !name.isEmpty()) {
             movie.setName(name);
@@ -234,8 +234,7 @@ public class MovieService {
         movie.setCreateDate(new Date());
         movie.setModifyDate(new Date());
         System.out.println(movie.toString());
-        //return movieRepository.save(movie);
-        return movie;
+        return movieRepository.save(movie);
     }
 
     @CacheEvict(value = "movieFindList", allEntries = true)

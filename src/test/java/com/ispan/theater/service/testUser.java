@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 import org.apache.commons.lang3.RandomStringUtils;
@@ -37,7 +38,7 @@ public class testUser {
 
 //	@Test
 	public void testFindByEmailOrPhone() {
-		User user = userRepository.findByEmailOrPhone("email", "phone");
+		List<User> user = userRepository.findByEmailOrPhone("email", "phone");
 		System.out.println(user);
 	}
 
@@ -70,7 +71,7 @@ public class testUser {
 	}
 
 	// 大量產生測試資料
-	@Test  
+//	@Test  
 	public void testLogInsertUser() throws Exception {
 		int randomInt = new Random().nextInt(15) + 3;
 
@@ -78,7 +79,7 @@ public class testUser {
 		int minDay = (int) LocalDate.of(1970, 1, 1).toEpochDay();
 		int maxDay = (int) LocalDate.of(2024, 5, 20).toEpochDay();
 
-		for (int i = 0; i <= 5; i++) {
+		for (int i = 0; i <= 300; i++) {
 			// 隨機產生日期
 			Random rand = new Random();
 			long randDay = minDay + rand.nextInt(maxDay - minDay);

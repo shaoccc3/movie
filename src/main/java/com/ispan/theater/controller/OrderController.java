@@ -1,8 +1,8 @@
 package com.ispan.theater.controller;
 
 import java.util.List;
+import java.util.Map;
 
-import org.apache.http.HttpStatus;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ispan.theater.dao.OrderDaoImpl;
 import com.ispan.theater.domain.Order;
 import com.ispan.theater.dto.InsertOrderDTO;
 
-import com.ispan.theater.exception.OrderException;
 import com.ispan.theater.listener.OrderConditionPublisher;
 import com.ispan.theater.repository.OrderRepository;
 import com.ispan.theater.repository.TicketRepository;
@@ -46,6 +46,8 @@ public class OrderController {
 	OrderRepository orderRepository;
 	@Autowired
 	OrderConditionPublisher orderConditionPublisher;
+	@Autowired
+	OrderDaoImpl orderDaoImpl;
 	@GetMapping("/movie/order")
 //	@Cacheable(cacheNames = "Order",key="#id")
 	public String getOrderById(@RequestParam(name="id")Integer id) {
@@ -83,6 +85,10 @@ public class OrderController {
 		System.out.println("Authorization="+request.getHeader("Authorization"));
 		return new JSONObject().put("allCinemaName", cinemaService.findAllCinemaName()).toString(); 
 	}
+	@GetMapping("/movie/findCinemaData")
+	public String findCinemaData() {
+		return new JSONObject().put("allCinemaName", cinemaService.findAllCinema()).toString();
+	}
 	
 	@GetMapping("/movie/findMovie")
 	public String findMovie(@RequestParam("cinemaId")Integer cinemaId) {
@@ -112,6 +118,7 @@ public class OrderController {
 		synchronized (this) {
 			json = orderService.createOrder(insertOrderDto);
 		}
+		System.out.println(json);
 		return json;
 	}
 
@@ -126,6 +133,7 @@ public class OrderController {
 		return new JSONObject().put("Order",orderRepository.orderCompletedByECPay(merchantTradeNo)).toString();
 	}
 	
+	
 	@GetMapping("/movie/getOrder")
 	public String getOrder(@RequestParam("userId")Integer userId,@RequestParam("page")Integer page) {
 		orderConditionPublisher.publishV2(userId);
@@ -137,11 +145,13 @@ public class OrderController {
 		return orderService.getOrderDetail(orderId);
 	}
 	
+	@GetMapping("/movie/getOrderBackStage")
+	public String getOrderBackStage(@RequestParam("page")Integer page) {
+		return orderService.getOrderBackStage(page);
+	}
 	
 	@GetMapping("/movie/deleteOrder")
-	public String refund(@RequestParam("orderId")Integer orderId) {
-	     return orderService.refund(orderId);
-	}
+	public String refund(@RequestParam("orderId")Integer orderId) {	return orderService.refund(orderId);	}
 	
 	
 //	@GetMapping("/movie/test")
@@ -151,9 +161,9 @@ public class OrderController {
 //		return "Success";
 //	}
 	
-	@GetMapping("/movie/test")
-	public String test() {
-		throw new OrderException(HttpStatus.SC_BAD_REQUEST,"已有座位被售出，請重新選擇！");
+	@PostMapping("/movie/getOrderCondition")
+	public String test(@RequestBody Map<String,String> requestParameters) {
+		return orderDaoImpl.multiConditionFindMovie(requestParameters);
 	}
 	
 }

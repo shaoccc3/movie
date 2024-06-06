@@ -1,9 +1,0 @@
-spring:
-  datasource:
-    url: jdbc:sqlserver://10.113.0.3:1433;database=test1;trustServerCertificate=true;encrypt=true
-    password: u7u4vrhur12fmjujfubctji8eflv4usn
-    username: sqlserver
-    
-front:
-  url: https://starburst-cinema.xyz
-    

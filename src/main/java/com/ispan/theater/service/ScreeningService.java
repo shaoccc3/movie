@@ -21,10 +21,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -152,5 +149,48 @@ public class ScreeningService {
         if (screening != null) {
             screeningRepository.delete(screening);
         }
+    }
+    public List<Map<String,Object>> findScreeningByMovieCinema(Integer cinemaId, Integer movieId){
+        return screeningRepository.findScreeningByMovieCinema(cinemaId,movieId);
+    }
+    public List<Map<String,Object>> findScreeningByCinema(Integer cinemaId){
+        return screeningRepository.findScreeningByCinema(cinemaId);
+    }
+    public List<Map<String, Object>> getScreeningsByMovieIdAuditoriumId(Integer movieId, Integer auditoriumId) {
+        return screeningRepository.findScreeningsByMovieAuditoium(movieId, auditoriumId);
+    }
+
+    public Integer jsonToScreen(JSONObject jsonScreen) {
+        Integer screeningId = jsonScreen.isNull("screeningId") ? 0 : jsonScreen.getInt("screeningId");
+        Integer movieId = jsonScreen.isNull("movieid") ? null : jsonScreen.getInt("movieid");
+        Integer auditoriumId = jsonScreen.isNull("auditoriumId") ? null : jsonScreen.getInt("auditoriumId");
+        String startTime = jsonScreen.isNull("start") ? null : jsonScreen.getString("start");
+        String endTime = jsonScreen.isNull("end") ? null : jsonScreen.getString("end");
+        System.out.println("AUD"+auditoriumId);
+        if (movieId == null || auditoriumId == null || startTime == null || endTime == null) {
+            return null;
+        }
+        if (screeningId!=0) {
+            Screening screening = screeningRepository.findById(screeningId).get();
+            screening.setStartTime(DatetimeConverter.parse(startTime, "yyyy-MM-dd HH:mm"));
+            screening.setEndTime(DatetimeConverter.parse(endTime, "yyyy-MM-dd HH:mm"));
+            screening.setAuditorium(auditoriumRepository.findById(auditoriumId).get());
+            screening.setModifyDate(new Date());
+            Screening insert = screeningRepository.save(screening);
+            return insert.getId();
+        } else {
+            Screening screening = new Screening();
+            screening.setStartTime(DatetimeConverter.parse(startTime, "yyyy-MM-dd HH:mm"));
+            screening.setEndTime(DatetimeConverter.parse(endTime, "yyyy-MM-dd HH:mm"));
+            screening.setMovie(movieRepository.findById(movieId).orElse(null));
+            screening.setAuditorium(auditoriumRepository.findById(auditoriumId).orElse(null));
+            screening.setCreateDate(new Date());
+            screening.setModifyDate(new Date());
+            Screening insert = screeningRepository.save(screening);
+            return insert.getId();
+        }
+    }
+    public List<Map<String, Object>> getScreeningsByAuditoriumId(Integer auditoriumId) {
+        return screeningRepository.findScreeningsByAuditorium(auditoriumId);
     }
 }

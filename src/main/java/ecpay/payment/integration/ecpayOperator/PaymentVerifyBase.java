@@ -1,5 +1,6 @@
 package ecpay.payment.integration.ecpayOperator;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,11 +14,14 @@ import ecpay.payment.integration.errorMsg.ErrorMessage;
 import ecpay.payment.integration.exception.EcpayException;
 
 public class PaymentVerifyBase{
-	protected String confPath = "/ecpay/payment/integration/config/EcpayPayment.xml";
+	//protected String confPath = "/ecpay/payment/integration/config/EcpayPayment.xml";
+	protected String confPath = "/usr/local/tomcat/conf/EcpayPayment.xml";
 	protected Document doc;
 	public PaymentVerifyBase(){
-		URL fileURL = this.getClass().getResource(confPath);
-		doc = EcpayFunction.xmlParser(fileURL.toString());
+		//URL fileURL = this.getClass().getResource(confPath);
+		File file = new File(confPath);
+		//doc = EcpayFunction.xmlParser(fileURL.toString());
+		doc = EcpayFunction.xmlParser(file.getAbsolutePath());
 		doc.getDocumentElement().normalize();
 	}
 	
