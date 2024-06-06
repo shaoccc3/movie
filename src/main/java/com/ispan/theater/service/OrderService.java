@@ -105,7 +105,7 @@ public class OrderService {
 
 	@Transactional
 	public String createOrder(InsertOrderDTO insertOrderDto) {
-		String Date = DatetimeConverter.createSqlDatetime(new Date());
+		String Date = DatetimeConverter.createSqlDatetime(new Date(System.currentTimeMillis()+28800000));
 		Order order = null;
 		String result = "";
 		Double price = 0.0;
