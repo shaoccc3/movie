@@ -21,7 +21,7 @@ public interface MovieRepository extends JpaRepository<Movie, Integer> , JpaSpec
     public long countByNameLike(String name);
     
     
-    @Query(value="select distinct m.movie_id,m.name,a.cinema_id from movie as m join Screening as s on m.movie_id=s.Movie_id join auditorium as a on s.auditorium_id=a.auditorium_id where a.cinema_id= :cinemaId",nativeQuery = true)
+    @Query(value="select distinct m.movie_id,m.name,a.cinema_id from movie as m join Screening as s on m.movie_id=s.Movie_id join auditorium as a on s.auditorium_id=a.auditorium_id where a.cinema_id= :cinemaId and substring(convert(nvarchar,s.Start_time),1,10)>=CONVERT(nvarchar,GETDATE(),23)",nativeQuery = true)
     public List<Map<String,Object>> findMovieByScreening(@Param(value="cinemaId")Integer cinemaId);
     	
 }
