@@ -3,6 +3,7 @@ package com.ispan.theater.repository;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -41,5 +42,8 @@ public interface TicketRepository extends JpaRepository<Ticket, Integer> {
 	
 	@Query("select t from Ticket t where t.screening.id = :screeningId")
 	public List<Ticket> test(@Param("screeningId")Integer screeningId);
+
+	@Query("SELECT t FROM Ticket t WHERE t.screening.id = :screeningId")
+	List<Ticket> findByScreening(@Param("screeningId") Integer screeningId);
 	
 }
