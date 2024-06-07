@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 public interface OrderRepository extends JpaRepository<Order, Integer> {
 	
 	//分頁  select * FROM Seat order by seat_id desc offset 0 rows fetch next 10 rows only 
-	
 	@Query(value="select o from Order o where o.user.id=:id")
 	Optional<Order> findOrderByUserId(@Param("id")Integer id);
 	
@@ -78,7 +77,6 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 	@Query(value="select count(order_id) as order_total from \"Order\"",nativeQuery=true)
 	Map<String,Integer> orderTotal();
 	
-
 	@Modifying
 	@Query(value="update t set t.is_available= '未售出' from  Ticket as t join OrderDetail as od on t.Ticket_id=od.ticket_id where od.order_id in (select od.order_id from OrderDetail as od join \"Order\" as o on o.order_id=od.order_id where o.payment_condition=0 and DATEDIFF(s,substring(convert(varchar,o.create_date),1,19),convert(nvarchar,getDate(),120)) > 600 group by od.order_id)",nativeQuery=true)
 	void deleteOrderStep1();
@@ -121,5 +119,7 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 //	@Modifying
 //	@Query(value="delete from \"Order\" where order_id=:orderId",nativeQuery=true)
 //	void orderRefundStep3(@Param("orderId")Integer orderId);
+	
+	Optional<Integer> findOrderConditionCurrentDate(@Param("orderId")Integer orderId);
 	
 }
