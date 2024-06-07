@@ -95,10 +95,11 @@ public class FoodPictureAjaxController {
 			path = "/backstage/food/photo/{food_pictureid}",
 			produces = {MediaType.IMAGE_JPEG_VALUE})
 	public @ResponseBody byte[] findPhotoByPhotoId(@PathVariable(name="food_pictureid") Integer id) {
-		FoodPicture foodPicture = foodPictureService.findFoodPictureById(id);
+
+        List<FoodPicture> foodPicture = foodPictureService.getFoodPicture(id);
 		byte[] result = this.picture;
 		if(foodPicture!=null) {
-			result =  foodPicture.getPicture();
+			result =  foodPicture.get(foodPicture.size()-1).getPicture();
         }
         return result;
 	}

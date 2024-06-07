@@ -37,7 +37,7 @@ public class JsonWebTokenUtility {
 	}
 
 	
-	//每天 10:15:05執行 更新對稱鑰
+	//每天 04:15:05執行 更新對稱鑰
 	@Scheduled(cron  =" 5 15 04 * * ?")
     public void updateSecretKey() {
 		//從資料庫找到對稱鑰

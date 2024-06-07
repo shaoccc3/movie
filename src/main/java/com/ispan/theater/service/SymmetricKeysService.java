@@ -21,13 +21,13 @@ public class SymmetricKeysService  {
 	
 	
 
-	@PostConstruct
-	public void init() throws NoSuchAlgorithmException  {
-		createSymmetricKey();
-	}
+//	@PostConstruct
+//	public void init() throws NoSuchAlgorithmException  {
+//		createSymmetricKey();
+//	}
 	
 	
-	//每天 10:15:00執行 產生對稱鑰存入資料庫
+	//每天 04:15:00執行 產生對稱鑰存入資料庫
 	@Scheduled(cron  =" 0 15 04 * * ?")
 	public void createSymmetricKey()throws NoSuchAlgorithmException {
 		SymmetricKeys key =new SymmetricKeys();

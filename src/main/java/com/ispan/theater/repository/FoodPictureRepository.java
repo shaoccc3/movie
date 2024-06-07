@@ -15,4 +15,5 @@ public interface FoodPictureRepository extends JpaRepository<FoodPicture, Intege
 
 	@Query("select fp from FoodPicture fp where fp.food = :food")
 	public List<FoodPicture> findFoodPictureByFoodId(@Param("food") Food food);
+
 }
