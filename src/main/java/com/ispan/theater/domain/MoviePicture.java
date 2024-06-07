@@ -28,5 +28,5 @@ public class MoviePicture {
     private byte[] picture;
     @Column(name = "filename", nullable = false)
     private String filename;
-
+    
 }

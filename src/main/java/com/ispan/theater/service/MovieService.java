@@ -2,6 +2,7 @@ package com.ispan.theater.service;
 
 import com.ispan.theater.domain.Category;
 import com.ispan.theater.domain.Movie;
+import com.ispan.theater.domain.MoviePicture;
 import com.ispan.theater.domain.Rated;
 import com.ispan.theater.repository.*;
 import com.ispan.theater.util.DatetimeConverter;
@@ -40,6 +41,8 @@ public class MovieService {
     private ActorRepository actorRepository;
     @Autowired
     private RatedRepository ratedRepository;
+    @Autowired
+    private MoviePictureRepository moviePictureRepository;
 
     @CacheEvict(value = "movieFindList", allEntries = true)
     public List<Movie> getAllMovies() {
@@ -239,6 +242,8 @@ public class MovieService {
 
     @CacheEvict(value = "movieFindList", allEntries = true)
     public void deleteMovie(Movie movie) {
+        List<MoviePicture> list= moviePictureRepository.findByMovieId(movie);
+        moviePictureRepository.deleteAll(list);
         movieRepository.delete(movie);
     }
 

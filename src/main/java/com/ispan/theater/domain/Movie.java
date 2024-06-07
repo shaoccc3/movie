@@ -68,8 +68,7 @@ public class Movie {
     @Lob
     @JsonIgnore
     private byte[] image;
-    
-    
+
 
     @Override
     public String toString() {
