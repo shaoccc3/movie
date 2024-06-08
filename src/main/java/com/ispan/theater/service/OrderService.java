@@ -219,6 +219,10 @@ public class OrderService {
 	
 	@Transactional
 	public String refund(Integer orderId)  {
+		Integer expirations=orderRepository.findOrderConditionCurrentDate(orderId).orElseThrow(()->new OrderException(1001,"場次已結束！無法退款！"));
+		if(expirations>=0) {
+			throw new OrderException(901,"場次已結束！無法退款！");
+		}
 		Order order = orderRepository.findById(orderId).get();
 		String returnCode = "";
 		if ("linepay".equals(order.getSupplier())) {

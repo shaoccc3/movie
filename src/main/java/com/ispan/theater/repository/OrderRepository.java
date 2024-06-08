@@ -120,6 +120,7 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 //	@Query(value="delete from \"Order\" where order_id=:orderId",nativeQuery=true)
 //	void orderRefundStep3(@Param("orderId")Integer orderId);
 	
+	@Query(value="select datediff(second,SUBSTRING(CONVERT(nvarchar,s.End_time),1,19),dateadd(second,28800,convert(nvarchar,getdate(),120))) from OrderDetail as od join Ticket as t on t.Ticket_id=od.ticket_id join Screening as s on s.Screening_id=t.Screening_id where od.order_id= :orderId group by s.End_time",nativeQuery=true)
 	Optional<Integer> findOrderConditionCurrentDate(@Param("orderId")Integer orderId);
 	
 }

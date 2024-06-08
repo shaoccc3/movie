@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ispan.theater.dao.OrderDaoImpl;
 import com.ispan.theater.domain.Order;
 import com.ispan.theater.dto.InsertOrderDTO;
-
+import com.ispan.theater.exception.OrderException;
 import com.ispan.theater.listener.OrderConditionPublisher;
 import com.ispan.theater.repository.OrderRepository;
 import com.ispan.theater.repository.TicketRepository;
@@ -166,6 +166,10 @@ public class OrderController {
 		return orderDaoImpl.multiConditionFindMovie(requestParameters);
 	}
 	
+//	@GetMapping("/movie/test")
+//	public String test() {
+//		throw new OrderException(901,"場次已結束！無法退款！");
+//	}
 }
 
 

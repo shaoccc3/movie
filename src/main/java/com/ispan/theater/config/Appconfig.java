@@ -59,7 +59,7 @@ public class Appconfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(JwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests((authorize) -> {//test /order/movie/getOrderCondition、/order/movie/getOrderDetail、/order/movie/deleteOrder、/order/movie/getOrderBackStage暫時開權限
-                    authorize.requestMatchers("/order/movie/getOrderCondition","/order/movie/getOrderDetail", "/order/movie/deleteOrder", "/order/movie/getOrderBackStage", "/user/pass/**", "/order-redirect", "/order/movie/linePayConfirm", "/order/movie/findMovie"
+                    authorize.requestMatchers("/order/movie/test", "/user/pass/**", "/order-redirect", "/order/movie/linePayConfirm", "/order/movie/findMovie"
                     				, "/order/movie/findAllCinema", "/order/movie/dates", "/order/movie/times", "/order/movie/ecPayConfirm"
                                     , "/order/movie/tickets", "/backstage/movie/**", "/moviePicture/**", "/comment/**"
                                     , "/login", "/api/login","/order/movie/findCinemaData","/backstage/food/**","/backstage/food/photo/**","/backstage/foodpicture/**","/back/custService").permitAll()

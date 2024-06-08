@@ -82,10 +82,15 @@ public class OrderServiceTest {
 		   throw new OrderException(HttpStatus.SC_BAD_REQUEST,"已有座位被售出，請重新選擇！");
 	   }
 	   
-	   @Test
+//	   @Test
 	   public void test7() {
 		   System.out.println(os.getOrderBackStage(1));
-	   }			
+	   }
+	   
+	   @Test
+	   public void test8() {
+		   System.out.println(or.findOrderConditionCurrentDate(212));
+	   }	
 		
 }
 
