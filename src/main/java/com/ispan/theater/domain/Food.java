@@ -49,7 +49,7 @@ public class Food {
 	@Column(name="modify_date", nullable = false)
 	private Date modifyDate;
 	
-	@OneToMany(mappedBy = "id", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+	@OneToMany(mappedBy = "food", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
 	@JsonIgnore
 	private List<FoodPicture> foodPicture;
 
