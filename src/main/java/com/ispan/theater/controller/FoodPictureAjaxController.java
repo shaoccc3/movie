@@ -31,47 +31,38 @@ public class FoodPictureAjaxController {
 	private FoodPictureService foodPictureService;
 	
 	
-	@GetMapping("/backstage/food/photo/{id}")
+//	@GetMapping("/backstage/food/photo/{id}")
+//    public ResponseEntity<?> getFoodPicture(@PathVariable Integer id) {
+//        return ResponseEntity.ok(foodPictureService.getFoodPicture(id));
+//    }
+	@GetMapping("/foodPicture/{id}")
     public ResponseEntity<?> getFoodPicture(@PathVariable Integer id) {
         return ResponseEntity.ok(foodPictureService.getFoodPicture(id));
     }
 
-    @PostMapping("/backstage/food/uploadPhoto/{id}")
-    public ResponseEntity<?> addFoodPicture(@PathVariable Integer id, @RequestParam("files") List<MultipartFile> files) throws IOException {
-        boolean insert = foodPictureService.insertFoodPicture(files, id);
-        System.out.println("insert:"+ insert);
-        System.out.println("id:"+ id);
-        System.out.println("files:"+files);
-        if (insert) {
-            return ResponseEntity.ok().build();
-        }
-        return ResponseEntity.badRequest().build();
-    }
+	@PostMapping("/backstage/food/uploadPhoto/{id}")
+	public ResponseEntity<?> addFoodPicture(@PathVariable Integer id, @RequestParam("files") List<MultipartFile> files) throws IOException {
+	    boolean insert = foodPictureService.insertFoodPicture(files, id);        
+	    if (insert) {
+	            return ResponseEntity.ok().build();
+	    }
+	        return ResponseEntity.badRequest().build();
+	}
 
-    
-    @DeleteMapping("/backstage/foodpicture/{pk}")
+    @DeleteMapping("/backstage/foodpicture/{pk}")//沒用到
     public String remove(@PathVariable(name = "pk") Integer id) {
         JSONObject responseJson = new JSONObject();
-        if(id==null) {
-            responseJson.put("success", false);
-            responseJson.put("message", "id是必要欄位");
-        } else if(!foodPictureService.existById(id)) {
-            responseJson.put("success", false);
-            responseJson.put("message", "id不存在");
-        } else {
-            if(foodPictureService.delete(id)) {
+        System.out.println("responseJson"+responseJson);
+            if(foodPictureService.deleteByFoodId(id)) {
                 responseJson.put("success", true);
                 responseJson.put("message", "刪除成功");
             } else {                
                 responseJson.put("success", false);
                 responseJson.put("message", "刪除失敗");
             }
-        }
         return responseJson.toString();
     }
-
-	
-	
+   
 	
 	private byte[] picture = null;	
 	@PostConstruct
@@ -103,5 +94,27 @@ public class FoodPictureAjaxController {
         }
         return result;
 	}
+	
+	 //origin
+//  @DeleteMapping("/backstage/foodpicture/{pk}")
+//  public String remove(@PathVariable(name = "pk") Integer id) {
+//      JSONObject responseJson = new JSONObject();
+//      if(id==null) {
+//          responseJson.put("success", false);
+//          responseJson.put("message", "id是必要欄位");
+//      } else if(!foodPictureService.existById(id)) {
+//          responseJson.put("success", false);
+//          responseJson.put("message", "id不存在");
+//      } else {
+//          if(foodPictureService.delete(id)) {
+//              responseJson.put("success", true);
+//              responseJson.put("message", "刪除成功");
+//          } else {                
+//              responseJson.put("success", false);
+//              responseJson.put("message", "刪除失敗");
+//          }
+//      }
+//      return responseJson.toString();
+//  }
 	
 }
