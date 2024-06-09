@@ -1,14 +1,10 @@
 package com.ispan.theater.controller;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,15 +12,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ispan.theater.domain.Food;
-import com.ispan.theater.domain.FoodPicture;
 import com.ispan.theater.service.FoodService;
 import com.ispan.theater.util.DatetimeConverter;
-
-import jakarta.annotation.PostConstruct;
 
 @RestController
 @CrossOrigin
@@ -62,25 +54,7 @@ public class FoodAjaxController {
 		}
 		return response.toString();
 	}
-//	public String createFood (@RequestBody String foodjson) {
-//		JSONObject response = new JSONObject();
-//		JSONObject jsonObject = new JSONObject(foodjson);
-//		String name = jsonObject.isNull("name")? null : jsonObject.getString("name");
-//		if(foodService.existsFoodByName(name)) {
-//			response.put("success", false);
-//			response.put("message", "name已存在");
-//		}else {
-//			Food food = foodService.createFood(foodjson);
-//			if (food==null) {
-//				response.put("success", false);
-//				response.put("message", "新增失敗");
-//			}else {
-//				response.put("succcess", true);
-//				response.put("message", "新增成功");
-//			}
-//		}
-//		return response.toString();
-//	}
+
 	
 	@PostMapping("/backstage/food/find")//postman test
 	public String find(@RequestBody String json) {
@@ -162,6 +136,7 @@ public class FoodAjaxController {
 	@DeleteMapping("/backstage/food/{pk}")//postman test
 	public String deleteFood (@PathVariable(name="pk") Integer id) {
 		JSONObject responseJson = new JSONObject();
+		System.out.println("responseJson"+responseJson);
         if(id==null) {
             responseJson.put("success", false);
             responseJson.put("message", "id是必要欄位");
@@ -179,6 +154,7 @@ public class FoodAjaxController {
         }
         return responseJson.toString();
 	}
+	
 	
 	
 }

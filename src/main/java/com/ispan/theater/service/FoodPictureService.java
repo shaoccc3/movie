@@ -1,9 +1,13 @@
 package com.ispan.theater.service;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,8 +15,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.ispan.theater.domain.Food;
 import com.ispan.theater.domain.FoodPicture;
+import com.ispan.theater.domain.Movie;
+import com.ispan.theater.domain.Rated;
 import com.ispan.theater.repository.FoodPictureRepository;
 import com.ispan.theater.repository.FoodRepository;
+import com.ispan.theater.util.DatetimeConverter;
 
 @Service
 @Transactional
@@ -44,8 +51,8 @@ public class FoodPictureService {
         }
         return false;
     }
-
-	//find picture
+	
+	//find picture      origin
     public FoodPicture findFoodPictureById(Integer id) {
 		if(id!=null) {
 			Optional<FoodPicture> optional = foodPictureRepository.findById(id);
@@ -56,29 +63,42 @@ public class FoodPictureService {
 		return null;
 	}
     
-    public boolean delete(Integer id) {
-		if(id!=null) {
-			Optional<FoodPicture> optional = foodPictureRepository.findById(id);
-			if(optional.isPresent()) {
-				foodPictureRepository.deleteById(id);
+    
+    //plus 沒用到
+    public boolean existsByFoodId(Integer foodId) {
+        return foodPictureRepository.existsByFoodId(foodId);
+    }
+    //plus 沒用到
+    public boolean deleteByFoodId(Integer fid) {
+		if (fid != null && existsByFoodId(fid)) {
+			System.out.println("fid" + fid);
+			Food food = foodRepository.findById(fid).orElse(null);
+			System.out.println("food" + food);
+			if (food!=null) {
+				foodPictureRepository.deleteByFoodId(food);
+				System.out.println("food" + food);
 				return true;
 			}
-		}
+		}		
 		return false;
 	}
+    
     public boolean existById(Integer id) {
 		if(id!=null) {
 			return foodPictureRepository.existsById(id);
 		}
 		return false;
 	}
-//	//upload picture
-//	public Optional<FoodPicture> findFoodPictureByFoodId(Integer foodId) {
-//		System.out.println("foodId:"+foodId);
-//		return foodPictureRepository.findFoodPictureByFoodId(foodId);
-//	}
-//	
-//	public List<FoodPicture> findAllPhotos(){
-//		return foodPictureRepository.findAll();
+
+  //origin
+//  public boolean delete(Integer id) {
+//		if(id!=null) {
+//			Optional<FoodPicture> optional = foodPictureRepository.findById(id);
+//			if(optional.isPresent()) {
+//				foodPictureRepository.deleteById(id);
+//				return true;
+//			}
+//		}
+//		return false;
 //	}
 }
