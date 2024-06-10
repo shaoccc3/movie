@@ -32,7 +32,7 @@ public class CustomerService {
     private String userEmail;
 
     @Column(name = "status", nullable = false, length = 20)
-    private String status;
+    private Boolean status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "agent_emp_id")
@@ -45,5 +45,11 @@ public class CustomerService {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "handle_date")
     private Date handleDate;
+
+	@Override
+	public String toString() {
+		return "CustomerService [id=" + id + ", user=" + user + ", text=" + text + ", category=" + category
+				+ ", userEmail=" + userEmail + ", status=" + status + "]";
+	}
 
 }
