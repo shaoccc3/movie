@@ -1,13 +1,21 @@
 package com.ispan.theater.dao;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.hibernate.Session;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ispan.theater.domain.CustomerService;
+import com.ispan.theater.domain.Movie;
+import com.ispan.theater.domain.Screening;
+import com.ispan.theater.domain.User;
+import com.ispan.theater.repository.UserRepository;
 import com.ispan.theater.util.DatetimeConverter;
 
 import jakarta.persistence.EntityManager;
@@ -15,6 +23,8 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 
@@ -26,7 +36,8 @@ public class CustomerServiceDaoImpl implements CustomerServiceDao{
 	public Session getSession() {
 		return this.session;
 	}
-	
+	@Autowired
+	public UserRepository ur;
 	
 	//避免多執行序執行時拿到同一個EntityManager autowired不是
 //	private EntityManager entityManager;
@@ -42,7 +53,7 @@ public class CustomerServiceDaoImpl implements CustomerServiceDao{
 		String category = json.isNull("category") ? null : json.getString("category");
 		String email = json.isNull("userEmail") ? null : json.getString("userEmail");
 
-		String status = json.isNull("status") ? null : json.getString("status");
+		Boolean status = json.isNull("status") ? null : json.getBoolean("status");
 		String createDateStart=json.isNull("createDateStart")?null:json.getString("createDateStart");
 		String createDateEnd=json.isNull("createDateEnd")?null:json.getString("createDateEnd");
 
@@ -53,45 +64,59 @@ public class CustomerServiceDaoImpl implements CustomerServiceDao{
 		
 //		from CustomerService
 		Root<CustomerService> table = criteriaQuery.from(CustomerService.class);
+		
+		
 //		select count(*)		
 		criteriaQuery = criteriaQuery.select(criteriaBuilder.count(table));
 
 		
-		//		where start
-		List<Predicate> predicates = new ArrayList<>();
-		
-		if(id!=null) {
-			predicates.add(criteriaBuilder.equal(table.get("id"), id));
-			
-		}
-		if(user!=null&& user.length()!=0) {
-			predicates.add( criteriaBuilder.equal(table.get("user"), user));
-		}
-		if(text!=null && text.length()!=0) {
-			predicates.add(criteriaBuilder.like(table.get("text"),"%"+text+"%"));	
-		}
-			
-		if(category!=null && category.length()!=0) {
-			predicates.add(criteriaBuilder.equal(table.get("category"), category));
-		}
+		// Add join
+				Join<CustomerService, User> userJoin = table.join("user");
+//				where start
+				List<Predicate> predicates = new ArrayList<>();
 
-		if(email!=null && email.length()!=0) {
-			predicates.add(criteriaBuilder.like(table.get("userEmail"),"%"+email+"%"));	
-		}
-		
-		if(status!=null && status.length()!=0) {
-			predicates.add(criteriaBuilder.equal(table.get("status"), status));
-		}
-		
-		if(createDateStart!=null && createDateStart.length()!=0) {
-			java.util.Date temp = DatetimeConverter.parse(createDateStart, "yyyy-MM-dd");
-			predicates.add(criteriaBuilder.greaterThan(table.get("createDateStart"), temp));
-		}
-		
-		if(createDateEnd!=null && createDateEnd.length()!=0) {
-			java.util.Date temp = DatetimeConverter.parse(createDateEnd, "yyyy-MM-dd");
-			predicates.add(criteriaBuilder.lessThan(table.get("createDateEnd"), temp));
-		}
+				if(id!=null) {
+					predicates.add(criteriaBuilder.equal(table.get("id"), id));
+					
+				}
+				
+				if(text!=null && text.length()!=0) {
+					predicates.add(criteriaBuilder.like(table.get("text"),"%"+text+"%"));	
+				}
+					
+				if(category!=null && category.length()!=0) {
+					predicates.add(criteriaBuilder.equal(table.get("category"), category));
+				}
+
+				if(email!=null && email.length()!=0) {
+					predicates.add(criteriaBuilder.like(table.get("userEmail"),"%"+email+"%"));	
+				}
+				
+				if(status!=null ) {
+					predicates.add(criteriaBuilder.equal(table.get("status"), status));
+				}
+				
+				if (createDateStart != null && createDateStart.length() != 0) {
+					SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+					try {
+						predicates.add(criteriaBuilder.greaterThanOrEqualTo(table.get("createDate"), formatter.parse(createDateStart)));
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+
+				}
+				if (createDateEnd != null && createDateEnd.length() != 0) {
+					SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+					try {
+						predicates.add(criteriaBuilder.lessThanOrEqualTo(table.get("createDate"), formatter.parse(createDateEnd)));
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+				// Compare jsonUser with user.user
+		        if (user != null && user.length() != 0) {
+		            predicates.add(criteriaBuilder.equal(userJoin.get("user"), user));
+		        }
 //		where end
 		if (predicates != null && !predicates.isEmpty()) {
 			Predicate[] array = predicates.toArray(new Predicate[0]);
@@ -120,19 +145,22 @@ public class CustomerServiceDaoImpl implements CustomerServiceDao{
 		String category = json.isNull("category") ? null : json.getString("category");
 		String email = json.isNull("userEmail") ? null : json.getString("userEmail");
 
-		String status = json.isNull("status") ? null : json.getString("status");
+		Boolean status = json.isNull("status") ? null : json.getBoolean("status");
 		String createDateStart=json.isNull("createDateStart")?null:json.getString("createDateStart");
 		String createDateEnd=json.isNull("createDateEnd")?null:json.getString("createDateEnd");
 		//分頁排序
 		int start = json.isNull("start") ? 0 : json.getInt("start");
 		int rows = json.isNull("rows") ? 10 : json.getInt("rows");
 		String order = json.isNull("order") ? "id" : json.getString("order");
-		boolean dir = json.isNull("dir") ? false : json.getBoolean("dir");
+		boolean dir = json.isNull("dir") ? true : json.getBoolean("dir");
 		
 		CriteriaBuilder criteriaBuilder=this.session.getCriteriaBuilder();
 		CriteriaQuery<CustomerService> criteriaQuery = criteriaBuilder.createQuery(CustomerService.class);
 		
 		Root<CustomerService> table = criteriaQuery.from(CustomerService.class);
+		
+		// Add join
+		Join<CustomerService, User> userJoin = table.join("user");
 //		where start
 		List<Predicate> predicates = new ArrayList<>();
 
@@ -140,9 +168,7 @@ public class CustomerServiceDaoImpl implements CustomerServiceDao{
 			predicates.add(criteriaBuilder.equal(table.get("id"), id));
 			
 		}
-		if(user!=null&& user.length()!=0) {
-			predicates.add( criteriaBuilder.equal(table.get("user"), user));
-		}
+		
 		if(text!=null && text.length()!=0) {
 			predicates.add(criteriaBuilder.like(table.get("text"),"%"+text+"%"));	
 		}
@@ -155,19 +181,31 @@ public class CustomerServiceDaoImpl implements CustomerServiceDao{
 			predicates.add(criteriaBuilder.like(table.get("userEmail"),"%"+email+"%"));	
 		}
 		
-		if(status!=null && status.length()!=0) {
+		if(status!=null ) {
 			predicates.add(criteriaBuilder.equal(table.get("status"), status));
 		}
 		
-		if(createDateStart!=null && createDateStart.length()!=0) {
-			java.util.Date temp = DatetimeConverter.parse(createDateStart, "yyyy-MM-dd");
-			predicates.add(criteriaBuilder.greaterThan(table.get("createDateStart"), temp));
+		if (createDateStart != null && createDateStart.length() != 0) {
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			try {
+				predicates.add(criteriaBuilder.greaterThanOrEqualTo(table.get("createDate"), formatter.parse(createDateStart)));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
 		}
-		
-		if(createDateEnd!=null && createDateEnd.length()!=0) {
-			java.util.Date temp = DatetimeConverter.parse(createDateEnd, "yyyy-MM-dd");
-			predicates.add(criteriaBuilder.lessThan(table.get("createDateEnd"), temp));
+		if (createDateEnd != null && createDateEnd.length() != 0) {
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			try {
+				predicates.add(criteriaBuilder.lessThanOrEqualTo(table.get("createDate"), formatter.parse(createDateEnd)));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
+		// Compare jsonUser with user.user
+        if (user != null && user.length() != 0) {
+            predicates.add(criteriaBuilder.equal(userJoin.get("user"), user));
+        }
 //		where end
 		
 		
