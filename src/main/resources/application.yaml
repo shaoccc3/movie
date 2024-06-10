@@ -41,7 +41,7 @@ logging:
 jwt:
   token:
     expire: 10000
-# email SMTP 服务器配置
+# email SMTP 服務器配置
 mail:
   smtp:
     host: smtp.gmail.com
